@@ -1,0 +1,214 @@
+[
+  {
+    "id": "jmeno",
+    "type": "text",
+    "title": "Jak se jmenujete?",
+    "hint": "Uveďte prosím vaše celé jméno, ať víme, s kým máme tu čest.",
+    "placeholder": "Pepa Stanek"
+  },
+  {
+    "id": "pozemek",
+    "type": "text",
+    "title": "Máte už vybraný pozemek?",
+    "hint": "Pokud ano, uveďte jeho velikost, tvar, sklon a orientaci ke světovým stranám (co víte). Pokud ne, napište alespoň lokalitu, kterou zvažujete.",
+    "placeholder": "Např. 800 m², rovinatý, obdélníkový, přístup ze severu, jižní část zahradou..."
+  },
+  {
+    "id": "rozpocet",
+    "type": "choice",
+    "title": "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?",
+    "hint": "Pomůže nám to hned od začátku navrhovat reálně.",
+    "options": [
+      "do 5 mil. Kč",
+      "5–8 mil. Kč",
+      "8–12 mil. Kč",
+      "nad 12 mil. Kč",
+      "Zatím nevím, chci poradit"
+    ]
+  },
+  {
+    "id": "podlazi",
+    "type": "choice",
+    "title": "Kolik podlaží by dům měl mít?",
+    "hint": "",
+    "options": [
+      "Přízemní bungalov",
+      "Přízemí + podkroví",
+      "Dvě nadzemní podlaží",
+      "Nejsem si jistý/á, poradíte mi"
+    ]
+  },
+  {
+    "id": "konstrukce",
+    "type": "choice",
+    "title": "Jaký typ konstrukce preferujete?",
+    "hint": "",
+    "options": [
+      "Zděná (cihla / tvárnice)",
+      "Dřevostavba",
+      "Kombinace",
+      "Nemám preferenci, doporučte"
+    ]
+  },
+  {
+    "id": "energie",
+    "type": "choice",
+    "title": "Jaký energetický standard byste chtěli?",
+    "hint": "",
+    "options": [
+      "Standardní novostavba",
+      "Nízkoenergetický dům",
+      "Pasivní dům",
+      "Nevím, chci poradit"
+    ]
+  },
+  {
+    "id": "vytapeni",
+    "type": "choice",
+    "title": "Jaký způsob vytápění preferujete?",
+    "hint": "",
+    "options": [
+      "Tepelné čerpadlo",
+      "Plyn",
+      "Krb/kamna jako doplněk",
+      "Kombinace",
+      "Nevím, chci poradit"
+    ]
+  },
+  {
+    "id": "styl",
+    "type": "image-choice",
+    "title": "Který vizuální styl exteriéru je vám bližší?",
+    "hint": "Nepřemýšlejte moc dlouho — jde o první dojem.",
+    "imageA": {
+      "url": "https://picsum.photos/seed/minimal-clean/600/500",
+      "label": "Minimalistický, střídmý"
+    },
+    "imageB": {
+      "url": "https://picsum.photos/seed/bold-vivid/600/500",
+      "label": "Výrazný, výrazné tvary"
+    }
+  },
+  {
+    "id": "barevnost",
+    "type": "image-choice",
+    "title": "Která barevná nálada fasády a interiéru vás víc oslovuje?",
+    "hint": "Vyberte tu, ke které se přikláníte přirozeněji.",
+    "imageA": {
+      "url": "https://picsum.photos/seed/soft-pastel/600/500",
+      "label": "Jemná, světlá"
+    },
+    "imageB": {
+      "url": "https://picsum.photos/seed/deep-contrast/600/500",
+      "label": "Tmavší, kontrastní"
+    }
+  },
+  {
+    "id": "inspirace",
+    "type": "text",
+    "title": "Uveďte 2–3 domy nebo styly, které se vám líbí.",
+    "hint": "Napište i proč — co konkrétně na nich funguje. Klidně přiložíte fotky později.",
+    "placeholder": "Např. moderní dům s plochou střechou a velkými prosklenými plochami..."
+  },
+  {
+    "id": "mistnosti",
+    "type": "rooms",
+    "title": "Jaké místnosti byste chtěli mít ve svém rodinném domě?",
+    "hint": "Zaškrtněte místnosti, které chcete, a u každé uveďte velikost, kterou si představujete. Ve sloupci Doporučení vidíte naši orientační hodnotu. Pokud vám nějaká místnost chybí, přidejte si vlastní.",
+    "rooms": [
+      {
+        "id": "r_obyvak",
+        "label": "Obývací pokoj",
+        "recommended": 28
+      },
+      {
+        "id": "r_kuchyn",
+        "label": "Kuchyň",
+        "recommended": 15
+      },
+      {
+        "id": "r_jidelna",
+        "label": "Jídelna",
+        "recommended": 12
+      },
+      {
+        "id": "r_loznice",
+        "label": "Ložnice",
+        "recommended": 16
+      },
+      {
+        "id": "r_detsky",
+        "label": "Dětský pokoj",
+        "recommended": 14
+      },
+      {
+        "id": "r_pracovna",
+        "label": "Pracovna",
+        "recommended": 10
+      },
+      {
+        "id": "r_koupelna",
+        "label": "Koupelna",
+        "recommended": 6
+      },
+      {
+        "id": "r_wc",
+        "label": "Samostatné WC",
+        "recommended": 2
+      },
+      {
+        "id": "r_satna",
+        "label": "Šatna",
+        "recommended": 5
+      },
+      {
+        "id": "r_technicka",
+        "label": "Technická místnost",
+        "recommended": 6
+      },
+      {
+        "id": "r_garaz",
+        "label": "Garáž",
+        "recommended": 20
+      }
+    ]
+  },
+  {
+    "id": "venkovni",
+    "type": "text",
+    "title": "Jaké venkovní prvky byste chtěli mít?",
+    "hint": "Např. terasa, bazén, přístřešek na auto, dílna, altán, zahradní domek...",
+    "placeholder": "Např. krytá terasa směrem na jih, bazén, dřevník..."
+  },
+  {
+    "id": "parkovani",
+    "type": "choice",
+    "title": "Kolik parkovacích míst potřebujete?",
+    "hint": "",
+    "options": [
+      "1 místo",
+      "2 místa",
+      "3 a více",
+      "Garáž pro 1 auto + venkovní stání",
+      "Garáž pro 2 auta"
+    ]
+  },
+  {
+    "id": "rozsireni",
+    "type": "choice",
+    "title": "Počítáte s budoucím rozšířením domu?",
+    "hint": "Např. přístavba, vestavba podkroví, další patro.",
+    "options": [
+      "Ano",
+      "Ne",
+      "Zatím nevím"
+    ]
+  },
+  {
+    "id": "termin",
+    "type": "text",
+    "title": "Máte představu o termínu zahájení stavby?",
+    "hint": "Klidně jen orientačně.",
+    "placeholder": "Např. jaro příštího roku, nebo bez pevného termínu"
+  }
+]
