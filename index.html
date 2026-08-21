@@ -255,6 +255,7 @@ const ADMIN_PASSCODE = "Dreamhomes274";
 // cokoliv uloží v záložce "Správa dotazů". Poté se otázky ukládají
 // do sdíleného úložiště artefaktu a tento seznam se dál nepoužívá.
 const DEFAULT_QUESTIONS = [
+  { id: "jmeno", type: "text", title: "Jak se jmenujete?", hint: "Uveďte prosím vaše celé jméno, ať víme, s kým máme tu čest.", placeholder: "Jan Novák" },
   { id: "popis", type: "text", title: "Popište prosím svůj vysněný dům třemi větami.", hint: "Jak si dům představujete a proč — klidně volně, jak vám to přijde na mysl.", placeholder: "Např. Chtěli bychom moderní jednopodlažní dům s velkým obývacím pokojem propojeným se zahradou..." },
   { id: "pozemek", type: "text", title: "Máte už vybraný pozemek?", hint: "Pokud ano, uveďte jeho velikost, tvar, sklon a orientaci ke světovým stranám (co víte). Pokud ne, napište alespoň lokalitu, kterou zvažujete.", placeholder: "Např. 800 m², rovinatý, obdélníkový, přístup ze severu, jižní část zahradou..." },
   { id: "rozpocet", type: "choice", title: "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?", hint: "Pomůže nám to hned od začátku navrhovat reálně.", options: ["do 5 mil. Kč", "5–8 mil. Kč", "8–12 mil. Kč", "nad 12 mil. Kč", "Zatím nevím, chci poradit"] },
