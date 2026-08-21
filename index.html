@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vstupní dotazník k projektu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas: #ffffff;
+    --paper: #ffffff;
+    --ink: #14130f;
+    --soft: #8b887f;
+    --line: #e7e4dc;
+    --sage: #A4AC7F;
+    --sage-tint: rgba(164,172,127,0.16);
+    --tan: #BA9470;
+    --tan-tint: rgba(186,148,112,0.16);
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    min-height:100vh;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family:'DM Sans', sans-serif;
+    display:flex;
+    justify-content:center;
+    padding: 148px 18px 60px;
+  }
+  #tab-content{ margin-top: 14px; }
+  .app{ width:100%; max-width: 720px; }
+
+  /* Top bar */
+  .topbar{
+    position:fixed; top:0; left:0; right:0;
+    width:100%;
+    background: var(--paper);
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px clamp(18px, 4vw, 56px) 18px;
+    gap:14px;
+    z-index: 50;
+  }
+  .brand{ display:flex; align-items:center; cursor:pointer; }
+  .brand:hover{ opacity:.75; }
+  .brand img{ height:75px; width:auto; display:block; }
+  .topbar-right{ display:flex; align-items:center; gap:14px; }
+  .nav-links{ display:flex; gap:26px; }
+  .nav-links button{
+    background:none; border:none; cursor:pointer;
+    font-family:'DM Sans', sans-serif; font-size:12px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color: var(--soft);
+    padding:6px 0; border-bottom:2px solid transparent;
+  }
+  .nav-links button.active{ color: var(--ink); }
+  .nav-links button[data-tab="form"].active{ border-color: var(--sage); }
+  .nav-links button[data-tab="admin"].active{ border-color: var(--tan); }
+  .menu-dots{ width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; gap:3px; flex:none; }
+  .menu-dots span{ width:3px; height:3px; border-radius:50%; background: var(--ink); }
+
+  h1,h2,h3{ margin:0; }
+
+  /* Sheet */
+  .sheet{
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 10px 4px 24px;
+    min-height: 340px;
+    display:flex; flex-direction:column;
+    position:relative;
+    overflow:visible;
+  }
+  .side-label{
+    position:absolute; left:-30px; top:50%; transform:translateY(-50%) rotate(-90deg);
+    font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color: var(--line);
+    white-space:nowrap;
+  }
+
+  .eyebrow{ font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color: var(--soft); margin-bottom:18px; }
+  .eyebrow b{ color: var(--ink); }
+
+  .q-title{ font-weight:800; font-size:30px; line-height:1.2; letter-spacing:-0.01em; margin-bottom:8px; }
+  .q-hint{ color: var(--soft); font-size:14px; line-height:1.55; margin-bottom:26px; }
+  .q-body{ flex:1; }
+
+  textarea, input[type=text], select{
+    width:100%;
+    border: 1.5px solid var(--line);
+    background:#fff;
+    padding: 13px 15px;
+    font-family:'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    border-radius: 10px;
+  }
+  textarea{ min-height:104px; resize:vertical; line-height:1.5; }
+  textarea:focus, input[type=text]:focus, select:focus{ outline:none; border-color: var(--ink); }
+
+  .choices{ display:flex; flex-direction:column; gap:9px; }
+  .choice-btn{
+    text-align:left; display:flex; align-items:center; gap:11px;
+    border: 1.5px solid var(--line); background:#fff;
+    padding: 13px 16px; font-size:15px; color: var(--ink);
+    cursor:pointer; border-radius:12px;
+    transition: border-color .12s, background .12s;
+  }
+  .choice-btn .dot{ width:14px; height:14px; border-radius:50%; border:1.5px solid var(--soft); flex:none; position:relative; }
+  .choice-btn.selected{ border-color: var(--sage); background: var(--sage-tint); }
+  .choice-btn.selected .dot{ border-color: var(--sage); }
+  .choice-btn.selected .dot::after{ content:""; position:absolute; inset:3px; border-radius:50%; background: var(--sage); }
+  .choice-btn:hover{ border-color: var(--ink); }
+
+  .image-pair{ display:flex; gap:14px; }
+  .image-opt{ width:50%; cursor:pointer; }
+  .image-opt .frame{ border-radius:14px; overflow:hidden; border: 1.5px solid var(--line); position:relative; }
+  .image-opt img{ width:100%; height:200px; object-fit:cover; display:block; filter:grayscale(0.35); transition: filter .2s, transform .3s; }
+  .image-opt.selected .frame{ border-color: var(--tan); }
+  .image-opt.selected img{ filter:grayscale(0); }
+  .image-opt.dimmed img{ filter:grayscale(0.75) brightness(0.85); }
+  .image-opt:not(.selected):hover img{ transform:scale(1.04); }
+  .image-opt .cap-eyebrow{ font-size:10.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color: var(--soft); margin: 12px 0 3px; }
+  .image-opt .cap-title{ font-size:15px; font-weight:700; }
+  .image-opt.selected .cap-title{ color: var(--tan); }
+
+  .rooms-table{ display:flex; flex-direction:column; gap:8px; }
+  .room-head{ display:grid; grid-template-columns: 1fr 90px 100px; gap:12px; padding:0 14px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); margin-bottom:2px; }
+  .room-row{ display:grid; grid-template-columns: 1fr 90px 100px; align-items:center; gap:12px; border:1.5px solid var(--line); border-radius:10px; padding:11px 14px; transition:border-color .12s, background .12s; }
+  .room-row.checked{ border-color: var(--sage); background: var(--sage-tint); }
+  .room-check{ display:flex; align-items:center; gap:10px; font-size:14.5px; cursor:pointer; }
+  .room-check input[type=checkbox]{ width:16px; height:16px; accent-color: var(--sage); cursor:pointer; flex:none; }
+  .room-rec{ font-size:13px; color: var(--soft); white-space:nowrap; }
+  .room-size{ width:100%; text-align:center; padding:8px 6px; }
+  .room-size:disabled{ background: var(--canvas); color: var(--line); }
+  .custom-row{ border-color: var(--tan); background: var(--tan-tint); }
+  .room-custom-label{ padding:8px 10px; font-size:14px; }
+  .room-size-wrap{ display:flex; align-items:center; gap:6px; }
+  .room-size-wrap .room-size{ flex:1; }
+  .rooms-total{ margin-top:16px; padding-top:14px; border-top:1.5px solid var(--line); }
+  .rooms-total-row{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:14px; color: var(--soft); padding:3px 0; }
+  .rooms-total-row b{ color: var(--ink); font-size:15.5px; }
+  .rooms-total-row.grand{ font-weight:700; }
+  .rooms-total-row.grand span{ color: var(--ink); }
+  .rooms-total-row.grand b{ color: var(--tan); font-size:19px; }
+
+  .nav-row{ display:flex; justify-content:space-between; align-items:center; margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
+  .circle-btn{
+    width:46px; height:46px; border-radius:50%; border:1.5px solid var(--sage);
+    background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color: var(--sage);
+    transition: opacity .15s, transform .1s;
+  }
+  .circle-btn:disabled{ opacity:.28; cursor:not-allowed; }
+  .circle-btn.filled{ background: var(--sage); border-color: var(--sage); color:#fff; }
+  .circle-btn:active:not(:disabled){ transform: scale(0.94); }
+  .nav-spacer{ width:46px; }
+
+  .btn{ font-family:'DM Sans', sans-serif; font-weight:700; font-size:14px; border-radius:999px; padding:13px 26px; cursor:pointer; border:1.5px solid var(--ink); }
+  .btn-primary{ background: var(--ink); color:#fff; }
+  .btn-primary:disabled{ opacity:.32; cursor:not-allowed; }
+  .btn-outline{ background:none; color:var(--ink); }
+  .btn-sage{ background: var(--sage); border-color: var(--sage); color:#fff; }
+  .btn-tan{ background: var(--tan); border-color: var(--tan); color:#fff; }
+  .btn-small{ padding:8px 15px; font-size:12.5px; border-radius:999px; }
+
+  .intro, .outro{ text-align:center; padding: 30px 4px 10px; }
+  .intro .hero{ font-weight:800; font-size: clamp(52px, 9vw, 78px); line-height:0.95; letter-spacing:-0.03em; margin: 0 0 22px; transition: opacity .35s ease; }
+  .hero-fade{ opacity: 0; }
+  .intro p, .outro p{ color: var(--soft); font-size:15.5px; line-height:1.65; max-width:440px; margin:0 auto 28px; }
+  .outro .hero{ font-weight:800; font-size: clamp(38px, 6vw, 52px); letter-spacing:-0.02em; margin-bottom:16px; }
+
+  /* Admin */
+  .admin-block{ margin-bottom: 30px; }
+  .admin-block-title{ font-weight:700; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--soft); margin-bottom:14px; padding-bottom:10px; border-bottom:1.5px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+  .admin-block-title span:first-child{ color: var(--ink); }
+
+  .gate{ text-align:center; padding: 20px 10px; }
+  .gate p{ color:var(--soft); font-size:14px; margin: 8px 0 20px; }
+  .gate input{ max-width:220px; margin: 0 auto 16px; text-align:center; }
+
+  .q-card{ border:1.5px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:14px; }
+  .q-card-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .q-card-head .idx{ font-size:11px; color:var(--soft); font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+  .q-card-actions{ display:flex; gap:6px; }
+  .icon-btn{ background:none; border:1.5px solid var(--line); border-radius:8px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--soft); line-height:1; }
+  .icon-btn:hover{ border-color:var(--ink); color:var(--ink); }
+  .field-row{ margin-bottom:11px; }
+  .field-label{ font-size:11px; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:5px; }
+  .opt-row{ display:flex; gap:8px; margin-bottom:7px; }
+  .opt-row input{ flex:1; }
+  .img-fields{ display:flex; gap:12px; }
+  .img-fields > div{ flex:1; }
+  .img-preview{ width:100%; height:110px; object-fit:cover; border-radius:10px; border:1.5px solid var(--line); display:block; margin-bottom:8px; }
+  input[type=file]{ width:100%; font-size:12.5px; color:var(--soft); }
+
+  .resp-item{ border:1.5px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:12px; }
+  .resp-item .ts{ font-size:11px; color:var(--soft); font-weight:700; letter-spacing:.06em; display:block; margin-bottom:9px; }
+  .resp-item dt{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--tan); margin-top:10px; }
+  .resp-item dd{ margin:2px 0 0; font-size:14.5px; line-height:1.45; }
+  .empty-state{ text-align:center; color:var(--soft); padding:30px 10px; font-size:14px; border:1.5px dashed var(--line); border-radius:14px; }
+  .save-msg{ font-size:12.5px; color: var(--sage); font-weight:700; margin-left:8px; }
+
+  @media (max-width:520px){
+    .sheet{ padding:10px 2px 20px; }
+    .side-label{ display:none; }
+    .image-pair{ flex-direction:column; }
+    .image-opt{ width:100%; }
+    .room-head{ display:none; }
+    .room-row{ grid-template-columns: 1fr; gap:8px; }
+    .custom-row .room-rec{ display:none; }
+    .topbar{ padding: 16px 18px 14px; }
+    .brand img{ height:59px; }
+    .nav-links{ gap:14px; }
+    .nav-links button{ font-size:10.5px; }
+  }
+  /* Vlastní kurzory: bílá šipka s tenkým černým obrysem přes celou stránku,
+     a bílá silueta domečku s černým obrysem nad vším klikatelným. */
+  body{
+    cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M4%2C2%20L4%2C19%20L8.3%2C15.2%20L11.3%2C21.5%20L14.2%2C20.1%20L11.2%2C13.8%20L17.5%2C13.8%20Z%22%20fill%3D%22white%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E") 4 2, auto;
+  }
+  button, a, select, label,
+  input[type="checkbox"], input[type="file"], input[type="file"]::-webkit-file-upload-button,
+  .choice-btn, .image-opt, .circle-btn, .icon-btn, .brand, .btn,
+  .nav-links button, [role="button"]{
+    cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2226%22%20height%3D%2226%22%3E%3Cpath%20d%3D%22M13%2C2%20L23%2C12%20L19%2C12%20L19%2C23%20L7%2C23%20L7%2C12%20L3%2C12%20Z%22%20fill%3D%22white%22%20stroke%3D%22black%22%20stroke-width%3D%221.6%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E") 13 24, pointer !important;
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+/* ============================================================
+   NASTAVENÍ
+   ============================================================ */
+const BRAND_MARK = "dream homes architecture"; // použije se jen jako alt text u loga
+const BRAND_LOGO = "data:image/png;base64,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";
+const APP_TITLE = "Vstupní dotazník k projektu";
+const HERO_WORD = "ahoj.";
+const HERO_WORDS = [HERO_WORD, "dobrý den."]; // střídají se na úvodní obrazovce
+const INTRO_TEXT = "Než se pustíme do práce, potřebujeme poznat váš pohled na věc. Zabere to asi 5 minut a odpovědi nám pomůžou navrhnout řešení přesně na míru.";
+
+// E-mailové oznámení o nové odpovědi (přes bezplatnou službu Web3Forms).
+// 1) Jděte na https://web3forms.com, zadejte e-mail kamil.plavec@dreamhomes.cz
+//    a nechte si vygenerovat přístupový klíč (žádné heslo, jen potvrzení e-mailem).
+// 2) Vložte získaný klíč sem místo prázdného řetězce.
+// 3) Dokud je klíč prázdný, e-maily se neposílají — odpovědi se ale i tak
+//    normálně ukládají do dotazníku jako doteď.
+const WEB3FORMS_ACCESS_KEY = "";
+const NOTIFY_EMAIL = "kamil.plavec@dreamhomes.cz";
+// Jde jen o slabou clonu proti náhodnému kliknutí, ne o skutečné zabezpečení.
+const ADMIN_PASSCODE = "Dreamhomes274";
+
+// Výchozí sada otázek — použije se při prvním spuštění, než programátor
+// cokoliv uloží v záložce "Správa dotazů". Poté se otázky ukládají
+// do sdíleného úložiště artefaktu a tento seznam se dál nepoužívá.
+const DEFAULT_QUESTIONS = [
+  { id: "popis", type: "text", title: "Popište prosím svůj vysněný dům třemi větami.", hint: "Jak si dům představujete a proč — klidně volně, jak vám to přijde na mysl.", placeholder: "Např. Chtěli bychom moderní jednopodlažní dům s velkým obývacím pokojem propojeným se zahradou..." },
+  { id: "pozemek", type: "text", title: "Máte už vybraný pozemek?", hint: "Pokud ano, uveďte jeho velikost, tvar, sklon a orientaci ke světovým stranám (co víte). Pokud ne, napište alespoň lokalitu, kterou zvažujete.", placeholder: "Např. 800 m², rovinatý, obdélníkový, přístup ze severu, jižní část zahradou..." },
+  { id: "rozpocet", type: "choice", title: "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?", hint: "Pomůže nám to hned od začátku navrhovat reálně.", options: ["do 5 mil. Kč", "5–8 mil. Kč", "8–12 mil. Kč", "nad 12 mil. Kč", "Zatím nevím, chci poradit"] },
+  { id: "podlazi", type: "choice", title: "Kolik podlaží by dům měl mít?", hint: "", options: ["Přízemní bungalov", "Přízemí + podkroví", "Dvě nadzemní podlaží", "Nejsem si jistý/á, poradíte mi"] },
+  { id: "konstrukce", type: "choice", title: "Jaký typ konstrukce preferujete?", hint: "", options: ["Zděná (cihla / tvárnice)", "Dřevostavba", "Kombinace", "Nemám preferenci, doporučte"] },
+  { id: "energie", type: "choice", title: "Jaký energetický standard byste chtěli?", hint: "", options: ["Standardní novostavba", "Nízkoenergetický dům", "Pasivní dům", "Nevím, chci poradit"] },
+  { id: "vytapeni", type: "choice", title: "Jaký způsob vytápění preferujete?", hint: "", options: ["Tepelné čerpadlo", "Plyn", "Krb/kamna jako doplněk", "Kombinace", "Nevím, chci poradit"] },
+  { id: "styl", type: "image-choice", title: "Který vizuální styl exteriéru je vám bližší?", hint: "Nepřemýšlejte moc dlouho — jde o první dojem.", imageA: { url: "https://picsum.photos/seed/minimal-clean/600/500", label: "Minimalistický, střídmý" }, imageB: { url: "https://picsum.photos/seed/bold-vivid/600/500", label: "Výrazný, výrazné tvary" } },
+  { id: "barevnost", type: "image-choice", title: "Která barevná nálada fasády a interiéru vás víc oslovuje?", hint: "Vyberte tu, ke které se přikláníte přirozeněji.", imageA: { url: "https://picsum.photos/seed/soft-pastel/600/500", label: "Jemná, světlá" }, imageB: { url: "https://picsum.photos/seed/deep-contrast/600/500", label: "Tmavší, kontrastní" } },
+  { id: "inspirace", type: "text", title: "Uveďte 2–3 domy nebo styly, které se vám líbí.", hint: "Napište i proč — co konkrétně na nich funguje. Klidně přiložíte fotky později.", placeholder: "Např. moderní dům s plochou střechou a velkými prosklenými plochami..." },
+  { id: "mistnosti", type: "rooms", title: "Jaké místnosti byste chtěli mít ve svém rodinném domě?", hint: "Zaškrtněte místnosti, které chcete, a u každé uveďte velikost, kterou si představujete. Ve sloupci Doporučení vidíte naši orientační hodnotu. Pokud vám nějaká místnost chybí, přidejte si vlastní.", rooms: [
+    { id: "r_obyvak", label: "Obývací pokoj", recommended: 28 },
+    { id: "r_kuchyn", label: "Kuchyň", recommended: 15 },
+    { id: "r_jidelna", label: "Jídelna", recommended: 12 },
+    { id: "r_loznice", label: "Ložnice", recommended: 16 },
+    { id: "r_detsky", label: "Dětský pokoj", recommended: 14 },
+    { id: "r_pracovna", label: "Pracovna", recommended: 10 },
+    { id: "r_koupelna", label: "Koupelna", recommended: 6 },
+    { id: "r_wc", label: "Samostatné WC", recommended: 2 },
+    { id: "r_satna", label: "Šatna", recommended: 5 },
+    { id: "r_technicka", label: "Technická místnost", recommended: 6 },
+    { id: "r_garaz", label: "Garáž", recommended: 20 }
+  ] },
+  { id: "venkovni", type: "text", title: "Jaké venkovní prvky byste chtěli mít?", hint: "Např. terasa, bazén, přístřešek na auto, dílna, altán, zahradní domek...", placeholder: "Např. krytá terasa směrem na jih, bazén, dřevník..." },
+  { id: "parkovani", type: "choice", title: "Kolik parkovacích míst potřebujete?", hint: "", options: ["1 místo", "2 místa", "3 a více", "Garáž pro 1 auto + venkovní stání", "Garáž pro 2 auta"] },
+  { id: "rozsireni", type: "choice", title: "Počítáte s budoucím rozšířením domu?", hint: "Např. přístavba, vestavba podkroví, další patro.", options: ["Ano", "Ne", "Zatím nevím"] },
+  { id: "termin", type: "text", title: "Máte představu o termínu zahájení stavby?", hint: "Klidně jen orientačně.", placeholder: "Např. jaro příštího roku, nebo bez pevného termínu" }
+];
+/* ============================================================ */
+
+const QUESTIONS_KEY = "config:questions";
+const RESPONSE_PREFIX = "response:";
+
+// Záložka "Správa" je vidět v horní liště pro každého (chráněná
+// přístupovým kódem ADMIN_PASSCODE výše). Pokud byste ji chtěli
+// zase skrýt a zpřístupnit jen přes odkaz s #sprava na konci,
+// nastavte tuto konstantu zpět na:
+//   window.location.hash.toLowerCase().includes("sprava")
+const ADMIN_ACCESS = true;
+
+let state = {
+  tab: "form",
+  adminUnlocked: false,
+  passInput: "",
+  passError: false,
+  questionsLoaded: false,
+  questions: [],
+  formView: "intro",
+  step: 0,
+  answers: {},
+  submitting: false,
+  responses: null,
+  saveMsg: ""
+};
+
+function setState(p){ state = { ...state, ...p }; render(); }
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+async function loadQuestions(){
+  try{
+    const res = await window.storage.get(QUESTIONS_KEY, true);
+    if(res && res.value){ setState({ questions: JSON.parse(res.value), questionsLoaded: true }); return; }
+  }catch(e){}
+  setState({ questions: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS)), questionsLoaded: true });
+}
+async function saveQuestions(){
+  try{
+    await window.storage.set(QUESTIONS_KEY, JSON.stringify(state.questions), true);
+    setState({ saveMsg: "Uloženo." });
+    setTimeout(() => setState({ saveMsg: "" }), 2500);
+  }catch(e){ setState({ saveMsg: "Uložení se nezdařilo." }); }
+}
+
+function fmtDate(iso){
+  try{ return new Date(iso).toLocaleString('cs-CZ', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }); }
+  catch(e){ return iso; }
+}
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+function escapeAttr(str){ return escapeHtml(str); }
+
+/* ---------- client form logic ---------- */
+function questionAnswered(q){
+  const v = state.answers[q.id];
+  if(q.type === "text") return typeof v === "string" && v.trim().length > 0;
+  if(q.type === "choice") return !!v;
+  if(q.type === "image-choice") return v === "A" || v === "B";
+  if(q.type === "rooms"){
+    const ans = v || {};
+    const predefined = ans.predefined || {};
+    const custom = ans.custom || [];
+    const hasPredefined = Object.values(predefined).some(r => r && r.selected && String(r.size||"").trim().length > 0);
+    const hasCustom = custom.some(c => c.label && String(c.label).trim().length > 0 && String(c.size||"").trim().length > 0);
+    return hasPredefined || hasCustom;
+  }
+  return false;
+}
+
+function computeRoomTotals(q, ans){
+  ans = ans || {};
+  const predefined = ans.predefined || {};
+  const custom = ans.custom || [];
+  let net = 0;
+  q.rooms.forEach(r => {
+    const ra = predefined[r.id];
+    if(ra && ra.selected){ const n = parseFloat(String(ra.size).replace(',','.')); if(!isNaN(n)) net += n; }
+  });
+  custom.forEach(c => { const n = parseFloat(String(c.size).replace(',','.')); if(!isNaN(n)) net += n; });
+  const withHallways = net * 1.12;
+  const gross = withHallways * 1.20;
+  return { net, withHallways, gross };
+}
+
+function answerValueForStorage(q){
+  if(q.type === "image-choice"){
+    return state.answers[q.id] === "A" ? q.imageA.label : state.answers[q.id] === "B" ? q.imageB.label : "";
+  }
+  if(q.type === "rooms"){
+    const ans = state.answers[q.id] || {};
+    const predefined = ans.predefined || {};
+    const custom = ans.custom || [];
+    const parts = q.rooms
+      .filter(r => predefined[r.id] && predefined[r.id].selected)
+      .map(r => `${r.label}: ${ (predefined[r.id].size || "—") } m² (doporučeno ${r.recommended} m²)`);
+    custom.filter(c => c.label && c.size).forEach(c => {
+      parts.push(`${c.label} (vlastní): ${c.size} m²`);
+    });
+    const totals = computeRoomTotals(q, ans);
+    parts.push(`Celková plocha místností: ${round1(totals.net)} m²`);
+    parts.push(`Součet včetně chodeb (cca +12 %): ${round1(totals.withHallways)} m²`);
+    parts.push(`Hrubá podlažní plocha (cca +20 % včetně ploch pod zdí): ${round1(totals.gross)} m²`);
+    return parts.join("; ");
+  }
+  return state.answers[q.id] || "";
+}
+function round1(n){ return Math.round(n * 10) / 10; }
+function fmtM2(n){ return round1(n).toLocaleString('cs-CZ') + " m²"; }
+
+async function submitResponses(){
+  setState({ submitting: true });
+  const answers = state.questions.map(q => ({
+    id: q.id, title: q.title, type: q.type,
+    value: answerValueForStorage(q)
+  }));
+  const record = { submittedAt: new Date().toISOString(), answers };
+  const key = RESPONSE_PREFIX + Date.now() + "-" + uid();
+  try{ await window.storage.set(key, JSON.stringify(record), true); }
+  catch(e){ console.error("Uložení se nezdařilo:", e); }
+  sendEmailNotification(record); // doběhne na pozadí, neblokuje odeslání
+  setState({ formView: "outro", submitting: false });
+}
+
+async function sendEmailNotification(record){
+  if(!WEB3FORMS_ACCESS_KEY) return; // klíč zatím nenastaven — e-mail se neposílá
+  const messageBody = record.answers.map(a => `${a.title}\n${a.value || "—"}`).join("\n\n");
+  try{
+    await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        to: NOTIFY_EMAIL,
+        subject: "Nová odpověď z dotazníku — " + APP_TITLE,
+        from_name: "Dotazník " + BRAND_MARK,
+        message: messageBody
+      })
+    });
+  }catch(e){
+    console.error("Odeslání e-mailu se nezdařilo:", e);
+  }
+}
+
+async function loadResponses(){
+  const listResult = await window.storage.list(RESPONSE_PREFIX, true);
+  const keys = (listResult && listResult.keys) || [];
+  const items = [];
+  for(const k of keys){
+    try{ const res = await window.storage.get(k, true); if(res && res.value) items.push(JSON.parse(res.value)); }
+    catch(e){}
+  }
+  items.sort((a,b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+  setState({ responses: items });
+}
+
+/* ---------- render ---------- */
+function render(){
+  if(!ADMIN_ACCESS && state.tab === "admin") state.tab = "form";
+  const app = document.getElementById('app');
+  const showCounter = state.tab === "form" && state.formView === "question";
+  const total = state.questions.length;
+  app.innerHTML = `
+    <div class="topbar">
+      <div class="brand" id="home-btn" role="button" tabindex="0" aria-label="Zpět na úvod"><img src="${BRAND_LOGO}" alt="${escapeAttr(BRAND_MARK)}"></div>
+      <div class="topbar-right">
+        ${ADMIN_ACCESS ? `
+        <div class="nav-links">
+          <button data-tab="form" class="${state.tab==='form'?'active':''}">Dotazník</button>
+          <button data-tab="admin" class="${state.tab==='admin'?'active':''}">Správa</button>
+        </div>` : ``}
+        ${showCounter ? `<div class="menu-dots"><span style="width:auto;height:auto;border-radius:0;background:none;font-size:10px;font-weight:700;color:var(--ink);">${state.step+1}/${total}</span></div>` : ``}
+      </div>
+    </div>
+    <div id="tab-content"></div>
+  `;
+  document.querySelectorAll('.nav-links button').forEach(b => b.onclick = () => setState({ tab: b.getAttribute('data-tab') }));
+  const homeBtn = document.getElementById('home-btn');
+  if(homeBtn){
+    homeBtn.onclick = goHome;
+    homeBtn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); goHome(); } });
+  }
+
+  const content = document.getElementById('tab-content');
+  if(!state.questionsLoaded){ content.innerHTML = `<div class="sheet"><div class="empty-state">Načítám…</div></div>`; return; }
+  if(state.tab === "form"){ content.innerHTML = formTemplate(); bindForm(); }
+  else{
+    content.innerHTML = adminTemplate(); bindAdmin();
+    if(state.adminUnlocked && state.responses === null) loadResponses();
+  }
+}
+
+/* ---------- form tab ---------- */
+function formTemplate(){
+  if(state.formView === "intro") return introTemplate();
+  if(state.formView === "outro") return outroTemplate();
+  return questionTemplate();
+}
+
+function introTemplate(){
+  return `
+    <div class="sheet">
+      <div class="intro">
+        <div class="hero">${escapeHtml(HERO_WORD)}</div>
+        <p>${INTRO_TEXT}</p>
+        <button class="btn btn-primary" id="start-btn">Začít vyplňovat</button>
+      </div>
+    </div>
+  `;
+}
+
+function questionTemplate(){
+  const q = state.questions[state.step];
+  const total = state.questions.length;
+  const isLast = state.step === total - 1;
+  const answered = questionAnswered(q);
+
+  let body = "";
+  if(q.type === "text"){
+    const val = state.answers[q.id] || "";
+    body = `<textarea id="q-input" placeholder="${escapeAttr(q.placeholder || '')}">${escapeHtml(val)}</textarea>`;
+  } else if(q.type === "choice"){
+    body = `<div class="choices">` + q.options.map(opt => `
+      <button class="choice-btn ${state.answers[q.id]===opt?'selected':''}" data-opt="${escapeAttr(opt)}">
+        <span class="dot"></span>${escapeHtml(opt)}
+      </button>`).join("") + `</div>`;
+  } else if(q.type === "image-choice"){
+    const sel = state.answers[q.id];
+    body = `
+      <div class="image-pair">
+        <div class="image-opt ${sel==='A'?'selected':''} ${sel==='B'?'dimmed':''}" data-choice="A">
+          <div class="frame"><img src="${escapeAttr(q.imageA.url)}" alt="${escapeAttr(q.imageA.label)}"></div>
+          <div class="cap-eyebrow">Varianta A</div>
+          <div class="cap-title">${escapeHtml(q.imageA.label)}</div>
+        </div>
+        <div class="image-opt ${sel==='B'?'selected':''} ${sel==='A'?'dimmed':''}" data-choice="B">
+          <div class="frame"><img src="${escapeAttr(q.imageB.url)}" alt="${escapeAttr(q.imageB.label)}"></div>
+          <div class="cap-eyebrow">Varianta B</div>
+          <div class="cap-title">${escapeHtml(q.imageB.label)}</div>
+        </div>
+      </div>`;
+  } else if(q.type === "rooms"){
+    const ans = state.answers[q.id] || {};
+    const predefined = ans.predefined || {};
+    const custom = ans.custom || [];
+    const totals = computeRoomTotals(q, ans);
+
+    body = `
+      <div class="rooms-table">
+        <div class="room-head"><span>Místnost</span><span>Doporučení</span><span>Vaše velikost</span></div>
+        ${q.rooms.map(r => {
+          const ra = predefined[r.id] || {};
+          const checked = !!ra.selected;
+          return `
+            <div class="room-row ${checked?'checked':''}">
+              <label class="room-check">
+                <input type="checkbox" data-room-check="${r.id}" ${checked?'checked':''}>
+                <span>${escapeHtml(r.label)}</span>
+              </label>
+              <span class="room-rec">${r.recommended} m²</span>
+              <input type="text" inputmode="decimal" class="room-size" data-room-size="${r.id}" placeholder="m²" value="${escapeAttr(ra.size||'')}" ${checked?'':'disabled'}>
+            </div>`;
+        }).join("")}
+        ${custom.map((c, ci) => `
+          <div class="room-row custom-row checked">
+            <input type="text" class="room-custom-label" data-custom-label="${ci}" placeholder="Vlastní místnost" value="${escapeAttr(c.label||'')}">
+            <span class="room-rec">—</span>
+            <span class="room-size-wrap">
+              <input type="text" inputmode="decimal" class="room-size" data-custom-size="${ci}" placeholder="m²" value="${escapeAttr(c.size||'')}">
+              <button class="icon-btn" data-remove-custom="${ci}" title="Odebrat místnost">×</button>
+            </span>
+          </div>`).join("")}
+      </div>
+      <button class="btn btn-outline btn-small" id="add-custom-room" style="margin-top:12px;">+ Přidat vlastní místnost</button>
+      <div class="rooms-total">
+        <div class="rooms-total-row"><span>Celková plocha místností</span><b data-total="net">${fmtM2(totals.net)}</b></div>
+        <div class="rooms-total-row"><span>Součet včetně chodeb (cca +12 %)</span><b data-total="hallways">${fmtM2(totals.withHallways)}</b></div>
+        <div class="rooms-total-row grand"><span>Hrubá podlažní plocha (cca +20 % včetně ploch pod zdí)</span><b data-total="gross">${fmtM2(totals.gross)}</b></div>
+      </div>`;
+  }
+
+  return `
+    <div class="sheet">
+      <div class="eyebrow">Otázka <b>${state.step+1}</b> z ${total}</div>
+      <div class="q-title">${escapeHtml(q.title)}</div>
+      ${q.hint ? `<div class="q-hint">${escapeHtml(q.hint)}</div>` : ""}
+      <div class="q-body">${body}</div>
+      <div class="nav-row">
+        <button class="circle-btn" id="back-btn" aria-label="${state.step===0 ? 'Zpět na úvod' : 'Zpět'}">←</button>
+        ${isLast
+          ? `<button class="btn btn-primary" id="next-btn" ${answered?'':'disabled'}>${state.submitting ? 'Odesílám…' : 'Odeslat odpovědi'}</button>`
+          : `<button class="circle-btn filled" id="next-btn" aria-label="Další" ${answered?'':'disabled'}>→</button>`}
+      </div>
+    </div>
+  `;
+}
+
+function outroTemplate(){
+  return `
+    <div class="sheet"><div class="outro">
+      <div class="hero">díky.</div>
+      <p>Vaše odpovědi jsme uložili. Ozveme se vám s dalšími kroky v projektu.</p>
+    </div></div>`;
+}
+
+function refreshRoomsUI(q){
+  const nextBtn = document.getElementById('next-btn');
+  if(nextBtn) nextBtn.disabled = !questionAnswered(q);
+  const totals = computeRoomTotals(q, state.answers[q.id]);
+  const netEl = document.querySelector('[data-total="net"]');
+  const hallEl = document.querySelector('[data-total="hallways"]');
+  const grossEl = document.querySelector('[data-total="gross"]');
+  if(netEl) netEl.textContent = fmtM2(totals.net);
+  if(hallEl) hallEl.textContent = fmtM2(totals.withHallways);
+  if(grossEl) grossEl.textContent = fmtM2(totals.gross);
+}
+
+let heroTimer = null;
+function startHeroBlink(){
+  clearInterval(heroTimer);
+  const el = document.querySelector('.hero');
+  if(!el || HERO_WORDS.length < 2) return;
+  let idx = 0;
+  heroTimer = setInterval(() => {
+    idx = (idx + 1) % HERO_WORDS.length;
+    el.classList.add('hero-fade');
+    setTimeout(() => {
+      el.textContent = HERO_WORDS[idx];
+      el.classList.remove('hero-fade');
+    }, 350);
+  }, 2200);
+}
+
+function goHome(){
+  clearInterval(heroTimer);
+  setState({ tab: "form", formView: "intro" });
+}
+
+function bindForm(){
+  if(state.formView === "intro"){
+    document.getElementById('start-btn').onclick = () => { clearInterval(heroTimer); setState({ formView:"question" }); };
+    startHeroBlink();
+    return;
+  }
+  if(state.formView === "outro"){ clearInterval(heroTimer); return; }
+
+  const q = state.questions[state.step];
+  const backBtn = document.getElementById('back-btn');
+  const nextBtn = document.getElementById('next-btn');
+  if(backBtn) backBtn.onclick = () => {
+    if(state.step === 0) goHome();
+    else setState({ step: Math.max(0, state.step-1) });
+  };
+
+  if(q.type === "text"){
+    const input = document.getElementById('q-input');
+    input.addEventListener('input', () => { state.answers[q.id] = input.value; nextBtn.disabled = !questionAnswered(q); });
+    input.focus();
+  }
+  if(q.type === "choice"){
+    document.querySelectorAll('.choice-btn').forEach(btn => btn.onclick = () => { state.answers[q.id] = btn.getAttribute('data-opt'); render(); });
+  }
+  if(q.type === "image-choice"){
+    document.querySelectorAll('.image-opt').forEach(el => el.onclick = () => { state.answers[q.id] = el.getAttribute('data-choice'); render(); });
+  }
+  if(q.type === "rooms"){
+    state.answers[q.id] = state.answers[q.id] || { predefined: {}, custom: [] };
+    const ansBucket = state.answers[q.id];
+    ansBucket.predefined = ansBucket.predefined || {};
+    ansBucket.custom = ansBucket.custom || [];
+
+    document.querySelectorAll('[data-room-check]').forEach(el => {
+      el.addEventListener('change', () => {
+        const roomId = el.getAttribute('data-room-check');
+        ansBucket.predefined[roomId] = ansBucket.predefined[roomId] || {};
+        ansBucket.predefined[roomId].selected = el.checked;
+        render();
+      });
+    });
+    document.querySelectorAll('[data-room-size]').forEach(el => {
+      el.addEventListener('input', () => {
+        const roomId = el.getAttribute('data-room-size');
+        ansBucket.predefined[roomId] = ansBucket.predefined[roomId] || {};
+        ansBucket.predefined[roomId].size = el.value;
+        refreshRoomsUI(q);
+      });
+    });
+    document.querySelectorAll('[data-custom-label]').forEach(el => {
+      el.addEventListener('input', () => {
+        const ci = +el.getAttribute('data-custom-label');
+        ansBucket.custom[ci].label = el.value;
+        refreshRoomsUI(q);
+      });
+    });
+    document.querySelectorAll('[data-custom-size]').forEach(el => {
+      el.addEventListener('input', () => {
+        const ci = +el.getAttribute('data-custom-size');
+        ansBucket.custom[ci].size = el.value;
+        refreshRoomsUI(q);
+      });
+    });
+    document.querySelectorAll('[data-remove-custom]').forEach(b => {
+      b.onclick = () => {
+        const ci = +b.getAttribute('data-remove-custom');
+        ansBucket.custom.splice(ci, 1);
+        render();
+      };
+    });
+    const addCustomBtn = document.getElementById('add-custom-room');
+    if(addCustomBtn) addCustomBtn.onclick = () => {
+      ansBucket.custom.push({ label: "", size: "" });
+      render();
+    };
+  }
+  nextBtn.onclick = () => {
+    if(!questionAnswered(q) || state.submitting) return;
+    if(state.step === state.questions.length - 1) submitResponses();
+    else setState({ step: state.step + 1 });
+  };
+}
+
+/* ---------- admin tab ---------- */
+function adminTemplate(){
+  if(!state.adminUnlocked){
+    return `
+      <div class="sheet">
+        <div class="gate">
+          <h3 style="font-size:20px;font-weight:800;">Záložka pro programátora</h3>
+          <p>Zadejte přístupový kód pro správu otázek a zobrazení odpovědí.</p>
+          <input type="text" id="pass-input" placeholder="Přístupový kód" value="${escapeAttr(state.passInput)}">
+          ${state.passError ? `<div class="q-hint" style="color:#b3382c;margin-bottom:12px;">Nesprávný kód, zkuste to znovu.</div>` : ""}
+          <div><button class="btn btn-primary" id="pass-submit">Odemknout</button></div>
+        </div>
+      </div>
+    `;
+  }
+
+  const qCards = state.questions.map((q, i) => questionCardTemplate(q, i)).join("");
+  const respList = state.responses === null
+    ? `<div class="empty-state">Načítám…</div>`
+    : state.responses.length === 0
+      ? `<div class="empty-state">Zatím nejsou uložené žádné odpovědi.</div>`
+      : state.responses.map(it => `
+          <div class="resp-item">
+            <span class="ts">${fmtDate(it.submittedAt)}</span>
+            <dl>${it.answers.map(a => `<dt>${escapeHtml(a.title)}</dt><dd>${escapeHtml(a.value || "—")}</dd>`).join("")}</dl>
+          </div>`).join("");
+
+  return `
+    <div class="sheet">
+      <div class="admin-block">
+        <div class="admin-block-title">
+          <span>Otázky (${state.questions.length})</span>
+          <span>
+            <button class="btn btn-sage btn-small" id="add-q-btn">+ Přidat otázku</button>
+            <button class="btn btn-tan btn-small" id="save-q-btn">Uložit změny</button>
+            <span class="save-msg">${state.saveMsg}</span>
+          </span>
+        </div>
+        ${qCards}
+      </div>
+      <div class="admin-block">
+        <div class="admin-block-title"><span>Uložené odpovědi</span></div>
+        ${respList}
+      </div>
+    </div>
+  `;
+}
+
+function questionCardTemplate(q, i){
+  const total = state.questions.length;
+  let typeFields = "";
+  if(q.type === "text"){
+    typeFields = `
+      <div class="field-row">
+        <label class="field-label">Placeholder textového pole</label>
+        <input type="text" data-field="placeholder" data-idx="${i}" value="${escapeAttr(q.placeholder||'')}">
+      </div>`;
+  } else if(q.type === "choice"){
+    typeFields = `
+      <div class="field-row">
+        <label class="field-label">Možnosti</label>
+        ${q.options.map((opt, oi) => `
+          <div class="opt-row">
+            <input type="text" data-opt-idx="${oi}" data-idx="${i}" value="${escapeAttr(opt)}">
+            <button class="icon-btn" data-remove-opt="${oi}" data-idx="${i}">×</button>
+          </div>`).join("")}
+        <button class="btn btn-outline btn-small" data-add-opt="${i}">+ Možnost</button>
+      </div>`;
+  } else if(q.type === "image-choice"){
+    typeFields = `
+      <div class="field-row img-fields">
+        <div>
+          <label class="field-label">Obrázek A</label>
+          ${q.imageA?.url ? `<img src="${escapeAttr(q.imageA.url)}" class="img-preview" alt="">` : ``}
+          <input type="file" accept="image/*" data-img-upload="A" data-idx="${i}">
+          <label class="field-label" style="margin-top:8px;">Obrázek A — popisek</label>
+          <input type="text" data-field="imgA-label" data-idx="${i}" value="${escapeAttr(q.imageA?.label||'')}">
+        </div>
+        <div>
+          <label class="field-label">Obrázek B</label>
+          ${q.imageB?.url ? `<img src="${escapeAttr(q.imageB.url)}" class="img-preview" alt="">` : ``}
+          <input type="file" accept="image/*" data-img-upload="B" data-idx="${i}">
+          <label class="field-label" style="margin-top:8px;">Obrázek B — popisek</label>
+          <input type="text" data-field="imgB-label" data-idx="${i}" value="${escapeAttr(q.imageB?.label||'')}">
+        </div>
+      </div>`;
+  } else if(q.type === "rooms"){
+    typeFields = `
+      <div class="field-row">
+        <label class="field-label">Místnosti a doporučená velikost (m²)</label>
+        ${q.rooms.map((r, ri) => `
+          <div class="opt-row">
+            <input type="text" placeholder="Název místnosti" data-room-label="${ri}" data-idx="${i}" value="${escapeAttr(r.label)}">
+            <input type="text" placeholder="m²" style="max-width:90px;" data-room-rec="${ri}" data-idx="${i}" value="${escapeAttr(String(r.recommended ?? ''))}">
+            <button class="icon-btn" data-remove-room="${ri}" data-idx="${i}">×</button>
+          </div>`).join("")}
+        <button class="btn btn-outline btn-small" data-add-room="${i}">+ Místnost</button>
+      </div>`;
+  }
+
+  return `
+    <div class="q-card">
+      <div class="q-card-head">
+        <span class="idx">Otázka ${i+1}</span>
+        <div class="q-card-actions">
+          <button class="icon-btn" data-move-up="${i}" ${i===0?'disabled':''}>↑</button>
+          <button class="icon-btn" data-move-down="${i}" ${i===total-1?'disabled':''}>↓</button>
+          <button class="icon-btn" data-delete-q="${i}">×</button>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Znění otázky</label>
+        <input type="text" data-field="title" data-idx="${i}" value="${escapeAttr(q.title)}">
+      </div>
+      <div class="field-row">
+        <label class="field-label">Nápověda (volitelné)</label>
+        <input type="text" data-field="hint" data-idx="${i}" value="${escapeAttr(q.hint||'')}">
+      </div>
+      <div class="field-row">
+        <label class="field-label">Typ otázky</label>
+        <select data-field="type" data-idx="${i}">
+          <option value="text" ${q.type==='text'?'selected':''}>Text</option>
+          <option value="choice" ${q.type==='choice'?'selected':''}>Výběr z možností</option>
+          <option value="image-choice" ${q.type==='image-choice'?'selected':''}>Výběr ze dvou obrázků</option>
+          <option value="rooms" ${q.type==='rooms'?'selected':''}>Místnosti domu (výběr + m²)</option>
+        </select>
+      </div>
+      ${typeFields}
+    </div>
+  `;
+}
+
+function blankQuestion(type){
+  const base = { id: "q_" + uid(), title: "Nová otázka", hint: "" };
+  if(type === "choice") return { ...base, type:"choice", options:["Možnost 1","Možnost 2"] };
+  if(type === "image-choice") return { ...base, type:"image-choice", imageA:{url:"",label:"Varianta A"}, imageB:{url:"",label:"Varianta B"} };
+  if(type === "rooms") return { ...base, type:"rooms", rooms:[
+    { id: uid(), label: "Obývací pokoj", recommended: 25 },
+    { id: uid(), label: "Kuchyň", recommended: 14 },
+    { id: uid(), label: "Ložnice", recommended: 16 }
+  ]};
+  return { ...base, type:"text", placeholder:"" };
+}
+
+function bindAdmin(){
+  if(!state.adminUnlocked){
+    const input = document.getElementById('pass-input');
+    const submit = document.getElementById('pass-submit');
+    const tryUnlock = () => {
+      if(input.value === ADMIN_PASSCODE) setState({ adminUnlocked:true, passError:false, passInput:"" });
+      else setState({ passError:true, passInput: input.value });
+    };
+    submit.onclick = tryUnlock;
+    input.addEventListener('keydown', e => { if(e.key === 'Enter') tryUnlock(); });
+    input.focus();
+    return;
+  }
+
+  document.getElementById('add-q-btn').onclick = () => { state.questions.push(blankQuestion("text")); render(); };
+  document.getElementById('save-q-btn').onclick = () => saveQuestions();
+
+  document.querySelectorAll('[data-move-up]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-move-up');
+    if(i>0){ [state.questions[i-1], state.questions[i]] = [state.questions[i], state.questions[i-1]]; render(); }
+  });
+  document.querySelectorAll('[data-move-down]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-move-down');
+    if(i<state.questions.length-1){ [state.questions[i+1], state.questions[i]] = [state.questions[i], state.questions[i+1]]; render(); }
+  });
+  document.querySelectorAll('[data-delete-q]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-delete-q');
+    if(confirm("Opravdu smazat tuto otázku?")){ state.questions.splice(i,1); render(); }
+  });
+
+  document.querySelectorAll('[data-field]').forEach(el => {
+    el.addEventListener(el.tagName==='SELECT' ? 'change' : 'input', () => {
+      const i = +el.getAttribute('data-idx');
+      const field = el.getAttribute('data-field');
+      const q = state.questions[i];
+      if(field === "type"){
+        const newType = el.value;
+        const preserved = blankQuestion(newType);
+        state.questions[i] = { ...preserved, id: q.id, title: q.title, hint: q.hint };
+        render();
+        return;
+      }
+      if(field === "title") q.title = el.value;
+      else if(field === "hint") q.hint = el.value;
+      else if(field === "placeholder") q.placeholder = el.value;
+      else if(field === "imgA-url"){ q.imageA = q.imageA || {}; q.imageA.url = el.value; }
+      else if(field === "imgA-label"){ q.imageA = q.imageA || {}; q.imageA.label = el.value; }
+      else if(field === "imgB-url"){ q.imageB = q.imageB || {}; q.imageB.url = el.value; }
+      else if(field === "imgB-label"){ q.imageB = q.imageB || {}; q.imageB.label = el.value; }
+    });
+  });
+
+  document.querySelectorAll('[data-img-upload]').forEach(el => {
+    el.addEventListener('change', () => {
+      const file = el.files && el.files[0];
+      if(!file) return;
+      const i = +el.getAttribute('data-idx');
+      const side = el.getAttribute('data-img-upload'); // "A" or "B"
+      const reader = new FileReader();
+      reader.onload = () => {
+        const q = state.questions[i];
+        if(side === "A"){ q.imageA = q.imageA || {}; q.imageA.url = reader.result; }
+        else{ q.imageB = q.imageB || {}; q.imageB.url = reader.result; }
+        render();
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  document.querySelectorAll('[data-opt-idx]').forEach(el => {
+    el.addEventListener('input', () => {
+      const i = +el.getAttribute('data-idx');
+      const oi = +el.getAttribute('data-opt-idx');
+      state.questions[i].options[oi] = el.value;
+    });
+  });
+  document.querySelectorAll('[data-add-opt]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-add-opt');
+    state.questions[i].options.push("Nová možnost");
+    render();
+  });
+  document.querySelectorAll('[data-remove-opt]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-idx');
+    const oi = +b.getAttribute('data-remove-opt');
+    state.questions[i].options.splice(oi,1);
+    render();
+  });
+
+  document.querySelectorAll('[data-room-label]').forEach(el => {
+    el.addEventListener('input', () => {
+      const i = +el.getAttribute('data-idx');
+      const ri = +el.getAttribute('data-room-label');
+      state.questions[i].rooms[ri].label = el.value;
+    });
+  });
+  document.querySelectorAll('[data-room-rec]').forEach(el => {
+    el.addEventListener('input', () => {
+      const i = +el.getAttribute('data-idx');
+      const ri = +el.getAttribute('data-room-rec');
+      state.questions[i].rooms[ri].recommended = el.value;
+    });
+  });
+  document.querySelectorAll('[data-add-room]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-add-room');
+    state.questions[i].rooms.push({ id: uid(), label: "Nová místnost", recommended: 10 });
+    render();
+  });
+  document.querySelectorAll('[data-remove-room]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-idx');
+    const ri = +b.getAttribute('data-remove-room');
+    state.questions[i].rooms.splice(ri,1);
+    render();
+  });
+}
+
+loadQuestions();
+render();
+</script>
+</body>
+</html>
