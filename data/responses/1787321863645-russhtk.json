@@ -1,0 +1,11 @@
+{
+  "submittedAt": "2026-08-21T14:17:43.370Z",
+  "answers": [
+    {
+      "id": "test",
+      "title": "Testovaci zaznam z nasazeni",
+      "type": "text",
+      "value": "Overeni zapisu do GitHubu"
+    }
+  ]
+}
