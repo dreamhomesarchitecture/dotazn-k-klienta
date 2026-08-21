@@ -285,9 +285,6 @@ const DEFAULT_QUESTIONS = [
 ];
 /* ============================================================ */
 
-const QUESTIONS_KEY = "config:questions";
-const RESPONSE_PREFIX = "response:";
-
 // Záložka "Správa" je vidět v horní liště pro každého (chráněná
 // přístupovým kódem ADMIN_PASSCODE výše). Pokud byste ji chtěli
 // zase skrýt a zpřístupnit jen přes odkaz s #sprava na konci,
@@ -315,14 +312,22 @@ function uid(){ return Math.random().toString(36).slice(2,9); }
 
 async function loadQuestions(){
   try{
-    const res = await window.storage.get(QUESTIONS_KEY, true);
-    if(res && res.value){ setState({ questions: JSON.parse(res.value), questionsLoaded: true }); return; }
+    const r = await fetch('/api/questions');
+    if(r.ok){
+      const data = await r.json();
+      if(data.found){ setState({ questions: data.questions, questionsLoaded: true }); return; }
+    }
   }catch(e){}
   setState({ questions: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS)), questionsLoaded: true });
 }
 async function saveQuestions(){
   try{
-    await window.storage.set(QUESTIONS_KEY, JSON.stringify(state.questions), true);
+    const r = await fetch('/api/questions', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_PASSCODE },
+      body: JSON.stringify(state.questions)
+    });
+    if(!r.ok) throw new Error('save failed');
     setState({ saveMsg: "Uloženo." });
     setTimeout(() => setState({ saveMsg: "" }), 2500);
   }catch(e){ setState({ saveMsg: "Uložení se nezdařilo." }); }
@@ -399,9 +404,14 @@ async function submitResponses(){
     value: answerValueForStorage(q)
   }));
   const record = { submittedAt: new Date().toISOString(), answers };
-  const key = RESPONSE_PREFIX + Date.now() + "-" + uid();
-  try{ await window.storage.set(key, JSON.stringify(record), true); }
-  catch(e){ console.error("Uložení se nezdařilo:", e); }
+  try{
+    const r = await fetch('/api/responses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(record)
+    });
+    if(!r.ok) throw new Error('submit failed');
+  }catch(e){ console.error("Uložení se nezdařilo:", e); }
   sendEmailNotification(record); // doběhne na pozadí, neblokuje odeslání
   setState({ formView: "outro", submitting: false });
 }
@@ -427,15 +437,12 @@ async function sendEmailNotification(record){
 }
 
 async function loadResponses(){
-  const listResult = await window.storage.list(RESPONSE_PREFIX, true);
-  const keys = (listResult && listResult.keys) || [];
-  const items = [];
-  for(const k of keys){
-    try{ const res = await window.storage.get(k, true); if(res && res.value) items.push(JSON.parse(res.value)); }
-    catch(e){}
-  }
-  items.sort((a,b) => new Date(b.submittedAt) - new Date(a.submittedAt));
-  setState({ responses: items });
+  try{
+    const r = await fetch('/api/responses', { headers: { 'x-admin-key': ADMIN_PASSCODE } });
+    if(!r.ok) throw new Error('load failed');
+    const data = await r.json();
+    setState({ responses: data.items || [] });
+  }catch(e){ setState({ responses: [] }); }
 }
 
 /* ---------- render ---------- */
