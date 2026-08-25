@@ -56,8 +56,9 @@
   .nav-links button.active{ color: var(--ink); }
   .nav-links button[data-tab="form"].active{ border-color: var(--sage); }
   .nav-links button[data-tab="admin"].active{ border-color: var(--tan); }
-  .menu-dots{ width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; gap:3px; flex:none; }
-  .menu-dots span{ width:3px; height:3px; border-radius:50%; background: var(--ink); }
+  .progress-ring{ position:relative; width:38px; height:38px; flex:none; }
+  .progress-ring svg circle{ transition: stroke-dashoffset .3s ease; }
+  .progress-ring-label{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:9.5px; font-weight:700; color:var(--ink); }
 
   h1,h2,h3{ margin:0; }
 
@@ -133,6 +134,9 @@
   .room-rec{ font-size:13px; color: var(--soft); white-space:nowrap; }
   .room-size{ width:100%; text-align:center; padding:8px 6px; }
   .room-size:disabled{ background: var(--canvas); color: var(--line); }
+  .room-row-sub{ margin-left:26px; }
+  .room-row-locked{ opacity:.5; }
+  .room-check input[type=checkbox]:disabled{ cursor:not-allowed; }
   .custom-row{ border-color: var(--tan); background: var(--tan-tint); }
   .room-custom-label{ padding:8px 10px; font-size:14px; }
   .room-size-wrap{ display:flex; align-items:center; gap:6px; }
@@ -143,6 +147,19 @@
   .rooms-total-row.grand{ font-weight:700; }
   .rooms-total-row.grand span{ color: var(--ink); }
   .rooms-total-row.grand b{ color: var(--tan); font-size:19px; }
+
+  .status-list{ display:flex; flex-direction:column; gap:10px; }
+  .status-row{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; border:1.5px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .status-row-label{ font-size:14.5px; flex:1 1 200px; }
+  .status-options{ display:flex; gap:6px; flex:0 0 auto; }
+  .status-btn{ border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:7px 12px; font-size:12.5px; font-family:'DM Sans', sans-serif; color: var(--soft); cursor:pointer; white-space:nowrap; }
+  .status-btn:hover{ border-color: var(--ink); }
+  .status-btn.selected{ border-color: var(--sage); background: var(--sage-tint); color: var(--ink); font-weight:700; }
+  @media (max-width:520px){
+    .status-row{ flex-direction:column; align-items:stretch; }
+    .status-options{ justify-content:space-between; }
+    .status-btn{ flex:1; text-align:center; padding:8px 6px; }
+  }
 
   .nav-row{ display:flex; justify-content:space-between; align-items:center; margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
   .circle-btn{
@@ -168,6 +185,7 @@
   .hero-fade{ opacity: 0; }
   .intro p, .outro p{ color: var(--soft); font-size:15.5px; line-height:1.65; max-width:440px; margin:0 auto 28px; }
   .outro .hero{ font-weight:800; font-size: clamp(38px, 6vw, 52px); letter-spacing:-0.02em; margin-bottom:16px; }
+  .client-info{ display:flex; flex-direction:column; gap:10px; max-width:360px; margin:0 auto 28px; text-align:left; }
 
   /* Admin */
   .admin-block{ margin-bottom: 30px; }
@@ -177,6 +195,10 @@
   .gate{ text-align:center; padding: 20px 10px; }
   .gate p{ color:var(--soft); font-size:14px; margin: 8px 0 20px; }
   .gate input{ max-width:220px; margin: 0 auto 16px; text-align:center; }
+
+  .modal-overlay{ position:fixed; inset:0; background:rgba(20,19,15,0.55); display:flex; align-items:center; justify-content:center; padding:24px; z-index:200; }
+  .modal-card{ background:#fff; border-radius:16px; max-width:440px; width:100%; padding:28px 26px 24px; text-align:center; }
+  .modal-card p{ color:var(--soft); font-size:14.5px; line-height:1.6; margin:0 0 22px; }
 
   .q-card{ border:1.5px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
@@ -195,6 +217,10 @@
 
   .resp-item{ border:1.5px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:12px; }
   .resp-item .ts{ font-size:11px; color:var(--soft); font-weight:700; letter-spacing:.06em; display:block; margin-bottom:9px; }
+  .resp-item-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .resp-summary{ font-size:14.5px; }
+  .resp-summary b{ color: var(--tan); }
+  .resp-location{ font-size:12.5px; color:var(--soft); margin-bottom:9px; }
   .resp-item dt{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--tan); margin-top:10px; }
   .resp-item dd{ margin:2px 0 0; font-size:14.5px; line-height:1.45; }
   .empty-state{ text-align:center; color:var(--soft); padding:30px 10px; font-size:14px; border:1.5px dashed var(--line); border-radius:14px; }
@@ -213,8 +239,8 @@
     .nav-links{ gap:14px; }
     .nav-links button{ font-size:10.5px; }
   }
-  /* Vlastní kurzory: bílá šipka s tenkým černým obrysem přes celou stránku,
-     a bílá silueta domečku s černým obrysem nad vším klikatelným. */
+  /* Vlastní kurzor: bílá šipka s tenkým černým obrysem přes celou stránku.
+     Nad klikatelnými prvky se používá standardní systémová ručička. */
   body{
     cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M4%2C2%20L4%2C19%20L8.3%2C15.2%20L11.3%2C21.5%20L14.2%2C20.1%20L11.2%2C13.8%20L17.5%2C13.8%20Z%22%20fill%3D%22white%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E") 4 2, auto;
   }
@@ -222,7 +248,7 @@
   input[type="checkbox"], input[type="file"], input[type="file"]::-webkit-file-upload-button,
   .choice-btn, .image-opt, .circle-btn, .icon-btn, .brand, .btn,
   .nav-links button, [role="button"]{
-    cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2226%22%20height%3D%2226%22%3E%3Cpath%20d%3D%22M13%2C2%20L23%2C12%20L19%2C12%20L19%2C23%20L7%2C23%20L7%2C12%20L3%2C12%20Z%22%20fill%3D%22white%22%20stroke%3D%22black%22%20stroke-width%3D%221.6%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E") 13 24, pointer !important;
+    cursor: pointer !important;
   }
 </style>
 </head>
@@ -251,37 +277,114 @@ const NOTIFY_EMAIL = "kamil.plavec@dreamhomes.cz";
 // Jde jen o slabou clonu proti náhodnému kliknutí, ne o skutečné zabezpečení.
 const ADMIN_PASSCODE = "Dreamhomes274";
 
+// Podmístnosti (parentId) jdou zaškrtnout až poté, co je zaškrtnutá jejich
+// rodičovská místnost — viz otázka "mistnosti" a vykreslení v questionTemplate.
+const MISTNOSTI_ROOMS = (function(){
+  const obyvak = { id: uid(), label: "Obývací pokoj + kuchyň se stolováním", recommendedMin: 40, recommendedMax: 75 };
+  const spiz = { id: uid(), label: "Spíž", recommendedMin: 1, recommendedMax: 4, parentId: obyvak.id };
+  const loznice = { id: uid(), label: "Ložnice", recommendedMin: 12, recommendedMax: 14 };
+  const loznice_skrin = { id: uid(), label: "Ložnice – vestavěná skříň", recommendedMin: 2, recommendedMax: 2, parentId: loznice.id };
+  const loznice_satna = { id: uid(), label: "Ložnice – šatna", recommendedMin: 6, recommendedMax: 10, parentId: loznice.id };
+  const loznice_koupelna = { id: uid(), label: "Ložnice – koupelna", recommendedMin: 3, recommendedMax: 8, parentId: loznice.id };
+  const detsky1 = { id: uid(), label: "Dětský pokoj 1", recommendedMin: 8, recommendedMax: 14 };
+  const detsky1_skrin = { id: uid(), label: "Dětský pokoj 1 – vestavěná skříň", recommendedMin: 2, recommendedMax: 2, parentId: detsky1.id };
+  const detsky1_satna = { id: uid(), label: "Dětský pokoj 1 – šatna", recommendedMin: 4, recommendedMax: 6, parentId: detsky1.id };
+  const detsky2 = { id: uid(), label: "Dětský pokoj 2", recommendedMin: 8, recommendedMax: 14 };
+  const detsky2_skrin = { id: uid(), label: "Dětský pokoj 2 – vestavěná skříň", recommendedMin: 2, recommendedMax: 2, parentId: detsky2.id };
+  const detsky2_satna = { id: uid(), label: "Dětský pokoj 2 – šatna", recommendedMin: 4, recommendedMax: 6, parentId: detsky2.id };
+  const detsky3 = { id: uid(), label: "Dětský pokoj 3", recommendedMin: 8, recommendedMax: 14 };
+  const detsky3_skrin = { id: uid(), label: "Dětský pokoj 3 – vestavěná skříň", recommendedMin: 2, recommendedMax: 2, parentId: detsky3.id };
+  const detsky3_satna = { id: uid(), label: "Dětský pokoj 3 – šatna", recommendedMin: 4, recommendedMax: 6, parentId: detsky3.id };
+  const pracovna1 = { id: uid(), label: "Pracovna 1", recommendedMin: 8, recommendedMax: 12 };
+  const pracovna2 = { id: uid(), label: "Pracovna 2", recommendedMin: 8, recommendedMax: 12 };
+  const hoste1 = { id: uid(), label: "Pokoj pro hosty 1", recommendedMin: 8, recommendedMax: 12 };
+  const hoste2 = { id: uid(), label: "Pokoj pro hosty 2", recommendedMin: 8, recommendedMax: 12 };
+  const jina1 = { id: uid(), label: "Jiná místnost (ateliér, fitness, herna, tv místnost apod.) 1", recommendedMin: 8, recommendedMax: 16 };
+  const jina2 = { id: uid(), label: "Jiná místnost (ateliér, fitness, herna, tv místnost apod.) 2", recommendedMin: 8, recommendedMax: 16 };
+  const koupelnaMala = { id: uid(), label: "Koupelna malá – sprcha, wc, umyvadlo", recommendedMin: 3, recommendedMax: 5 };
+  const koupelnaVelka = { id: uid(), label: "Koupelna velká – sprcha, wc, umyvadlo, vana", recommendedMin: 6, recommendedMax: 8 };
+  const koupelna = { id: uid(), label: "Koupelna", recommendedMin: 3, recommendedMax: 8 };
+  const wc1 = { id: uid(), label: "WC 1", recommendedMin: 2, recommendedMax: 2 };
+  const wc2 = { id: uid(), label: "WC 2", recommendedMin: 2, recommendedMax: 2 };
+  const technicka = { id: uid(), label: "Technická místnost", recommendedMin: 4, recommendedMax: 6 };
+  const technicka_pradelna = { id: uid(), label: "Technická místnost – prádelna společná", recommendedMin: 2, recommendedMax: 4, parentId: technicka.id };
+  const pradelna = { id: uid(), label: "Prádelna samostatně", recommendedMin: 4, recommendedMax: 6 };
+  const wellness1 = { id: uid(), label: "Jiná místnost (wellness, sauna, bazén) 1", recommendedMin: null, recommendedMax: null };
+  const wellness2 = { id: uid(), label: "Jiná místnost (wellness, sauna, bazén) 2", recommendedMin: null, recommendedMax: null };
+  const zadveri = { id: uid(), label: "Zádveří", recommendedMin: 6, recommendedMax: 8 };
+  const zadveri_skrin = { id: uid(), label: "Zádveří – vestavěná skříň", recommendedMin: 2, recommendedMax: 2, parentId: zadveri.id };
+  const zadveri_satna = { id: uid(), label: "Zádveří – šatna", recommendedMin: 6, recommendedMax: 8, parentId: zadveri.id };
+  const schodiste = { id: uid(), label: "Schodiště (8 m² na každé patro)", recommendedMin: 8, recommendedMax: 24 };
+  const garaz = { id: uid(), label: "Garáž (1 auto 24 m², 2 auta 45 m², každé další +21 m²)", recommendedMin: null, recommendedMax: null };
+  const sklad = { id: uid(), label: "Sklad (zahradní nábytek, vybavení, sport apod.)", recommendedMin: 4, recommendedMax: 10 };
+  const technologicka = { id: uid(), label: "Technologické místnosti (například k bazénu)", recommendedMin: null, recommendedMax: null };
+  const dilna = { id: uid(), label: "Dílna", recommendedMin: 10, recommendedMax: 10 };
+
+  return [
+    obyvak, spiz,
+    loznice, loznice_skrin, loznice_satna, loznice_koupelna,
+    detsky1, detsky1_skrin, detsky1_satna,
+    detsky2, detsky2_skrin, detsky2_satna,
+    detsky3, detsky3_skrin, detsky3_satna,
+    pracovna1, pracovna2, hoste1, hoste2, jina1, jina2,
+    koupelnaMala, koupelnaVelka, koupelna, wc1, wc2,
+    technicka, technicka_pradelna, pradelna,
+    wellness1, wellness2,
+    zadveri, zadveri_skrin, zadveri_satna,
+    schodiste,
+    garaz, sklad, technologicka, dilna
+  ];
+})();
+
+// Stavy pro otázky typu "status-list" (seznam bodů s tlačítky) — každá
+// otázka tohoto typu má vlastní pole statusOptions s vlastními stavy.
+const INFRASTRUKTURA_STATUS_OPTIONS = [
+  { key: "na_pozemku", label: "Je na pozemku" },
+  { key: "zaridit", label: "Potřebuji zařídit" },
+  { key: "nebude", label: "Nebude realizováno" }
+];
+const INFRASTRUKTURA_ITEMS = [
+  { id: uid(), label: "Sjezd na pozemek" },
+  { id: uid(), label: "Přípojka vody" },
+  { id: uid(), label: "Přípojka kanalizace" },
+  { id: uid(), label: "Přípojka elektroinstalace" },
+  { id: uid(), label: "Přípojka CETIN" },
+  { id: uid(), label: "Přípojka plynu" },
+  { id: uid(), label: "Čistička odpadních vod" },
+  { id: uid(), label: "Studna" }
+];
+const ANO_NE_STATUS_OPTIONS = [
+  { key: "ano", label: "Ano" },
+  { key: "ne", label: "Ne" },
+  { key: "nevim", label: "Zatím nevím" }
+];
+const TECHNOLOGIE_ITEMS = [
+  { id: uid(), label: "Venkovní žaluzie" },
+  { id: uid(), label: "Solární panely" },
+  { id: uid(), label: "Fotovoltaika" },
+  { id: uid(), label: "Hospodaření s dešťovou vodou – splachování" },
+  { id: uid(), label: "Centrální vysavač" },
+  { id: uid(), label: "Inteligentní řízení domu" },
+  { id: uid(), label: "Krb včetně komínu" },
+  { id: uid(), label: "Rekuperace" },
+  { id: uid(), label: "Klimatizace" }
+];
+
+const DISCLAIMER_TEXT = "Veškeré odpovědi jsou pouze informativní a orientační. V případě spolupráce budeme jednotlivé body řešit podrobně a budeme se bavit o vhodnosti pro váš dům a pozemek.";
+
 // Výchozí sada otázek — použije se při prvním spuštění, než programátor
 // cokoliv uloží v záložce "Správa dotazů". Poté se otázky ukládají
 // do sdíleného úložiště artefaktu a tento seznam se dál nepoužívá.
 const DEFAULT_QUESTIONS = [
-  { id: "jmeno", type: "text", title: "Jak se jmenujete?", hint: "Uveďte prosím vaše celé jméno, ať víme, s kým máme tu čest.", placeholder: "Jan Novák" },
-  { id: "popis", type: "text", title: "Popište prosím svůj vysněný dům třemi větami.", hint: "Jak si dům představujete a proč — klidně volně, jak vám to přijde na mysl.", placeholder: "Např. Chtěli bychom moderní jednopodlažní dům s velkým obývacím pokojem propojeným se zahradou..." },
+  { id: "mistnosti", type: "rooms", title: "Jaké místnosti byste chtěli mít ve svém rodinném domě?", hint: "Zaškrtněte místnosti, které chcete, a u každé uveďte velikost, kterou si představujete. Ve sloupci Doporučení vidíte naši orientační hodnotu. Pokud vám nějaká místnost chybí, přidejte si vlastní.", rooms: MISTNOSTI_ROOMS },
+  { id: "infrastruktura", type: "status-list", title: "Jaký je stav technické infrastruktury na pozemku?", hint: "U každého bodu vyberte, jak na tom jste.", items: INFRASTRUKTURA_ITEMS, statusOptions: INFRASTRUKTURA_STATUS_OPTIONS },
+  { id: "technologie", type: "status-list", title: "Jaké technologické vybavení rodinného domu byste chtěli?", hint: "U každého bodu vyberte, zda ho chcete.", items: TECHNOLOGIE_ITEMS, statusOptions: ANO_NE_STATUS_OPTIONS },
+  { id: "realizace", type: "choice", title: "Jak plánujete stavbu realizovat?", hint: "", options: ["Svépomocně", "Subdodavatelsky", "Stavební firmou"] },
   { id: "pozemek", type: "text", title: "Máte už vybraný pozemek?", hint: "Pokud ano, uveďte jeho velikost, tvar, sklon a orientaci ke světovým stranám (co víte). Pokud ne, napište alespoň lokalitu, kterou zvažujete.", placeholder: "Např. 800 m², rovinatý, obdélníkový, přístup ze severu, jižní část zahradou..." },
-  { id: "rozpocet", type: "choice", title: "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?", hint: "Pomůže nám to hned od začátku navrhovat reálně.", options: ["do 5 mil. Kč", "5–8 mil. Kč", "8–12 mil. Kč", "nad 12 mil. Kč", "Zatím nevím, chci poradit"] },
+  { id: "rozpocet", type: "text", title: "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?", hint: "Napište prosím orientační částku v milionech Kč.", placeholder: "Např. 10 mil. Kč" },
   { id: "podlazi", type: "choice", title: "Kolik podlaží by dům měl mít?", hint: "", options: ["Přízemní bungalov", "Přízemí + podkroví", "Dvě nadzemní podlaží", "Nejsem si jistý/á, poradíte mi"] },
   { id: "konstrukce", type: "choice", title: "Jaký typ konstrukce preferujete?", hint: "", options: ["Zděná (cihla / tvárnice)", "Dřevostavba", "Kombinace", "Nemám preferenci, doporučte"] },
-  { id: "energie", type: "choice", title: "Jaký energetický standard byste chtěli?", hint: "", options: ["Standardní novostavba", "Nízkoenergetický dům", "Pasivní dům", "Nevím, chci poradit"] },
-  { id: "vytapeni", type: "choice", title: "Jaký způsob vytápění preferujete?", hint: "", options: ["Tepelné čerpadlo", "Plyn", "Krb/kamna jako doplněk", "Kombinace", "Nevím, chci poradit"] },
   { id: "styl", type: "image-choice", title: "Který vizuální styl exteriéru je vám bližší?", hint: "Nepřemýšlejte moc dlouho — jde o první dojem.", imageA: { url: "https://picsum.photos/seed/minimal-clean/600/500", label: "Minimalistický, střídmý" }, imageB: { url: "https://picsum.photos/seed/bold-vivid/600/500", label: "Výrazný, výrazné tvary" } },
-  { id: "barevnost", type: "image-choice", title: "Která barevná nálada fasády a interiéru vás víc oslovuje?", hint: "Vyberte tu, ke které se přikláníte přirozeněji.", imageA: { url: "https://picsum.photos/seed/soft-pastel/600/500", label: "Jemná, světlá" }, imageB: { url: "https://picsum.photos/seed/deep-contrast/600/500", label: "Tmavší, kontrastní" } },
-  { id: "inspirace", type: "text", title: "Uveďte 2–3 domy nebo styly, které se vám líbí.", hint: "Napište i proč — co konkrétně na nich funguje. Klidně přiložíte fotky později.", placeholder: "Např. moderní dům s plochou střechou a velkými prosklenými plochami..." },
-  { id: "mistnosti", type: "rooms", title: "Jaké místnosti byste chtěli mít ve svém rodinném domě?", hint: "Zaškrtněte místnosti, které chcete, a u každé uveďte velikost, kterou si představujete. Ve sloupci Doporučení vidíte naši orientační hodnotu. Pokud vám nějaká místnost chybí, přidejte si vlastní.", rooms: [
-    { id: "r_obyvak", label: "Obývací pokoj", recommended: 28 },
-    { id: "r_kuchyn", label: "Kuchyň", recommended: 15 },
-    { id: "r_jidelna", label: "Jídelna", recommended: 12 },
-    { id: "r_loznice", label: "Ložnice", recommended: 16 },
-    { id: "r_detsky", label: "Dětský pokoj", recommended: 14 },
-    { id: "r_pracovna", label: "Pracovna", recommended: 10 },
-    { id: "r_koupelna", label: "Koupelna", recommended: 6 },
-    { id: "r_wc", label: "Samostatné WC", recommended: 2 },
-    { id: "r_satna", label: "Šatna", recommended: 5 },
-    { id: "r_technicka", label: "Technická místnost", recommended: 6 },
-    { id: "r_garaz", label: "Garáž", recommended: 20 }
-  ] },
-  { id: "venkovni", type: "text", title: "Jaké venkovní prvky byste chtěli mít?", hint: "Např. terasa, bazén, přístřešek na auto, dílna, altán, zahradní domek...", placeholder: "Např. krytá terasa směrem na jih, bazén, dřevník..." },
-  { id: "parkovani", type: "choice", title: "Kolik parkovacích míst potřebujete?", hint: "", options: ["1 místo", "2 místa", "3 a více", "Garáž pro 1 auto + venkovní stání", "Garáž pro 2 auta"] },
-  { id: "rozsireni", type: "choice", title: "Počítáte s budoucím rozšířením domu?", hint: "Např. přístavba, vestavba podkroví, další patro.", options: ["Ano", "Ne", "Zatím nevím"] },
   { id: "termin", type: "text", title: "Máte představu o termínu zahájení stavby?", hint: "Klidně jen orientačně.", placeholder: "Např. jaro příštího roku, nebo bez pevného termínu" }
 ];
 /* ============================================================ */
@@ -301,11 +404,16 @@ let state = {
   questionsLoaded: false,
   questions: [],
   formView: "intro",
+  clientName: "",
+  clientBuildType: "",
+  clientLocation: "",
+  showDisclaimer: false,
   step: 0,
   answers: {},
   submitting: false,
   responses: null,
-  saveMsg: ""
+  saveMsg: "",
+  lastSubmittedRecord: null
 };
 
 function setState(p){ state = { ...state, ...p }; render(); }
@@ -355,6 +463,10 @@ function questionAnswered(q){
     const hasCustom = custom.some(c => c.label && String(c.label).trim().length > 0 && String(c.size||"").trim().length > 0);
     return hasPredefined || hasCustom;
   }
+  if(q.type === "status-list"){
+    const ans = v || {};
+    return q.items.every(item => !!ans[item.id]);
+  }
   return false;
 }
 
@@ -383,7 +495,7 @@ function answerValueForStorage(q){
     const custom = ans.custom || [];
     const parts = q.rooms
       .filter(r => predefined[r.id] && predefined[r.id].selected)
-      .map(r => `${r.label}: ${ (predefined[r.id].size || "—") } m² (doporučeno ${r.recommended} m²)`);
+      .map(r => `${r.label}: ${ (predefined[r.id].size || "—") } m² (doporučeno ${fmtRoomRange(r)})`);
     custom.filter(c => c.label && c.size).forEach(c => {
       parts.push(`${c.label} (vlastní): ${c.size} m²`);
     });
@@ -393,18 +505,56 @@ function answerValueForStorage(q){
     parts.push(`Hrubá podlažní plocha (cca +20 % včetně ploch pod zdí): ${round1(totals.gross)} m²`);
     return parts.join("; ");
   }
+  if(q.type === "status-list"){
+    const ans = state.answers[q.id] || {};
+    return q.items.map(item => {
+      const opt = q.statusOptions.find(o => o.key === ans[item.id]);
+      return `${item.label}: ${opt ? opt.label : "—"}`;
+    }).join("; ");
+  }
   return state.answers[q.id] || "";
 }
 function round1(n){ return Math.round(n * 10) / 10; }
 function fmtM2(n){ return round1(n).toLocaleString('cs-CZ') + " m²"; }
+function fmtRoomRange(r){
+  const min = r.recommendedMin, max = r.recommendedMax;
+  if(min === "" || min === undefined || min === null) return "";
+  if(max === "" || max === undefined || max === null || String(max) === String(min)) return `${min} m²`;
+  return `${min}–${max} m²`;
+}
+
+function roomsDetailForStorage(q, ans){
+  ans = ans || {};
+  const predefined = ans.predefined || {};
+  const custom = ans.custom || [];
+  const rooms = q.rooms.map(r => {
+    const ra = predefined[r.id] || {};
+    return { label: r.label, recommendedMin: r.recommendedMin, recommendedMax: r.recommendedMax, parentId: r.parentId || null, selected: !!ra.selected, size: ra.size || "" };
+  });
+  const customRooms = custom.filter(c => c.label && String(c.label).trim()).map(c => ({ label: c.label, size: c.size || "" }));
+  const totals = computeRoomTotals(q, ans);
+  return { rooms, custom: customRooms, totals };
+}
+
+function statusListDetailForStorage(q, ans){
+  ans = ans || {};
+  return q.items.map(item => {
+    const opt = q.statusOptions.find(o => o.key === ans[item.id]);
+    return { label: item.label, statusLabel: opt ? opt.label : null };
+  });
+}
 
 async function submitResponses(){
   setState({ submitting: true });
-  const answers = state.questions.map(q => ({
-    id: q.id, title: q.title, type: q.type,
-    value: answerValueForStorage(q)
-  }));
-  const record = { submittedAt: new Date().toISOString(), answers };
+  const answers = state.questions.map(q => {
+    const base = { id: q.id, title: q.title, type: q.type, value: answerValueForStorage(q) };
+    if(q.type === "rooms") base.detail = roomsDetailForStorage(q, state.answers[q.id]);
+    if(q.type === "status-list") base.detail = statusListDetailForStorage(q, state.answers[q.id]);
+    return base;
+  });
+  const roomsQuestion = state.questions.find(q => q.type === "rooms");
+  const roomsTotalM2 = roomsQuestion ? round1(computeRoomTotals(roomsQuestion, state.answers[roomsQuestion.id]).net) : null;
+  const record = { submittedAt: new Date().toISOString(), clientName: state.clientName.trim(), clientBuildType: state.clientBuildType.trim(), clientLocation: state.clientLocation.trim(), roomsTotalM2, answers };
   try{
     const r = await fetch('/api/responses', {
       method: 'POST',
@@ -414,7 +564,7 @@ async function submitResponses(){
     if(!r.ok) throw new Error('submit failed');
   }catch(e){ console.error("Uložení se nezdařilo:", e); }
   sendEmailNotification(record); // doběhne na pozadí, neblokuje odeslání
-  setState({ formView: "outro", submitting: false });
+  setState({ formView: "outro", submitting: false, lastSubmittedRecord: record });
 }
 
 async function sendEmailNotification(record){
@@ -446,6 +596,186 @@ async function loadResponses(){
   }catch(e){ setState({ responses: [] }); }
 }
 
+/* ---------- PDF export ---------- */
+function loadScriptOnce(src, globalCheck){
+  return new Promise((resolve, reject) => {
+    if(globalCheck()) return resolve();
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if(existing){ existing.addEventListener('load', () => resolve()); existing.addEventListener('error', () => reject(new Error("Nepodařilo se načíst " + src))); return; }
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("Nepodařilo se načíst " + src));
+    document.head.appendChild(s);
+  });
+}
+
+async function ensurePdfLibs(){
+  await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', () => !!window.html2canvas);
+  await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', () => !!window.jspdf);
+}
+
+function pdfRoomsBlock(a){
+  const d = a.detail;
+  const thStyle = "text-align:left;padding:3px 8px;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:#8b887f;border-bottom:1.5px solid #14130f;";
+  const tdBase = "padding:2.5px 8px;border-bottom:1px solid #e7e4dc;font-size:11.5px;line-height:1.3;";
+  const roomsHtml = d.rooms.map(r => {
+    const indent = r.parentId ? "padding-left:20px;" : "";
+    const rec = fmtRoomRange(r);
+    const nameStyle = r.selected ? "font-weight:700;" : "color:#b3b0a6;";
+    return `
+      <tr>
+        <td style="${tdBase}${indent}${nameStyle}">${r.selected ? "✓" : "–"} ${escapeHtml(r.label)}</td>
+        <td style="${tdBase}text-align:right;color:#8b887f;">${escapeHtml(rec)}</td>
+        <td style="${tdBase}text-align:right;${r.selected ? "font-weight:700;" : "color:#b3b0a6;"}">${r.selected && r.size ? escapeHtml(String(r.size)) + " m²" : "—"}</td>
+      </tr>`;
+  }).join("");
+  const customHtml = d.custom.map(c => `
+      <tr>
+        <td style="${tdBase}font-weight:700;">✓ ${escapeHtml(c.label)} (vlastní)</td>
+        <td style="${tdBase}"></td>
+        <td style="${tdBase}text-align:right;font-weight:700;">${c.size ? escapeHtml(String(c.size)) + " m²" : "—"}</td>
+      </tr>`).join("");
+  return `
+    <div class="pdf-row" style="margin-bottom:30px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.title)}</div>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr>
+          <th style="${thStyle}">Místnost</th>
+          <th style="${thStyle}text-align:right;">Doporučení</th>
+          <th style="${thStyle}text-align:right;">Velikost</th>
+        </tr></thead>
+        <tbody>${roomsHtml}${customHtml}</tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;color:#8b887f;">
+        <div>Celková plocha místností: <b style="color:#14130f;">${fmtM2(d.totals.net)}</b></div>
+        <div>Součet včetně chodeb (cca +12 %): <b style="color:#14130f;">${fmtM2(d.totals.withHallways)}</b></div>
+        <div style="margin-top:2px;font-weight:700;color:#BA9470;font-size:13px;">Hrubá podlažní plocha: ${fmtM2(d.totals.gross)}</div>
+      </div>
+    </div>`;
+}
+
+function pdfStatusListBlock(a){
+  const thStyle = "text-align:left;padding:3px 8px;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:#8b887f;border-bottom:1.5px solid #14130f;";
+  const tdBase = "padding:2.5px 8px;border-bottom:1px solid #e7e4dc;font-size:11.5px;line-height:1.3;";
+  const rowsHtml = a.detail.map(item => `
+      <tr>
+        <td style="${tdBase}">${escapeHtml(item.label)}</td>
+        <td style="${tdBase}text-align:right;font-weight:700;">${item.statusLabel ? escapeHtml(item.statusLabel) : "—"}</td>
+      </tr>`).join("");
+  return `
+    <div class="pdf-row" style="margin-bottom:30px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.title)}</div>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr>
+          <th style="${thStyle}">Bod</th>
+          <th style="${thStyle}text-align:right;">Stav</th>
+        </tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>`;
+}
+
+async function downloadResponsePdf(it, triggerBtn){
+  const originalLabel = triggerBtn ? triggerBtn.textContent : "";
+  if(triggerBtn){ triggerBtn.disabled = true; triggerBtn.textContent = "Připravuji…"; }
+  try{
+    await ensurePdfLibs();
+
+    const scale = 2;
+    const orderedAnswers = [...it.answers];
+    const roomsIdx = orderedAnswers.findIndex(a => a.type === "rooms");
+    if(roomsIdx > 0){
+      const [roomsAnswer] = orderedAnswers.splice(roomsIdx, 1);
+      orderedAnswers.unshift(roomsAnswer);
+    }
+
+    const container = document.createElement('div');
+    container.style.cssText = "position:fixed; left:-9999px; top:0; width:640px; padding:26px; background:#ffffff; font-family:'DM Sans',sans-serif; color:#14130f;";
+    const rows = orderedAnswers.map(a => {
+      if(a.type === "rooms" && a.detail) return pdfRoomsBlock(a);
+      if(a.type === "status-list" && a.detail) return pdfStatusListBlock(a);
+      return `
+      <div class="pdf-row" style="margin-bottom:26px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;">${escapeHtml(a.title)}</div>
+        <div style="font-size:13px;line-height:1.4;margin-top:2px;">${escapeHtml(a.value || "—")}</div>
+      </div>`;
+    }).join("");
+    container.innerHTML = `
+      <div class="pdf-row" style="margin-bottom:26px;">
+        <img src="${BRAND_LOGO}" alt="${escapeAttr(BRAND_MARK)}" style="height:42px; width:auto; display:block; margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:800;">${escapeHtml(it.clientName || "Jméno neuvedeno")}${typeof it.roomsTotalM2 === "number" && it.roomsTotalM2 !== null ? " · " + fmtM2(it.roomsTotalM2) + " celkem" : ""}</div>
+        <div style="font-size:12.5px;color:#8b887f;margin-top:2px;">${it.clientBuildType ? escapeHtml(it.clientBuildType) + " · " : ""}${escapeHtml(fmtDate(it.submittedAt))}</div>
+        ${it.clientLocation ? `<div style="font-size:12.5px;color:#8b887f;margin-top:2px;">${escapeHtml(it.clientLocation)}</div>` : ""}
+      </div>
+      ${rows}
+    `;
+    document.body.appendChild(container);
+
+    const breakEls = [...container.querySelectorAll('.pdf-row, .pdf-row table tr')];
+    const rowBottomsCss = breakEls.map(el => el.offsetTop + el.offsetHeight).sort((a,b) => a - b);
+
+    const canvas = await window.html2canvas(container, { scale, backgroundColor: "#ffffff" });
+    document.body.removeChild(container);
+    const rowBottomsPx = rowBottomsCss.map(y => y * scale);
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const margin = 32;
+    const usableWidth = doc.internal.pageSize.getWidth() - margin * 2;
+    const usableHeight = doc.internal.pageSize.getHeight() - margin * 2;
+    const pxPerPt = canvas.width / usableWidth;
+    const pageHeightPx = usableHeight * pxPerPt;
+
+    let renderedPx = 0;
+    let firstPage = true;
+    while(renderedPx < canvas.height){
+      const naiveEnd = renderedPx + pageHeightPx;
+      let sliceEnd = Math.min(naiveEnd, canvas.height);
+      if(sliceEnd < canvas.height){
+        const safeBreak = rowBottomsPx.filter(y => y > renderedPx && y <= naiveEnd).pop();
+        if(safeBreak) sliceEnd = safeBreak;
+      }
+      const sliceHeightPx = sliceEnd - renderedPx;
+      const pageCanvas = document.createElement("canvas");
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = sliceHeightPx;
+      pageCanvas.getContext("2d").drawImage(canvas, 0, renderedPx, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
+      if(!firstPage) doc.addPage();
+      doc.addImage(pageCanvas.toDataURL("image/jpeg", 0.92), "JPEG", margin, margin, usableWidth, sliceHeightPx / pxPerPt);
+      renderedPx += sliceHeightPx;
+      firstPage = false;
+    }
+
+    const safeName = (it.clientName || "dotaznik").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/gi, "_").replace(/^_+|_+$/g, "");
+    doc.save(`dotaznik-${safeName || "klient"}.pdf`);
+  }catch(e){
+    alert("Nepodařilo se vygenerovat PDF. Zkontrolujte připojení k internetu a zkuste to znovu.");
+    console.error(e);
+  }finally{
+    if(triggerBtn){ triggerBtn.disabled = false; triggerBtn.textContent = originalLabel; }
+  }
+}
+
+function progressRingTemplate(){
+  const total = state.questions.length;
+  const completed = state.questions.filter(q => questionAnswered(q)).length;
+  const percent = total ? Math.round((completed / total) * 100) : 0;
+  const r = 16;
+  const circumference = 2 * Math.PI * r;
+  const dashoffset = circumference * (1 - percent / 100);
+  return `
+    <div class="progress-ring" title="${completed} z ${total} otázek vyplněno">
+      <svg width="38" height="38" viewBox="0 0 38 38">
+        <circle cx="19" cy="19" r="${r}" fill="none" stroke="var(--line)" stroke-width="3"></circle>
+        <circle cx="19" cy="19" r="${r}" fill="none" stroke="var(--sage)" stroke-width="3"
+          stroke-dasharray="${circumference}" stroke-dashoffset="${dashoffset}"
+          stroke-linecap="round" transform="rotate(-90 19 19)"></circle>
+      </svg>
+      <span class="progress-ring-label">${percent}%</span>
+    </div>`;
+}
+
 /* ---------- render ---------- */
 function render(){
   if(!ADMIN_ACCESS && state.tab === "admin") state.tab = "form";
@@ -461,10 +791,11 @@ function render(){
           <button data-tab="form" class="${state.tab==='form'?'active':''}">Dotazník</button>
           <button data-tab="admin" class="${state.tab==='admin'?'active':''}">Správa</button>
         </div>` : ``}
-        ${showCounter ? `<div class="menu-dots"><span style="width:auto;height:auto;border-radius:0;background:none;font-size:10px;font-weight:700;color:var(--ink);">${state.step+1}/${total}</span></div>` : ``}
+        ${showCounter ? progressRingTemplate() : ``}
       </div>
     </div>
     <div id="tab-content"></div>
+    ${state.showDisclaimer ? disclaimerModalTemplate() : ""}
   `;
   document.querySelectorAll('.nav-links button').forEach(b => b.onclick = () => setState({ tab: b.getAttribute('data-tab') }));
   const homeBtn = document.getElementById('home-btn');
@@ -472,6 +803,8 @@ function render(){
     homeBtn.onclick = goHome;
     homeBtn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); goHome(); } });
   }
+  const disclaimerBtn = document.getElementById('disclaimer-ok-btn');
+  if(disclaimerBtn) disclaimerBtn.onclick = () => setState({ showDisclaimer: false, formView: "question" });
 
   const content = document.getElementById('tab-content');
   if(!state.questionsLoaded){ content.innerHTML = `<div class="sheet"><div class="empty-state">Načítám…</div></div>`; return; }
@@ -482,6 +815,16 @@ function render(){
   }
 }
 
+function disclaimerModalTemplate(){
+  return `
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <p>${escapeHtml(DISCLAIMER_TEXT)}</p>
+        <button class="btn btn-primary" id="disclaimer-ok-btn">Rozumím, pokračovat</button>
+      </div>
+    </div>`;
+}
+
 /* ---------- form tab ---------- */
 function formTemplate(){
   if(state.formView === "intro") return introTemplate();
@@ -489,13 +832,23 @@ function formTemplate(){
   return questionTemplate();
 }
 
+function clientInfoReady(){
+  return state.clientName.trim().length > 0 && state.clientBuildType.trim().length > 0 && state.clientLocation.trim().length > 0;
+}
+
 function introTemplate(){
+  const ready = clientInfoReady();
   return `
     <div class="sheet">
       <div class="intro">
         <div class="hero">${escapeHtml(HERO_WORD)}</div>
         <p>${INTRO_TEXT}</p>
-        <button class="btn btn-primary" id="start-btn">Začít vyplňovat</button>
+        <div class="client-info">
+          <input type="text" id="client-name-input" placeholder="Jméno a příjmení" value="${escapeAttr(state.clientName)}">
+          <input type="text" id="client-buildtype-input" placeholder="Typ stavby (např. rodinný dům, přístavba…)" value="${escapeAttr(state.clientBuildType)}">
+          <input type="text" id="client-location-input" placeholder="Místo stavby včetně parcelního čísla (např. Jihlava, parc. č. 123/45)" value="${escapeAttr(state.clientLocation)}">
+        </div>
+        <button class="btn btn-primary" id="start-btn" ${ready ? '' : 'disabled'}>Začít vyplňovat</button>
       </div>
     </div>
   `;
@@ -543,13 +896,15 @@ function questionTemplate(){
         ${q.rooms.map(r => {
           const ra = predefined[r.id] || {};
           const checked = !!ra.selected;
+          const parentChecked = !r.parentId || !!(predefined[r.parentId] && predefined[r.parentId].selected);
+          const rowClasses = ["room-row", checked?"checked":"", r.parentId?"room-row-sub":"", !parentChecked?"room-row-locked":""].filter(Boolean).join(" ");
           return `
-            <div class="room-row ${checked?'checked':''}">
+            <div class="${rowClasses}">
               <label class="room-check">
-                <input type="checkbox" data-room-check="${r.id}" ${checked?'checked':''}>
+                <input type="checkbox" data-room-check="${r.id}" ${checked?'checked':''} ${parentChecked?'':'disabled'}>
                 <span>${escapeHtml(r.label)}</span>
               </label>
-              <span class="room-rec">${r.recommended} m²</span>
+              <span class="room-rec">${fmtRoomRange(r)}</span>
               <input type="text" inputmode="decimal" class="room-size" data-room-size="${r.id}" placeholder="m²" value="${escapeAttr(ra.size||'')}" ${checked?'':'disabled'}>
             </div>`;
         }).join("")}
@@ -568,6 +923,20 @@ function questionTemplate(){
         <div class="rooms-total-row"><span>Celková plocha místností</span><b data-total="net">${fmtM2(totals.net)}</b></div>
         <div class="rooms-total-row"><span>Součet včetně chodeb (cca +12 %)</span><b data-total="hallways">${fmtM2(totals.withHallways)}</b></div>
         <div class="rooms-total-row grand"><span>Hrubá podlažní plocha (cca +20 % včetně ploch pod zdí)</span><b data-total="gross">${fmtM2(totals.gross)}</b></div>
+      </div>`;
+  } else if(q.type === "status-list"){
+    const ans = state.answers[q.id] || {};
+    body = `
+      <div class="status-list">
+        ${q.items.map(item => `
+          <div class="status-row">
+            <span class="status-row-label">${escapeHtml(item.label)}</span>
+            <div class="status-options">
+              ${q.statusOptions.map(opt => `
+                <button type="button" class="status-btn ${ans[item.id]===opt.key?'selected':''}" data-status-item="${item.id}" data-status-key="${opt.key}">${escapeHtml(opt.label)}</button>
+              `).join("")}
+            </div>
+          </div>`).join("")}
       </div>`;
   }
 
@@ -592,6 +961,7 @@ function outroTemplate(){
     <div class="sheet"><div class="outro">
       <div class="hero">díky.</div>
       <p>Vaše odpovědi jsme uložili. Ozveme se vám s dalšími kroky v projektu.</p>
+      ${state.lastSubmittedRecord ? `<button class="btn btn-outline" id="outro-pdf-btn">Stáhnout PDF s odpověďmi</button>` : ``}
     </div></div>`;
 }
 
@@ -630,11 +1000,23 @@ function goHome(){
 
 function bindForm(){
   if(state.formView === "intro"){
-    document.getElementById('start-btn').onclick = () => { clearInterval(heroTimer); setState({ formView:"question" }); };
+    const startBtn = document.getElementById('start-btn');
+    startBtn.onclick = () => { clearInterval(heroTimer); setState({ showDisclaimer: true }); };
+    const nameInput = document.getElementById('client-name-input');
+    const buildTypeInput = document.getElementById('client-buildtype-input');
+    const locationInput = document.getElementById('client-location-input');
+    nameInput.addEventListener('input', () => { state.clientName = nameInput.value; startBtn.disabled = !clientInfoReady(); });
+    buildTypeInput.addEventListener('input', () => { state.clientBuildType = buildTypeInput.value; startBtn.disabled = !clientInfoReady(); });
+    locationInput.addEventListener('input', () => { state.clientLocation = locationInput.value; startBtn.disabled = !clientInfoReady(); });
     startHeroBlink();
     return;
   }
-  if(state.formView === "outro"){ clearInterval(heroTimer); return; }
+  if(state.formView === "outro"){
+    clearInterval(heroTimer);
+    const pdfBtn = document.getElementById('outro-pdf-btn');
+    if(pdfBtn) pdfBtn.onclick = () => downloadResponsePdf(state.lastSubmittedRecord, pdfBtn);
+    return;
+  }
 
   const q = state.questions[state.step];
   const backBtn = document.getElementById('back-btn');
@@ -666,6 +1048,14 @@ function bindForm(){
         const roomId = el.getAttribute('data-room-check');
         ansBucket.predefined[roomId] = ansBucket.predefined[roomId] || {};
         ansBucket.predefined[roomId].selected = el.checked;
+        if(!el.checked){
+          q.rooms.filter(r => r.parentId === roomId).forEach(child => {
+            if(ansBucket.predefined[child.id]){
+              ansBucket.predefined[child.id].selected = false;
+              ansBucket.predefined[child.id].size = "";
+            }
+          });
+        }
         render();
       });
     });
@@ -704,6 +1094,18 @@ function bindForm(){
       render();
     };
   }
+  if(q.type === "status-list"){
+    state.answers[q.id] = state.answers[q.id] || {};
+    const ansBucket = state.answers[q.id];
+    document.querySelectorAll('[data-status-item]').forEach(btn => {
+      btn.onclick = () => {
+        const itemId = btn.getAttribute('data-status-item');
+        const key = btn.getAttribute('data-status-key');
+        ansBucket[itemId] = key;
+        render();
+      };
+    });
+  }
   nextBtn.onclick = () => {
     if(!questionAnswered(q) || state.submitting) return;
     if(state.step === state.questions.length - 1) submitResponses();
@@ -732,9 +1134,16 @@ function adminTemplate(){
     ? `<div class="empty-state">Načítám…</div>`
     : state.responses.length === 0
       ? `<div class="empty-state">Zatím nejsou uložené žádné odpovědi.</div>`
-      : state.responses.map(it => `
+      : state.responses.map((it, ri) => `
           <div class="resp-item">
-            <span class="ts">${fmtDate(it.submittedAt)}</span>
+            <div class="resp-item-head">
+              <div>
+                <span class="ts">${fmtDate(it.submittedAt)}</span>
+                <div class="resp-summary"><b>${escapeHtml(it.clientName || "Jméno neuvedeno")}</b>${it.clientBuildType ? ` · ${escapeHtml(it.clientBuildType)}` : ""}${typeof it.roomsTotalM2 === "number" && it.roomsTotalM2 !== null ? ` · ${fmtM2(it.roomsTotalM2)} celkem` : ""}</div>
+                ${it.clientLocation ? `<div class="resp-location">${escapeHtml(it.clientLocation)}</div>` : ""}
+              </div>
+              <button class="btn btn-outline btn-small" data-pdf="${ri}">Stáhnout PDF</button>
+            </div>
             <dl>${it.answers.map(a => `<dt>${escapeHtml(a.title)}</dt><dd>${escapeHtml(a.value || "—")}</dd>`).join("")}</dl>
           </div>`).join("");
 
@@ -800,14 +1209,26 @@ function questionCardTemplate(q, i){
   } else if(q.type === "rooms"){
     typeFields = `
       <div class="field-row">
-        <label class="field-label">Místnosti a doporučená velikost (m²)</label>
+        <label class="field-label">Místnosti a doporučená velikost — od–do (m²)</label>
         ${q.rooms.map((r, ri) => `
           <div class="opt-row">
             <input type="text" placeholder="Název místnosti" data-room-label="${ri}" data-idx="${i}" value="${escapeAttr(r.label)}">
-            <input type="text" placeholder="m²" style="max-width:90px;" data-room-rec="${ri}" data-idx="${i}" value="${escapeAttr(String(r.recommended ?? ''))}">
+            <input type="text" placeholder="od" style="max-width:64px;flex:0 0 64px;" data-room-min="${ri}" data-idx="${i}" value="${escapeAttr(String(r.recommendedMin ?? ''))}">
+            <input type="text" placeholder="do" style="max-width:64px;flex:0 0 64px;" data-room-max="${ri}" data-idx="${i}" value="${escapeAttr(String(r.recommendedMax ?? ''))}">
             <button class="icon-btn" data-remove-room="${ri}" data-idx="${i}">×</button>
           </div>`).join("")}
         <button class="btn btn-outline btn-small" data-add-room="${i}">+ Místnost</button>
+      </div>`;
+  } else if(q.type === "status-list"){
+    typeFields = `
+      <div class="field-row">
+        <label class="field-label">Body seznamu (ke každému lze zvolit: ${q.statusOptions.map(o=>o.label).join(" / ")})</label>
+        ${q.items.map((item, ii) => `
+          <div class="opt-row">
+            <input type="text" placeholder="Název bodu" data-status-item-label="${ii}" data-idx="${i}" value="${escapeAttr(item.label)}">
+            <button class="icon-btn" data-remove-status-item="${ii}" data-idx="${i}">×</button>
+          </div>`).join("")}
+        <button class="btn btn-outline btn-small" data-add-status-item="${i}">+ Bod</button>
       </div>`;
   }
 
@@ -836,6 +1257,7 @@ function questionCardTemplate(q, i){
           <option value="choice" ${q.type==='choice'?'selected':''}>Výběr z možností</option>
           <option value="image-choice" ${q.type==='image-choice'?'selected':''}>Výběr ze dvou obrázků</option>
           <option value="rooms" ${q.type==='rooms'?'selected':''}>Místnosti domu (výběr + m²)</option>
+          <option value="status-list" ${q.type==='status-list'?'selected':''}>Seznam bodů (3 stavy)</option>
         </select>
       </div>
       ${typeFields}
@@ -848,9 +1270,13 @@ function blankQuestion(type){
   if(type === "choice") return { ...base, type:"choice", options:["Možnost 1","Možnost 2"] };
   if(type === "image-choice") return { ...base, type:"image-choice", imageA:{url:"",label:"Varianta A"}, imageB:{url:"",label:"Varianta B"} };
   if(type === "rooms") return { ...base, type:"rooms", rooms:[
-    { id: uid(), label: "Obývací pokoj", recommended: 25 },
-    { id: uid(), label: "Kuchyň", recommended: 14 },
-    { id: uid(), label: "Ložnice", recommended: 16 }
+    { id: uid(), label: "Obývací pokoj", recommendedMin: 25, recommendedMax: 25 },
+    { id: uid(), label: "Kuchyň", recommendedMin: 14, recommendedMax: 14 },
+    { id: uid(), label: "Ložnice", recommendedMin: 16, recommendedMax: 16 }
+  ]};
+  if(type === "status-list") return { ...base, type:"status-list", statusOptions: ANO_NE_STATUS_OPTIONS, items:[
+    { id: uid(), label: "Nový bod 1" },
+    { id: uid(), label: "Nový bod 2" }
   ]};
   return { ...base, type:"text", placeholder:"" };
 }
@@ -950,16 +1376,23 @@ function bindAdmin(){
       state.questions[i].rooms[ri].label = el.value;
     });
   });
-  document.querySelectorAll('[data-room-rec]').forEach(el => {
+  document.querySelectorAll('[data-room-min]').forEach(el => {
     el.addEventListener('input', () => {
       const i = +el.getAttribute('data-idx');
-      const ri = +el.getAttribute('data-room-rec');
-      state.questions[i].rooms[ri].recommended = el.value;
+      const ri = +el.getAttribute('data-room-min');
+      state.questions[i].rooms[ri].recommendedMin = el.value;
+    });
+  });
+  document.querySelectorAll('[data-room-max]').forEach(el => {
+    el.addEventListener('input', () => {
+      const i = +el.getAttribute('data-idx');
+      const ri = +el.getAttribute('data-room-max');
+      state.questions[i].rooms[ri].recommendedMax = el.value;
     });
   });
   document.querySelectorAll('[data-add-room]').forEach(b => b.onclick = () => {
     const i = +b.getAttribute('data-add-room');
-    state.questions[i].rooms.push({ id: uid(), label: "Nová místnost", recommended: 10 });
+    state.questions[i].rooms.push({ id: uid(), label: "Nová místnost", recommendedMin: 10, recommendedMax: 10 });
     render();
   });
   document.querySelectorAll('[data-remove-room]').forEach(b => b.onclick = () => {
@@ -967,6 +1400,30 @@ function bindAdmin(){
     const ri = +b.getAttribute('data-remove-room');
     state.questions[i].rooms.splice(ri,1);
     render();
+  });
+
+  document.querySelectorAll('[data-status-item-label]').forEach(el => {
+    el.addEventListener('input', () => {
+      const i = +el.getAttribute('data-idx');
+      const ii = +el.getAttribute('data-status-item-label');
+      state.questions[i].items[ii].label = el.value;
+    });
+  });
+  document.querySelectorAll('[data-add-status-item]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-add-status-item');
+    state.questions[i].items.push({ id: uid(), label: "Nový bod" });
+    render();
+  });
+  document.querySelectorAll('[data-remove-status-item]').forEach(b => b.onclick = () => {
+    const i = +b.getAttribute('data-idx');
+    const ii = +b.getAttribute('data-remove-status-item');
+    state.questions[i].items.splice(ii,1);
+    render();
+  });
+
+  document.querySelectorAll('[data-pdf]').forEach(b => b.onclick = () => {
+    const ri = +b.getAttribute('data-pdf');
+    downloadResponsePdf(state.responses[ri], b);
   });
 }
 
