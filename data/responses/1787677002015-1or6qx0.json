@@ -1,0 +1,452 @@
+{
+  "submittedAt": "2026-08-25T16:56:41.385Z",
+  "clientName": "Kamil Plavec",
+  "clientBuildType": "Rodinný dům",
+  "clientLocation": "Jihlava",
+  "roomsTotalM2": 249,
+  "answers": [
+    {
+      "id": "mistnosti",
+      "title": "Jaké místnosti byste chtěli mít ve svém rodinném domě?",
+      "short": "Místnosti v domě",
+      "type": "rooms",
+      "value": "Obývací pokoj + kuchyň se stolováním: 100 m² (doporučeno 40–75 m²); Ložnice: 12 m² (doporučeno 12–14 m²); Dětský pokoj 1: 21 m² (doporučeno 8–14 m²); Pracovna 1: 10 m² (doporučeno 8–12 m²); Fitness: 16 m² (doporučeno 8–16 m²); Koupelna – sprcha, wc, umyvadlo: 8 m² (doporučeno 3–5 m²); Technická místnost: 10 m² (doporučeno 6–8 m²); Zádveří: 12 m² (doporučeno 6–8 m²); Garáž (1 auto 24 m², 2 auta 45 m², každé další +21 m²): 50 m² (doporučeno ); Dílna: 10 m² (doporučeno 10 m²); Celková plocha místností: 249 m²; Součet včetně chodeb (cca +12 %): 278.9 m²; Hrubá podlažní plocha (cca +20 % včetně ploch pod zdí): 334.7 m²",
+      "detail": {
+        "rooms": [
+          {
+            "label": "Obývací pokoj + kuchyň se stolováním",
+            "recommendedMin": 40,
+            "recommendedMax": 75,
+            "parentId": null,
+            "selected": true,
+            "size": "100"
+          },
+          {
+            "label": "Spíž",
+            "recommendedMin": 1,
+            "recommendedMax": 4,
+            "parentId": "lamv0n5",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Ložnice",
+            "recommendedMin": 12,
+            "recommendedMax": 14,
+            "parentId": null,
+            "selected": true,
+            "size": "12"
+          },
+          {
+            "label": "Ložnice – vestavěná skříň",
+            "recommendedMin": 2,
+            "recommendedMax": 2,
+            "parentId": "0t1n5nb",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Ložnice – šatna",
+            "recommendedMin": 6,
+            "recommendedMax": 10,
+            "parentId": "0t1n5nb",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Ložnice – koupelna",
+            "recommendedMin": 3,
+            "recommendedMax": 8,
+            "parentId": "0t1n5nb",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 1",
+            "recommendedMin": 8,
+            "recommendedMax": 14,
+            "parentId": null,
+            "selected": true,
+            "size": "21"
+          },
+          {
+            "label": "Dětský pokoj 1 – vestavěná skříň",
+            "recommendedMin": 2,
+            "recommendedMax": 2,
+            "parentId": "6hms6h8",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 1 – šatna",
+            "recommendedMin": 4,
+            "recommendedMax": 6,
+            "parentId": "6hms6h8",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 2",
+            "recommendedMin": 8,
+            "recommendedMax": 14,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 2 – vestavěná skříň",
+            "recommendedMin": 2,
+            "recommendedMax": 2,
+            "parentId": "vszwrxl",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 2 – šatna",
+            "recommendedMin": 4,
+            "recommendedMax": 6,
+            "parentId": "vszwrxl",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 3",
+            "recommendedMin": 8,
+            "recommendedMax": 14,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 3 – vestavěná skříň",
+            "recommendedMin": 2,
+            "recommendedMax": 2,
+            "parentId": "vuqtd5p",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dětský pokoj 3 – šatna",
+            "recommendedMin": 4,
+            "recommendedMax": 6,
+            "parentId": "vuqtd5p",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Pracovna 1",
+            "recommendedMin": 8,
+            "recommendedMax": 12,
+            "parentId": null,
+            "selected": true,
+            "size": "10"
+          },
+          {
+            "label": "Pracovna 2",
+            "recommendedMin": 8,
+            "recommendedMax": 12,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Pokoj pro hosty 1",
+            "recommendedMin": 8,
+            "recommendedMax": 12,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Pokoj pro hosty 2",
+            "recommendedMin": 8,
+            "recommendedMax": 12,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Fitness",
+            "recommendedMin": 8,
+            "recommendedMax": 16,
+            "parentId": null,
+            "selected": true,
+            "size": "16"
+          },
+          {
+            "label": "Koupelna – sprcha, wc, umyvadlo",
+            "recommendedMin": 3,
+            "recommendedMax": 5,
+            "parentId": null,
+            "selected": true,
+            "size": "8"
+          },
+          {
+            "label": "Koupelna – sprcha, wc, umyvadlo, vana",
+            "recommendedMin": 6,
+            "recommendedMax": 8,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "WC 1",
+            "recommendedMin": 2,
+            "recommendedMax": 2,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "WC 2",
+            "recommendedMin": 2,
+            "recommendedMax": 2,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Technická místnost",
+            "recommendedMin": 6,
+            "recommendedMax": 8,
+            "parentId": null,
+            "selected": true,
+            "size": "10"
+          },
+          {
+            "label": "Technická místnost – prádelna společná",
+            "recommendedMin": 2,
+            "recommendedMax": 4,
+            "parentId": "iuo9aso",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Prádelna samostatně",
+            "recommendedMin": 4,
+            "recommendedMax": 6,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Zádveří",
+            "recommendedMin": 6,
+            "recommendedMax": 8,
+            "parentId": null,
+            "selected": true,
+            "size": "12"
+          },
+          {
+            "label": "Zádveří – vestavěná skříň",
+            "recommendedMin": 2,
+            "recommendedMax": 2,
+            "parentId": "tvwekgq",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Zádveří – šatna",
+            "recommendedMin": 6,
+            "recommendedMax": 8,
+            "parentId": "tvwekgq",
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Schodiště (8 m² na každé patro)",
+            "recommendedMin": 8,
+            "recommendedMax": 24,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Garáž (1 auto 24 m², 2 auta 45 m², každé další +21 m²)",
+            "recommendedMin": null,
+            "recommendedMax": null,
+            "parentId": null,
+            "selected": true,
+            "size": "50"
+          },
+          {
+            "label": "Sklad (zahradní nábytek, vybavení, sport apod.)",
+            "recommendedMin": 4,
+            "recommendedMax": 10,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Technologické místnosti (například k bazénu)",
+            "recommendedMin": null,
+            "recommendedMax": null,
+            "parentId": null,
+            "selected": false,
+            "size": ""
+          },
+          {
+            "label": "Dílna",
+            "recommendedMin": 10,
+            "recommendedMax": 10,
+            "parentId": null,
+            "selected": true,
+            "size": "10"
+          }
+        ],
+        "custom": [],
+        "totals": {
+          "net": 249,
+          "withHallways": 278.88000000000005,
+          "gross": 334.65600000000006
+        }
+      }
+    },
+    {
+      "id": "infrastruktura",
+      "title": "Jaký je stav technické infrastruktury na pozemku?",
+      "short": "Technická infrastruktura na pozemku",
+      "type": "status-list",
+      "value": "Sjezd na pozemek: Nebude realizováno; Přípojka vody: Potřebuji zařídit; Přípojka kanalizace: Potřebuji zařídit; Přípojka elektroinstalace: Potřebuji zařídit; Přípojka CETIN: Potřebuji zařídit; Přípojka plynu: Nebude realizováno; Čistička odpadních vod: Nebude realizováno; Studna: Nebude realizováno",
+      "detail": [
+        {
+          "label": "Sjezd na pozemek",
+          "statusLabel": "Nebude realizováno"
+        },
+        {
+          "label": "Přípojka vody",
+          "statusLabel": "Potřebuji zařídit"
+        },
+        {
+          "label": "Přípojka kanalizace",
+          "statusLabel": "Potřebuji zařídit"
+        },
+        {
+          "label": "Přípojka elektroinstalace",
+          "statusLabel": "Potřebuji zařídit"
+        },
+        {
+          "label": "Přípojka CETIN",
+          "statusLabel": "Potřebuji zařídit"
+        },
+        {
+          "label": "Přípojka plynu",
+          "statusLabel": "Nebude realizováno"
+        },
+        {
+          "label": "Čistička odpadních vod",
+          "statusLabel": "Nebude realizováno"
+        },
+        {
+          "label": "Studna",
+          "statusLabel": "Nebude realizováno"
+        }
+      ]
+    },
+    {
+      "id": "technologie",
+      "title": "Jaké technologické vybavení rodinného domu byste chtěli?",
+      "short": "Technologické vybavení domu",
+      "type": "status-list",
+      "value": "Rekuperace: Ano; Klimatizace: Ano; Fotovoltaika: Ne; Solární panely: Ano; Inteligentní řízení domu: Ano; Venkovní žaluzie: Ano; Hospodaření s dešťovou vodou – splachování a zálivka zahrady: Ne; Hospodaření s dešťovou vodou – zálivka zahrady: Ano; Centrální vysavač: Ne; Krb včetně komínu: Ano",
+      "detail": [
+        {
+          "label": "Rekuperace",
+          "statusLabel": "Ano"
+        },
+        {
+          "label": "Klimatizace",
+          "statusLabel": "Ano"
+        },
+        {
+          "label": "Fotovoltaika",
+          "statusLabel": "Ne"
+        },
+        {
+          "label": "Solární panely",
+          "statusLabel": "Ano"
+        },
+        {
+          "label": "Inteligentní řízení domu",
+          "statusLabel": "Ano"
+        },
+        {
+          "label": "Venkovní žaluzie",
+          "statusLabel": "Ano"
+        },
+        {
+          "label": "Hospodaření s dešťovou vodou – splachování a zálivka zahrady",
+          "statusLabel": "Ne"
+        },
+        {
+          "label": "Hospodaření s dešťovou vodou – zálivka zahrady",
+          "statusLabel": "Ano"
+        },
+        {
+          "label": "Centrální vysavač",
+          "statusLabel": "Ne"
+        },
+        {
+          "label": "Krb včetně komínu",
+          "statusLabel": "Ano"
+        }
+      ]
+    },
+    {
+      "id": "realizace",
+      "title": "Jak plánujete stavbu realizovat?",
+      "short": "Způsob realizace stavby",
+      "type": "choice",
+      "value": "Subdodavatelsky"
+    },
+    {
+      "id": "pozemek",
+      "title": "Máte už vybraný pozemek?",
+      "short": "Pozemek",
+      "type": "text",
+      "value": "800"
+    },
+    {
+      "id": "rozpocet",
+      "title": "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?",
+      "short": "Orientační rozpočet",
+      "type": "text",
+      "value": "10"
+    },
+    {
+      "id": "podlazi",
+      "title": "Kolik podlaží by dům měl mít?",
+      "short": "Počet podlaží",
+      "type": "choice",
+      "value": "Přízemní bungalov"
+    },
+    {
+      "id": "konstrukce",
+      "title": "Jaký typ konstrukce preferujete?",
+      "short": "Typ konstrukce",
+      "type": "choice",
+      "value": "Dřevostavba"
+    },
+    {
+      "id": "styl",
+      "title": "Který vizuální styl exteriéru je vám bližší?",
+      "short": "Vizuální styl exteriéru",
+      "type": "image-choice",
+      "value": "Městský moderní"
+    },
+    {
+      "id": "bungalov",
+      "title": "Který styl bungalovu je vám bližší?",
+      "short": "Styl bungalovu",
+      "type": "image-choice",
+      "value": "Moderní verze bungalovu"
+    },
+    {
+      "id": "termin",
+      "title": "Máte představu o termínu zahájení stavby?",
+      "short": "Termín zahájení stavby",
+      "type": "text",
+      "value": "Jaro 2027"
+    }
+  ]
+}
