@@ -84,7 +84,7 @@
 
   .q-title{ font-weight:800; font-size:30px; line-height:1.2; letter-spacing:-0.01em; margin-bottom:8px; }
   .q-hint{ color: var(--soft); font-size:14px; line-height:1.55; margin-bottom:26px; }
-  .q-body{ flex:1; }
+  .q-body{ flex:1; margin-top:22px; }
 
   textarea, input[type=text], select{
     width:100%;
@@ -299,18 +299,14 @@ const MISTNOSTI_ROOMS = (function(){
   const pracovna2 = { id: uid(), label: "Pracovna 2", recommendedMin: 8, recommendedMax: 12 };
   const hoste1 = { id: uid(), label: "Pokoj pro hosty 1", recommendedMin: 8, recommendedMax: 12 };
   const hoste2 = { id: uid(), label: "Pokoj pro hosty 2", recommendedMin: 8, recommendedMax: 12 };
-  const jina1 = { id: uid(), label: "Jiná místnost (ateliér, fitness, herna, tv místnost apod.) 1", recommendedMin: 8, recommendedMax: 16 };
-  const jina2 = { id: uid(), label: "Jiná místnost (ateliér, fitness, herna, tv místnost apod.) 2", recommendedMin: 8, recommendedMax: 16 };
-  const koupelnaMala = { id: uid(), label: "Koupelna malá – sprcha, wc, umyvadlo", recommendedMin: 3, recommendedMax: 5 };
-  const koupelnaVelka = { id: uid(), label: "Koupelna velká – sprcha, wc, umyvadlo, vana", recommendedMin: 6, recommendedMax: 8 };
-  const koupelna = { id: uid(), label: "Koupelna", recommendedMin: 3, recommendedMax: 8 };
+  const fitness = { id: uid(), label: "Fitness", recommendedMin: 8, recommendedMax: 16 };
+  const koupelnaMala = { id: uid(), label: "Koupelna – sprcha, wc, umyvadlo", recommendedMin: 3, recommendedMax: 5 };
+  const koupelnaVelka = { id: uid(), label: "Koupelna – sprcha, wc, umyvadlo, vana", recommendedMin: 6, recommendedMax: 8 };
   const wc1 = { id: uid(), label: "WC 1", recommendedMin: 2, recommendedMax: 2 };
   const wc2 = { id: uid(), label: "WC 2", recommendedMin: 2, recommendedMax: 2 };
-  const technicka = { id: uid(), label: "Technická místnost", recommendedMin: 4, recommendedMax: 6 };
+  const technicka = { id: uid(), label: "Technická místnost", recommendedMin: 6, recommendedMax: 8 };
   const technicka_pradelna = { id: uid(), label: "Technická místnost – prádelna společná", recommendedMin: 2, recommendedMax: 4, parentId: technicka.id };
   const pradelna = { id: uid(), label: "Prádelna samostatně", recommendedMin: 4, recommendedMax: 6 };
-  const wellness1 = { id: uid(), label: "Jiná místnost (wellness, sauna, bazén) 1", recommendedMin: null, recommendedMax: null };
-  const wellness2 = { id: uid(), label: "Jiná místnost (wellness, sauna, bazén) 2", recommendedMin: null, recommendedMax: null };
   const zadveri = { id: uid(), label: "Zádveří", recommendedMin: 6, recommendedMax: 8 };
   const zadveri_skrin = { id: uid(), label: "Zádveří – vestavěná skříň", recommendedMin: 2, recommendedMax: 2, parentId: zadveri.id };
   const zadveri_satna = { id: uid(), label: "Zádveří – šatna", recommendedMin: 6, recommendedMax: 8, parentId: zadveri.id };
@@ -326,10 +322,9 @@ const MISTNOSTI_ROOMS = (function(){
     detsky1, detsky1_skrin, detsky1_satna,
     detsky2, detsky2_skrin, detsky2_satna,
     detsky3, detsky3_skrin, detsky3_satna,
-    pracovna1, pracovna2, hoste1, hoste2, jina1, jina2,
-    koupelnaMala, koupelnaVelka, koupelna, wc1, wc2,
+    pracovna1, pracovna2, hoste1, hoste2, fitness,
+    koupelnaMala, koupelnaVelka, wc1, wc2,
     technicka, technicka_pradelna, pradelna,
-    wellness1, wellness2,
     zadveri, zadveri_skrin, zadveri_satna,
     schodiste,
     garaz, sklad, technologicka, dilna
@@ -359,15 +354,16 @@ const ANO_NE_STATUS_OPTIONS = [
   { key: "nevim", label: "Zatím nevím" }
 ];
 const TECHNOLOGIE_ITEMS = [
-  { id: uid(), label: "Venkovní žaluzie" },
-  { id: uid(), label: "Solární panely" },
-  { id: uid(), label: "Fotovoltaika" },
-  { id: uid(), label: "Hospodaření s dešťovou vodou – splachování" },
-  { id: uid(), label: "Centrální vysavač" },
-  { id: uid(), label: "Inteligentní řízení domu" },
-  { id: uid(), label: "Krb včetně komínu" },
   { id: uid(), label: "Rekuperace" },
-  { id: uid(), label: "Klimatizace" }
+  { id: uid(), label: "Klimatizace" },
+  { id: uid(), label: "Fotovoltaika" },
+  { id: uid(), label: "Solární panely" },
+  { id: uid(), label: "Inteligentní řízení domu" },
+  { id: uid(), label: "Venkovní žaluzie" },
+  { id: uid(), label: "Hospodaření s dešťovou vodou – splachování a zálivka zahrady" },
+  { id: uid(), label: "Hospodaření s dešťovou vodou – zálivka zahrady" },
+  { id: uid(), label: "Centrální vysavač" },
+  { id: uid(), label: "Krb včetně komínu" }
 ];
 
 const DISCLAIMER_TEXT = "Veškeré odpovědi jsou pouze informativní a orientační. V případě spolupráce budeme jednotlivé body řešit podrobně a budeme se bavit o vhodnosti pro váš dům a pozemek.";
@@ -376,16 +372,17 @@ const DISCLAIMER_TEXT = "Veškeré odpovědi jsou pouze informativní a orienta�
 // cokoliv uloží v záložce "Správa dotazů". Poté se otázky ukládají
 // do sdíleného úložiště artefaktu a tento seznam se dál nepoužívá.
 const DEFAULT_QUESTIONS = [
-  { id: "mistnosti", type: "rooms", title: "Jaké místnosti byste chtěli mít ve svém rodinném domě?", hint: "Zaškrtněte místnosti, které chcete, a u každé uveďte velikost, kterou si představujete. Ve sloupci Doporučení vidíte naši orientační hodnotu. Pokud vám nějaká místnost chybí, přidejte si vlastní.", rooms: MISTNOSTI_ROOMS },
-  { id: "infrastruktura", type: "status-list", title: "Jaký je stav technické infrastruktury na pozemku?", hint: "U každého bodu vyberte, jak na tom jste.", items: INFRASTRUKTURA_ITEMS, statusOptions: INFRASTRUKTURA_STATUS_OPTIONS },
-  { id: "technologie", type: "status-list", title: "Jaké technologické vybavení rodinného domu byste chtěli?", hint: "U každého bodu vyberte, zda ho chcete.", items: TECHNOLOGIE_ITEMS, statusOptions: ANO_NE_STATUS_OPTIONS },
-  { id: "realizace", type: "choice", title: "Jak plánujete stavbu realizovat?", hint: "", options: ["Svépomocně", "Subdodavatelsky", "Stavební firmou"] },
-  { id: "pozemek", type: "text", title: "Máte už vybraný pozemek?", hint: "Pokud ano, uveďte jeho velikost, tvar, sklon a orientaci ke světovým stranám (co víte). Pokud ne, napište alespoň lokalitu, kterou zvažujete.", placeholder: "Např. 800 m², rovinatý, obdélníkový, přístup ze severu, jižní část zahradou..." },
-  { id: "rozpocet", type: "text", title: "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?", hint: "Napište prosím orientační částku v milionech Kč.", placeholder: "Např. 10 mil. Kč" },
-  { id: "podlazi", type: "choice", title: "Kolik podlaží by dům měl mít?", hint: "", options: ["Přízemní bungalov", "Přízemí + podkroví", "Dvě nadzemní podlaží", "Nejsem si jistý/á, poradíte mi"] },
-  { id: "konstrukce", type: "choice", title: "Jaký typ konstrukce preferujete?", hint: "", options: ["Zděná (cihla / tvárnice)", "Dřevostavba", "Kombinace", "Nemám preferenci, doporučte"] },
-  { id: "styl", type: "image-choice", title: "Který vizuální styl exteriéru je vám bližší?", hint: "Nepřemýšlejte moc dlouho — jde o první dojem.", imageA: { url: "https://picsum.photos/seed/minimal-clean/600/500", label: "Minimalistický, střídmý" }, imageB: { url: "https://picsum.photos/seed/bold-vivid/600/500", label: "Výrazný, výrazné tvary" } },
-  { id: "termin", type: "text", title: "Máte představu o termínu zahájení stavby?", hint: "Klidně jen orientačně.", placeholder: "Např. jaro příštího roku, nebo bez pevného termínu" }
+  { id: "mistnosti", type: "rooms", title: "Jaké místnosti byste chtěli mít ve svém rodinném domě?", short: "Místnosti v domě", hint: "Zaškrtněte místnosti, které chcete, a u každé uveďte velikost, kterou si představujete. Ve sloupci Doporučení vidíte naši orientační hodnotu. Pokud vám nějaká místnost chybí, přidejte si vlastní.", rooms: MISTNOSTI_ROOMS },
+  { id: "infrastruktura", type: "status-list", title: "Jaký je stav technické infrastruktury na pozemku?", short: "Technická infrastruktura na pozemku", hint: "U každého bodu vyberte, jak na tom jste.", items: INFRASTRUKTURA_ITEMS, statusOptions: INFRASTRUKTURA_STATUS_OPTIONS },
+  { id: "technologie", type: "status-list", title: "Jaké technologické vybavení rodinného domu byste chtěli?", short: "Technologické vybavení domu", hint: "", items: TECHNOLOGIE_ITEMS, statusOptions: ANO_NE_STATUS_OPTIONS },
+  { id: "realizace", type: "choice", title: "Jak plánujete stavbu realizovat?", short: "Způsob realizace stavby", hint: "", options: ["Svépomocně", "Subdodavatelsky", "Stavební firmou", "Chci realizovat s Vámi"] },
+  { id: "pozemek", type: "text", title: "Máte už vybraný pozemek?", short: "Pozemek", hint: "Pokud ano, uveďte jeho velikost, tvar, sklon a orientaci ke světovým stranám (co víte). Pokud ne, napište alespoň lokalitu, kterou zvažujete.", placeholder: "Např. 800 m², rovinatý, obdélníkový, přístup ze severu, jižní část zahradou..." },
+  { id: "rozpocet", type: "text", title: "Jaký je orientační rozpočet na stavbu domu (bez pozemku)?", short: "Orientační rozpočet", hint: "Napište prosím orientační částku v milionech Kč.", placeholder: "Např. 10 mil. Kč" },
+  { id: "podlazi", type: "choice", title: "Kolik podlaží by dům měl mít?", short: "Počet podlaží", hint: "", options: ["Přízemní bungalov", "Přízemí + podkroví", "Dvě nadzemní podlaží", "Nejsem si jistý/á, poradíte mi"] },
+  { id: "konstrukce", type: "choice", title: "Jaký typ konstrukce preferujete?", short: "Typ konstrukce", hint: "", options: ["Zděná (cihla / tvárnice)", "Dřevostavba", "Kombinace", "Nemám preferenci, doporučte"] },
+  { id: "styl", type: "image-choice", title: "Který vizuální styl exteriéru je vám bližší?", short: "Vizuální styl exteriéru", hint: "Nepřemýšlejte moc dlouho — jde o první dojem.", imageA: { url: "images/styl-mestsky-moderni.jpg", label: "Městský moderní" }, imageB: { url: "images/styl-venkovsky-tradicni.jpg", label: "Venkovský tradiční" } },
+  { id: "bungalov", type: "image-choice", title: "Který styl bungalovu je vám bližší?", short: "Styl bungalovu", hint: "Nepřemýšlejte moc dlouho — jde o první dojem.", imageA: { url: "images/bungalov-tradicni-valbovy.jpg", label: "Tradiční valbový bungalov" }, imageB: { url: "images/bungalov-moderni.jpg", label: "Moderní verze bungalovu" } },
+  { id: "termin", type: "text", title: "Máte představu o termínu zahájení stavby?", short: "Termín zahájení stavby", hint: "Klidně jen orientačně.", placeholder: "Např. jaro příštího roku, nebo bez pevného termínu" }
 ];
 /* ============================================================ */
 
@@ -547,7 +544,7 @@ function statusListDetailForStorage(q, ans){
 async function submitResponses(){
   setState({ submitting: true });
   const answers = state.questions.map(q => {
-    const base = { id: q.id, title: q.title, type: q.type, value: answerValueForStorage(q) };
+    const base = { id: q.id, title: q.title, short: q.short || q.title, type: q.type, value: answerValueForStorage(q) };
     if(q.type === "rooms") base.detail = roomsDetailForStorage(q, state.answers[q.id]);
     if(q.type === "status-list") base.detail = statusListDetailForStorage(q, state.answers[q.id]);
     return base;
@@ -638,7 +635,7 @@ function pdfRoomsBlock(a){
       </tr>`).join("");
   return `
     <div class="pdf-row" style="margin-bottom:30px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.title)}</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.short || a.title)}</div>
       <table style="width:100%;border-collapse:collapse;">
         <thead><tr>
           <th style="${thStyle}">Místnost</th>
@@ -665,7 +662,7 @@ function pdfStatusListBlock(a){
       </tr>`).join("");
   return `
     <div class="pdf-row" style="margin-bottom:30px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.title)}</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.short || a.title)}</div>
       <table style="width:100%;border-collapse:collapse;">
         <thead><tr>
           <th style="${thStyle}">Bod</th>
@@ -697,7 +694,7 @@ async function downloadResponsePdf(it, triggerBtn){
       if(a.type === "status-list" && a.detail) return pdfStatusListBlock(a);
       return `
       <div class="pdf-row" style="margin-bottom:26px;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;">${escapeHtml(a.title)}</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;">${escapeHtml(a.short || a.title)}</div>
         <div style="font-size:13px;line-height:1.4;margin-top:2px;">${escapeHtml(a.value || "—")}</div>
       </div>`;
     }).join("");
@@ -1247,6 +1244,10 @@ function questionCardTemplate(q, i){
         <input type="text" data-field="title" data-idx="${i}" value="${escapeAttr(q.title)}">
       </div>
       <div class="field-row">
+        <label class="field-label">Krátký název pro PDF (volitelné)</label>
+        <input type="text" data-field="short" data-idx="${i}" value="${escapeAttr(q.short||'')}">
+      </div>
+      <div class="field-row">
         <label class="field-label">Nápověda (volitelné)</label>
         <input type="text" data-field="hint" data-idx="${i}" value="${escapeAttr(q.hint||'')}">
       </div>
@@ -1266,7 +1267,7 @@ function questionCardTemplate(q, i){
 }
 
 function blankQuestion(type){
-  const base = { id: "q_" + uid(), title: "Nová otázka", hint: "" };
+  const base = { id: "q_" + uid(), title: "Nová otázka", short: "", hint: "" };
   if(type === "choice") return { ...base, type:"choice", options:["Možnost 1","Možnost 2"] };
   if(type === "image-choice") return { ...base, type:"image-choice", imageA:{url:"",label:"Varianta A"}, imageB:{url:"",label:"Varianta B"} };
   if(type === "rooms") return { ...base, type:"rooms", rooms:[
@@ -1319,11 +1320,12 @@ function bindAdmin(){
       if(field === "type"){
         const newType = el.value;
         const preserved = blankQuestion(newType);
-        state.questions[i] = { ...preserved, id: q.id, title: q.title, hint: q.hint };
+        state.questions[i] = { ...preserved, id: q.id, title: q.title, short: q.short, hint: q.hint };
         render();
         return;
       }
       if(field === "title") q.title = el.value;
+      else if(field === "short") q.short = el.value;
       else if(field === "hint") q.hint = el.value;
       else if(field === "placeholder") q.placeholder = el.value;
       else if(field === "imgA-url"){ q.imageA = q.imageA || {}; q.imageA.url = el.value; }
