@@ -56,6 +56,21 @@
   .nav-links button.active{ color: var(--ink); }
   .nav-links button[data-tab="form"].active{ border-color: var(--sage); }
   .nav-links button[data-tab="admin"].active{ border-color: var(--tan); }
+
+  .admin-subtabs{ display:flex; gap:26px; margin-bottom:26px; border-bottom:1.5px solid var(--line); }
+  .admin-subtabs button{
+    background:none; border:none; cursor:pointer;
+    font-family:'DM Sans', sans-serif; font-size:12.5px; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; color: var(--soft);
+    padding:0 0 12px; border-bottom:2px solid transparent; margin-bottom:-1.5px;
+  }
+  .admin-subtabs button.active{ color: var(--ink); border-color: var(--tan); }
+
+  .resp-table-wrap{ overflow-x:auto; }
+  .resp-table{ width:100%; border-collapse:collapse; font-size:14px; }
+  .resp-table th{ text-align:left; padding:8px 10px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); border-bottom:1.5px solid var(--line); white-space:nowrap; }
+  .resp-table td{ padding:10px; border-bottom:1px solid var(--line); vertical-align:middle; white-space:nowrap; }
+  .resp-table td.price{ color: var(--tan); font-weight:700; }
   .progress-ring{ position:relative; width:38px; height:38px; flex:none; }
   .progress-ring svg circle{ transition: stroke-dashoffset .3s ease; }
   .progress-ring-label{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:9.5px; font-weight:700; color:var(--ink); }
@@ -215,14 +230,6 @@
   .img-preview{ width:100%; height:110px; object-fit:cover; border-radius:10px; border:1.5px solid var(--line); display:block; margin-bottom:8px; }
   input[type=file]{ width:100%; font-size:12.5px; color:var(--soft); }
 
-  .resp-item{ border:1.5px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:12px; }
-  .resp-item .ts{ font-size:11px; color:var(--soft); font-weight:700; letter-spacing:.06em; display:block; margin-bottom:9px; }
-  .resp-item-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
-  .resp-summary{ font-size:14.5px; }
-  .resp-summary b{ color: var(--tan); }
-  .resp-location{ font-size:12.5px; color:var(--soft); margin-bottom:9px; }
-  .resp-item dt{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--tan); margin-top:10px; }
-  .resp-item dd{ margin:2px 0 0; font-size:14.5px; line-height:1.45; }
   .empty-state{ text-align:center; color:var(--soft); padding:30px 10px; font-size:14px; border:1.5px dashed var(--line); border-radius:14px; }
   .save-msg{ font-size:12.5px; color: var(--sage); font-weight:700; margin-left:8px; }
 
@@ -311,9 +318,9 @@ const MISTNOSTI_ROOMS = (function(){
   const zadveri_skrin = { id: uid(), label: "Zádveří – vestavěná skříň", recommendedMin: 2, recommendedMax: 2, parentId: zadveri.id };
   const zadveri_satna = { id: uid(), label: "Zádveří – šatna", recommendedMin: 6, recommendedMax: 8, parentId: zadveri.id };
   const schodiste = { id: uid(), label: "Schodiště (8 m² na každé patro)", recommendedMin: 8, recommendedMax: 24 };
-  const garaz = { id: uid(), label: "Garáž (1 auto 24 m², 2 auta 45 m², každé další +21 m²)", recommendedMin: null, recommendedMax: null };
+  const garaz = { id: uid(), label: "Garáž (1 auto 24 m², 2 auta 45 m², každé další +21 m²)", recommendedMin: 21, recommendedMax: 45 };
   const sklad = { id: uid(), label: "Sklad (zahradní nábytek, vybavení, sport apod.)", recommendedMin: 4, recommendedMax: 10 };
-  const technologicka = { id: uid(), label: "Technologické místnosti (například k bazénu)", recommendedMin: null, recommendedMax: null };
+  const technologicka = { id: uid(), label: "Technologické místnosti (například k bazénu)", recommendedMin: 6, recommendedMax: 21 };
   const dilna = { id: uid(), label: "Dílna", recommendedMin: 10, recommendedMax: 10 };
 
   return [
@@ -365,6 +372,17 @@ const TECHNOLOGIE_ITEMS = [
   { id: uid(), label: "Centrální vysavač" },
   { id: uid(), label: "Krb včetně komínu" }
 ];
+const OSTATNI_ITEMS = [
+  { id: uid(), label: "Kryté stání pro auto" },
+  { id: uid(), label: "Pojezdová brána" },
+  { id: uid(), label: "Exteriérový bazén" },
+  { id: uid(), label: "Koupací jezírko" },
+  { id: uid(), label: "Venkovní vířivka" },
+  { id: uid(), label: "Samostatná sauna na pozemku" },
+  { id: uid(), label: "Zahradní domek" },
+  { id: uid(), label: "Automatické zavlažování" },
+  { id: uid(), label: "Oplocení a opěrné zídky" }
+];
 
 const DISCLAIMER_TEXT = "Veškeré odpovědi jsou pouze informativní a orientační. V případě spolupráce budeme jednotlivé body řešit podrobně a budeme se bavit o vhodnosti pro váš dům a pozemek.";
 
@@ -374,6 +392,7 @@ const DISCLAIMER_TEXT = "Veškeré odpovědi jsou pouze informativní a orienta�
 const DEFAULT_QUESTIONS = [
   { id: "mistnosti", type: "rooms", title: "Jaké místnosti byste chtěli mít ve svém rodinném domě?", short: "Místnosti v domě", hint: "Zaškrtněte místnosti, které chcete, a u každé uveďte velikost, kterou si představujete. Ve sloupci Doporučení vidíte naši orientační hodnotu. Pokud vám nějaká místnost chybí, přidejte si vlastní.", rooms: MISTNOSTI_ROOMS },
   { id: "infrastruktura", type: "status-list", title: "Jaký je stav technické infrastruktury na pozemku?", short: "Technická infrastruktura na pozemku", hint: "U každého bodu vyberte, jak na tom jste.", items: INFRASTRUKTURA_ITEMS, statusOptions: INFRASTRUKTURA_STATUS_OPTIONS },
+  { id: "ostatni", type: "status-list", title: "Jaké ostatní položky si přejete na pozemku mít?", short: "Ostatní položky", hint: "", items: OSTATNI_ITEMS, statusOptions: ANO_NE_STATUS_OPTIONS },
   { id: "technologie", type: "status-list", title: "Jaké technologické vybavení rodinného domu byste chtěli?", short: "Technologické vybavení domu", hint: "", items: TECHNOLOGIE_ITEMS, statusOptions: ANO_NE_STATUS_OPTIONS },
   { id: "realizace", type: "choice", title: "Jak plánujete stavbu realizovat?", short: "Způsob realizace stavby", hint: "", options: ["Svépomocně", "Subdodavatelsky", "Stavební firmou", "Chci realizovat s Vámi"] },
   { id: "pozemek", type: "text", title: "Máte už vybraný pozemek?", short: "Pozemek", hint: "Pokud ano, uveďte jeho velikost, tvar, sklon a orientaci ke světovým stranám (co víte). Pokud ne, napište alespoň lokalitu, kterou zvažujete.", placeholder: "Např. 800 m², rovinatý, obdélníkový, přístup ze severu, jižní část zahradou..." },
@@ -396,6 +415,7 @@ const ADMIN_ACCESS = true;
 let state = {
   tab: "form",
   adminUnlocked: false,
+  adminSection: "responses",
   passInput: "",
   passError: false,
   questionsLoaded: false,
@@ -505,7 +525,7 @@ function answerValueForStorage(q){
   if(q.type === "status-list"){
     const ans = state.answers[q.id] || {};
     return q.items.map(item => {
-      const opt = q.statusOptions.find(o => o.key === ans[item.id]);
+      const opt = (item.statusOptions || q.statusOptions).find(o => o.key === ans[item.id]);
       return `${item.label}: ${opt ? opt.label : "—"}`;
     }).join("; ");
   }
@@ -513,6 +533,13 @@ function answerValueForStorage(q){
 }
 function round1(n){ return Math.round(n * 10) / 10; }
 function fmtM2(n){ return round1(n).toLocaleString('cs-CZ') + " m²"; }
+function fmtCzk(n){ return Math.round(n).toLocaleString('cs-CZ') + " Kč"; }
+function computeHousePrice(grossM2){ return grossM2 * 4 * 17000; }
+function getGrossM2(it){
+  if(typeof it.roomsGrossM2 === "number" && it.roomsGrossM2 !== null) return it.roomsGrossM2;
+  const roomsAnswer = it.answers.find(a => a.type === "rooms");
+  return roomsAnswer && roomsAnswer.detail && roomsAnswer.detail.totals ? round1(roomsAnswer.detail.totals.gross) : null;
+}
 function fmtRoomRange(r){
   const min = r.recommendedMin, max = r.recommendedMax;
   if(min === "" || min === undefined || min === null) return "";
@@ -536,7 +563,7 @@ function roomsDetailForStorage(q, ans){
 function statusListDetailForStorage(q, ans){
   ans = ans || {};
   return q.items.map(item => {
-    const opt = q.statusOptions.find(o => o.key === ans[item.id]);
+    const opt = (item.statusOptions || q.statusOptions).find(o => o.key === ans[item.id]);
     return { label: item.label, statusLabel: opt ? opt.label : null };
   });
 }
@@ -550,8 +577,10 @@ async function submitResponses(){
     return base;
   });
   const roomsQuestion = state.questions.find(q => q.type === "rooms");
-  const roomsTotalM2 = roomsQuestion ? round1(computeRoomTotals(roomsQuestion, state.answers[roomsQuestion.id]).net) : null;
-  const record = { submittedAt: new Date().toISOString(), clientName: state.clientName.trim(), clientBuildType: state.clientBuildType.trim(), clientLocation: state.clientLocation.trim(), roomsTotalM2, answers };
+  const roomsTotals = roomsQuestion ? computeRoomTotals(roomsQuestion, state.answers[roomsQuestion.id]) : null;
+  const roomsTotalM2 = roomsTotals ? round1(roomsTotals.net) : null;
+  const roomsGrossM2 = roomsTotals ? round1(roomsTotals.gross) : null;
+  const record = { submittedAt: new Date().toISOString(), clientName: state.clientName.trim(), clientBuildType: state.clientBuildType.trim(), clientLocation: state.clientLocation.trim(), roomsTotalM2, roomsGrossM2, answers };
   try{
     const r = await fetch('/api/responses', {
       method: 'POST',
@@ -614,8 +643,8 @@ async function ensurePdfLibs(){
 
 function pdfRoomsBlock(a){
   const d = a.detail;
-  const thStyle = "text-align:left;padding:3px 8px;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:#8b887f;border-bottom:1.5px solid #14130f;";
-  const tdBase = "padding:2.5px 8px;border-bottom:1px solid #e7e4dc;font-size:11.5px;line-height:1.3;";
+  const thStyle = "text-align:left;padding:2px 8px;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:#8b887f;border-bottom:1.5px solid #14130f;";
+  const tdBase = "padding:1.5px 6px;border-bottom:1px solid #e7e4dc;font-size:11px;line-height:1.2;";
   const roomsHtml = d.rooms.map(r => {
     const indent = r.parentId ? "padding-left:20px;" : "";
     const rec = fmtRoomRange(r);
@@ -634,8 +663,8 @@ function pdfRoomsBlock(a){
         <td style="${tdBase}text-align:right;font-weight:700;">${c.size ? escapeHtml(String(c.size)) + " m²" : "—"}</td>
       </tr>`).join("");
   return `
-    <div class="pdf-row" style="margin-bottom:30px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.short || a.title)}</div>
+    <div class="pdf-row" style="margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:3px;">${escapeHtml(a.short || a.title)}</div>
       <table style="width:100%;border-collapse:collapse;">
         <thead><tr>
           <th style="${thStyle}">Místnost</th>
@@ -644,25 +673,25 @@ function pdfRoomsBlock(a){
         </tr></thead>
         <tbody>${roomsHtml}${customHtml}</tbody>
       </table>
-      <div style="margin-top:10px;font-size:12px;color:#8b887f;">
+      <div class="pdf-row" style="margin-top:6px;font-size:11.5px;color:#8b887f;">
         <div>Celková plocha místností: <b style="color:#14130f;">${fmtM2(d.totals.net)}</b></div>
         <div>Součet včetně chodeb (cca +12 %): <b style="color:#14130f;">${fmtM2(d.totals.withHallways)}</b></div>
-        <div style="margin-top:2px;font-weight:700;color:#BA9470;font-size:13px;">Hrubá podlažní plocha: ${fmtM2(d.totals.gross)}</div>
+        <div style="margin-top:2px;font-weight:700;color:#BA9470;font-size:12.5px;">Hrubá podlažní plocha: ${fmtM2(d.totals.gross)}</div>
       </div>
     </div>`;
 }
 
 function pdfStatusListBlock(a){
-  const thStyle = "text-align:left;padding:3px 8px;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:#8b887f;border-bottom:1.5px solid #14130f;";
-  const tdBase = "padding:2.5px 8px;border-bottom:1px solid #e7e4dc;font-size:11.5px;line-height:1.3;";
+  const thStyle = "text-align:left;padding:2px 8px;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:#8b887f;border-bottom:1.5px solid #14130f;";
+  const tdBase = "padding:1.5px 6px;border-bottom:1px solid #e7e4dc;font-size:11px;line-height:1.2;";
   const rowsHtml = a.detail.map(item => `
       <tr>
         <td style="${tdBase}">${escapeHtml(item.label)}</td>
         <td style="${tdBase}text-align:right;font-weight:700;">${item.statusLabel ? escapeHtml(item.statusLabel) : "—"}</td>
       </tr>`).join("");
   return `
-    <div class="pdf-row" style="margin-bottom:30px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:6px;">${escapeHtml(a.short || a.title)}</div>
+    <div class="pdf-row" style="margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;margin-bottom:3px;">${escapeHtml(a.short || a.title)}</div>
       <table style="width:100%;border-collapse:collapse;">
         <thead><tr>
           <th style="${thStyle}">Bod</th>
@@ -693,19 +722,27 @@ async function downloadResponsePdf(it, triggerBtn){
       if(a.type === "rooms" && a.detail) return pdfRoomsBlock(a);
       if(a.type === "status-list" && a.detail) return pdfStatusListBlock(a);
       return `
-      <div class="pdf-row" style="margin-bottom:26px;">
+      <div class="pdf-row" style="margin-bottom:14px;">
         <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#BA9470;">${escapeHtml(a.short || a.title)}</div>
-        <div style="font-size:13px;line-height:1.4;margin-top:2px;">${escapeHtml(a.value || "—")}</div>
+        <div style="font-size:13px;line-height:1.35;margin-top:2px;">${escapeHtml(a.value || "—")}</div>
       </div>`;
     }).join("");
     container.innerHTML = `
-      <div class="pdf-row" style="margin-bottom:26px;">
-        <img src="${BRAND_LOGO}" alt="${escapeAttr(BRAND_MARK)}" style="height:42px; width:auto; display:block; margin-bottom:14px;">
+      <div class="pdf-row" style="margin-bottom:16px;">
+        <img src="${BRAND_LOGO}" alt="${escapeAttr(BRAND_MARK)}" style="height:55px; width:auto; display:block; margin-bottom:10px;">
         <div style="font-size:16px;font-weight:800;">${escapeHtml(it.clientName || "Jméno neuvedeno")}${typeof it.roomsTotalM2 === "number" && it.roomsTotalM2 !== null ? " · " + fmtM2(it.roomsTotalM2) + " celkem" : ""}</div>
         <div style="font-size:12.5px;color:#8b887f;margin-top:2px;">${it.clientBuildType ? escapeHtml(it.clientBuildType) + " · " : ""}${escapeHtml(fmtDate(it.submittedAt))}</div>
         ${it.clientLocation ? `<div style="font-size:12.5px;color:#8b887f;margin-top:2px;">${escapeHtml(it.clientLocation)}</div>` : ""}
       </div>
       ${rows}
+      <div class="pdf-row" style="margin-top:18px; padding-top:12px; border-top:1px solid #e7e4dc; text-align:center;">
+        <div style="font-size:10.5px;line-height:1.5;color:#6f6c62;">
+          Autorem této tabulky je architektonické studio dream homes.<br>
+          www.dreamhomes.cz<br>
+          Všechna práva vyhrazena. Výpočet je pouze orientační.
+        </div>
+        <img src="${BRAND_LOGO}" alt="${escapeAttr(BRAND_MARK)}" style="height:56px; width:auto; display:block; margin:12px auto 0;">
+      </div>
     `;
     document.body.appendChild(container);
 
@@ -929,7 +966,7 @@ function questionTemplate(){
           <div class="status-row">
             <span class="status-row-label">${escapeHtml(item.label)}</span>
             <div class="status-options">
-              ${q.statusOptions.map(opt => `
+              ${(item.statusOptions || q.statusOptions).map(opt => `
                 <button type="button" class="status-btn ${ans[item.id]===opt.key?'selected':''}" data-status-item="${item.id}" data-status-key="${opt.key}">${escapeHtml(opt.label)}</button>
               `).join("")}
             </div>
@@ -1126,40 +1163,69 @@ function adminTemplate(){
     `;
   }
 
-  const qCards = state.questions.map((q, i) => questionCardTemplate(q, i)).join("");
-  const respList = state.responses === null
+  const subtabs = `
+    <div class="admin-subtabs">
+      <button data-admin-section="responses" class="${state.adminSection==='responses'?'active':''}">Odpovědi</button>
+      <button data-admin-section="questions" class="${state.adminSection==='questions'?'active':''}">Správa otázek</button>
+    </div>`;
+
+  if(state.adminSection === "questions"){
+    const qCards = state.questions.map((q, i) => questionCardTemplate(q, i)).join("");
+    return `
+      <div class="sheet">
+        ${subtabs}
+        <div class="admin-block">
+          <div class="admin-block-title">
+            <span>Otázky (${state.questions.length})</span>
+            <span>
+              <button class="btn btn-sage btn-small" id="add-q-btn">+ Přidat otázku</button>
+              <button class="btn btn-tan btn-small" id="save-q-btn">Uložit změny</button>
+              <span class="save-msg">${state.saveMsg}</span>
+            </span>
+          </div>
+          ${qCards}
+        </div>
+      </div>
+    `;
+  }
+
+  const respBody = state.responses === null
     ? `<div class="empty-state">Načítám…</div>`
     : state.responses.length === 0
       ? `<div class="empty-state">Zatím nejsou uložené žádné odpovědi.</div>`
-      : state.responses.map((it, ri) => `
-          <div class="resp-item">
-            <div class="resp-item-head">
-              <div>
-                <span class="ts">${fmtDate(it.submittedAt)}</span>
-                <div class="resp-summary"><b>${escapeHtml(it.clientName || "Jméno neuvedeno")}</b>${it.clientBuildType ? ` · ${escapeHtml(it.clientBuildType)}` : ""}${typeof it.roomsTotalM2 === "number" && it.roomsTotalM2 !== null ? ` · ${fmtM2(it.roomsTotalM2)} celkem` : ""}</div>
-                ${it.clientLocation ? `<div class="resp-location">${escapeHtml(it.clientLocation)}</div>` : ""}
-              </div>
-              <button class="btn btn-outline btn-small" data-pdf="${ri}">Stáhnout PDF</button>
-            </div>
-            <dl>${it.answers.map(a => `<dt>${escapeHtml(a.title)}</dt><dd>${escapeHtml(a.value || "—")}</dd>`).join("")}</dl>
-          </div>`).join("");
+      : `
+        <div class="resp-table-wrap">
+          <table class="resp-table">
+            <thead><tr>
+              <th>Jméno</th>
+              <th>Místo stavby</th>
+              <th>Hrubá podlažní plocha</th>
+              <th>Cena domu</th>
+              <th></th>
+            </tr></thead>
+            <tbody>
+              ${state.responses.map((it, ri) => {
+                const gross = getGrossM2(it);
+                const price = typeof gross === "number" ? computeHousePrice(gross) : null;
+                return `
+                  <tr>
+                    <td>${escapeHtml(it.clientName || "—")}</td>
+                    <td>${escapeHtml(it.clientLocation || "—")}</td>
+                    <td>${typeof gross === "number" ? fmtM2(gross) : "—"}</td>
+                    <td class="price">${price !== null ? fmtCzk(price) : "—"}</td>
+                    <td><button class="btn btn-outline btn-small" data-pdf="${ri}">Stáhnout PDF</button></td>
+                  </tr>`;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>`;
 
   return `
     <div class="sheet">
+      ${subtabs}
       <div class="admin-block">
-        <div class="admin-block-title">
-          <span>Otázky (${state.questions.length})</span>
-          <span>
-            <button class="btn btn-sage btn-small" id="add-q-btn">+ Přidat otázku</button>
-            <button class="btn btn-tan btn-small" id="save-q-btn">Uložit změny</button>
-            <span class="save-msg">${state.saveMsg}</span>
-          </span>
-        </div>
-        ${qCards}
-      </div>
-      <div class="admin-block">
-        <div class="admin-block-title"><span>Uložené odpovědi</span></div>
-        ${respList}
+        <div class="admin-block-title"><span>Odpovědi (${state.responses ? state.responses.length : "…"})</span></div>
+        ${respBody}
       </div>
     </div>
   `;
@@ -1219,10 +1285,11 @@ function questionCardTemplate(q, i){
   } else if(q.type === "status-list"){
     typeFields = `
       <div class="field-row">
-        <label class="field-label">Body seznamu (ke každému lze zvolit: ${q.statusOptions.map(o=>o.label).join(" / ")})</label>
+        <label class="field-label">Body seznamu</label>
         ${q.items.map((item, ii) => `
           <div class="opt-row">
             <input type="text" placeholder="Název bodu" data-status-item-label="${ii}" data-idx="${i}" value="${escapeAttr(item.label)}">
+            <span style="font-size:11px;color:var(--soft);white-space:nowrap;align-self:center;">${escapeHtml((item.statusOptions || q.statusOptions).map(o=>o.label).join(" / "))}</span>
             <button class="icon-btn" data-remove-status-item="${ii}" data-idx="${i}">×</button>
           </div>`).join("")}
         <button class="btn btn-outline btn-small" data-add-status-item="${i}">+ Bod</button>
@@ -1296,8 +1363,12 @@ function bindAdmin(){
     return;
   }
 
-  document.getElementById('add-q-btn').onclick = () => { state.questions.push(blankQuestion("text")); render(); };
-  document.getElementById('save-q-btn').onclick = () => saveQuestions();
+  document.querySelectorAll('[data-admin-section]').forEach(b => b.onclick = () => setState({ adminSection: b.getAttribute('data-admin-section') }));
+
+  const addQBtn = document.getElementById('add-q-btn');
+  if(addQBtn) addQBtn.onclick = () => { state.questions.push(blankQuestion("text")); render(); };
+  const saveQBtn = document.getElementById('save-q-btn');
+  if(saveQBtn) saveQBtn.onclick = () => saveQuestions();
 
   document.querySelectorAll('[data-move-up]').forEach(b => b.onclick = () => {
     const i = +b.getAttribute('data-move-up');
