@@ -71,6 +71,8 @@
   .resp-table th{ text-align:left; padding:8px 10px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); border-bottom:1.5px solid var(--line); white-space:nowrap; }
   .resp-table td{ padding:10px; border-bottom:1px solid var(--line); vertical-align:middle; white-space:nowrap; }
   .resp-table td.price{ color: var(--tan); font-weight:700; }
+  .resp-delete-btn{ width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--soft); font-size:16px; line-height:1; cursor:pointer; }
+  .resp-delete-btn:hover{ border-color:#b3382c; color:#b3382c; background:rgba(179,56,44,0.08); }
   .progress-ring{ position:relative; width:38px; height:38px; flex:none; }
   .progress-ring svg circle{ transition: stroke-dashoffset .3s ease; }
   .progress-ring-label{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:9.5px; font-weight:700; color:var(--ink); }
@@ -620,6 +622,25 @@ async function loadResponses(){
     const data = await r.json();
     setState({ responses: data.items || [] });
   }catch(e){ setState({ responses: [] }); }
+}
+
+async function deleteResponse(ri, triggerBtn){
+  const it = state.responses[ri];
+  if(!it || !it._key) return;
+  if(!confirm(`Opravdu smazat odpověď od "${it.clientName || 'neuvedeno'}"?`)) return;
+  if(triggerBtn) triggerBtn.disabled = true;
+  try{
+    const r = await fetch(`/api/responses?key=${encodeURIComponent(it._key)}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-key': ADMIN_PASSCODE }
+    });
+    if(!r.ok) throw new Error('delete failed');
+    const responses = state.responses.filter((_, i) => i !== ri);
+    setState({ responses });
+  }catch(e){
+    alert("Smazání se nezdařilo. Zkuste to znovu.");
+    if(triggerBtn) triggerBtn.disabled = false;
+  }
 }
 
 /* ---------- PDF export ---------- */
@@ -1202,6 +1223,7 @@ function adminTemplate(){
               <th>Hrubá podlažní plocha</th>
               <th>Cena domu</th>
               <th></th>
+              <th></th>
             </tr></thead>
             <tbody>
               ${state.responses.map((it, ri) => {
@@ -1214,6 +1236,7 @@ function adminTemplate(){
                     <td>${typeof gross === "number" ? fmtM2(gross) : "—"}</td>
                     <td class="price">${price !== null ? fmtCzk(price) : "—"}</td>
                     <td><button class="btn btn-outline btn-small" data-pdf="${ri}">Stáhnout PDF</button></td>
+                    <td><button class="resp-delete-btn" data-delete-resp="${ri}" title="Smazat odpověď">×</button></td>
                   </tr>`;
               }).join("")}
             </tbody>
@@ -1497,6 +1520,11 @@ function bindAdmin(){
   document.querySelectorAll('[data-pdf]').forEach(b => b.onclick = () => {
     const ri = +b.getAttribute('data-pdf');
     downloadResponsePdf(state.responses[ri], b);
+  });
+
+  document.querySelectorAll('[data-delete-resp]').forEach(b => b.onclick = () => {
+    const ri = +b.getAttribute('data-delete-resp');
+    deleteResponse(ri, b);
   });
 }
 
