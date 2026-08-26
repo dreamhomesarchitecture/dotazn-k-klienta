@@ -67,11 +67,15 @@
   .admin-subtabs button.active{ color: var(--ink); border-color: var(--tan); }
 
   .resp-table-wrap{ overflow-x:auto; }
-  .resp-table{ width:100%; border-collapse:collapse; font-size:14px; }
-  .resp-table th{ text-align:left; padding:8px 10px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); border-bottom:1.5px solid var(--line); white-space:nowrap; }
-  .resp-table td{ padding:10px; border-bottom:1px solid var(--line); vertical-align:middle; white-space:nowrap; }
-  .resp-table td.price{ color: var(--tan); font-weight:700; }
-  .resp-delete-btn{ width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--soft); font-size:16px; line-height:1; cursor:pointer; }
+  .resp-table{ width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
+  .resp-table th{ text-align:left; padding:6px 6px; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--soft); border-bottom:1.5px solid var(--line); }
+  .resp-table td{ padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:middle; overflow-wrap:break-word; }
+  .resp-table td.price{ color: var(--tan); font-weight:700; white-space:nowrap; }
+  .resp-table td.nowrap, .resp-table th.nowrap{ white-space:nowrap; }
+  .resp-table .col-actions{ width:34px; }
+  .resp-pdf-btn, .resp-delete-btn{ width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--soft); font-size:14px; line-height:1; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; padding:0; }
+  .resp-delete-btn{ font-size:16px; }
+  .resp-pdf-btn:hover{ border-color:var(--tan); color:var(--tan); }
   .resp-delete-btn:hover{ border-color:#b3382c; color:#b3382c; background:rgba(179,56,44,0.08); }
   .progress-ring{ position:relative; width:38px; height:38px; flex:none; }
   .progress-ring svg circle{ transition: stroke-dashoffset .3s ease; }
@@ -1224,11 +1228,11 @@ function adminTemplate(){
             <thead><tr>
               <th>Jméno</th>
               <th>Místo stavby</th>
-              <th>Datum</th>
-              <th>Hrubá podlažní plocha</th>
-              <th>Cena domu</th>
-              <th></th>
-              <th></th>
+              <th class="nowrap">Datum</th>
+              <th class="nowrap" title="Hrubá podlažní plocha">Plocha</th>
+              <th class="nowrap">Cena domu</th>
+              <th class="col-actions"></th>
+              <th class="col-actions"></th>
             </tr></thead>
             <tbody>
               ${state.responses.map((it, ri) => {
@@ -1238,11 +1242,11 @@ function adminTemplate(){
                   <tr>
                     <td>${escapeHtml(it.clientName || "—")}</td>
                     <td>${escapeHtml(it.clientLocation || "—")}</td>
-                    <td>${it.submittedAt ? escapeHtml(fmtDateShort(it.submittedAt)) : "—"}</td>
-                    <td>${typeof gross === "number" ? fmtM2(gross) : "—"}</td>
+                    <td class="nowrap">${it.submittedAt ? escapeHtml(fmtDateShort(it.submittedAt)) : "—"}</td>
+                    <td class="nowrap">${typeof gross === "number" ? fmtM2(gross) : "—"}</td>
                     <td class="price">${price !== null ? fmtCzk(price) : "—"}</td>
-                    <td><button class="btn btn-outline btn-small" data-pdf="${ri}">Stáhnout PDF</button></td>
-                    <td><button class="resp-delete-btn" data-delete-resp="${ri}" title="Smazat odpověď">×</button></td>
+                    <td class="col-actions"><button class="resp-pdf-btn" data-pdf="${ri}" title="Stáhnout PDF">⬇</button></td>
+                    <td class="col-actions"><button class="resp-delete-btn" data-delete-resp="${ri}" title="Smazat odpověď">×</button></td>
                   </tr>`;
               }).join("")}
             </tbody>
