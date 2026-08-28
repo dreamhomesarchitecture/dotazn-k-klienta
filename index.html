@@ -422,6 +422,46 @@ const DEFAULT_QUESTIONS = [
   { id: "termin", type: "text", title: "Máte představu o termínu zahájení stavby?", short: "Termín zahájení stavby", hint: "Klidně jen orientačně.", placeholder: "Např. jaro příštího roku, nebo bez pevného termínu" },
   { id: "zdroj", type: "choice", title: "Řekněte nám, jak jste se o nás dozvěděli?", short: "Jak jste se o nás dozvěděli", hint: "", options: ["Facebook", "Instagram", "LinkedIn", "Google/Seznam", "Doporučení od známého či přátel", "Časopisy/média", "Jinde"] }
 ];
+
+// Sada otázek pro "Dotazník DSP" (technické řešení stavby pro dokumentaci
+// pro stavební povolení) — použije se stejným způsobem jako DEFAULT_QUESTIONS,
+// jen jako výchozí obsah pro typ dotazníku "dsp".
+const DSP_OSTATNI_AGENDA_ITEMS = [
+  { id: uid(), label: "Hydrogeologie" },
+  { id: uid(), label: "Inženýrský průzkum" },
+  { id: uid(), label: "Zaměření pozemku" },
+  { id: uid(), label: "Radon" },
+  { id: uid(), label: "Plná moc" }
+];
+const DSP_QUESTIONS = [
+  { id: "dsp_svisle", type: "choice", title: "Jaký je váš preferovaný systém svislých konstrukcí?", short: "Svislé konstrukce", hint: "", options: ["Keramické tvárnice (Porotherm, Heluz)", "Vápenopískové tvárnice (KM BETA, Silka)", "Pórobetonové tvárnice (Ytong, Porfix)", "Dřevěné konstrukce", "Betonová konstrukce", "Jiná preference"] },
+  { id: "dsp_vodorovne", type: "choice", title: "Jaký je váš preferovaný systém vodorovných konstrukcí?", short: "Vodorovné konstrukce", hint: "", options: ["Skládané konstrukce stropu (systém dle druhu zdícího systému – Porotherm, Heluz…)", "Dřevěné stropy (trámové…)", "Prefabrikované betonové stropy (předpjaté stropní panely Spiroll, filigrán…)", "Monolitické betonové stropy", "Kombinace", "Jiná preference"] },
+  { id: "dsp_zatepleni_svisle", type: "choice", title: "Jaké je vaše preferované zateplení svislých konstrukcí?", short: "Zateplení svislých konstrukcí", hint: "", options: ["Kontaktní zateplovací systém – polystyren (ETICS systém)", "Kontaktní zateplovací systém minerální – minerální vata (ETICS systém)", "Cihla pro jednovrstvé zdivo vyplněná tepelněizolačním materiálem (minerální vatou / polystyrenem)", "Jiná preference"] },
+  { id: "dsp_zatepleni_strecha", type: "choice", title: "Jaké je vaše preferované zateplení střešních konstrukcí?", short: "Zateplení střešních konstrukcí", hint: "", options: ["Stříkaná izolace – při provedení mezikrokevního a podkrokevního zateplení (PUR pěny…)", "Vkládaná izolace – při provedení mezikrokevního a podkrokevního zateplení (minerální vata, kombinace…)", "Nadkrokevní zateplení (PIR desky, vaty…)", "Jiná preference"] },
+  { id: "dsp_krytina_sikma", type: "choice", title: "Jaká je vaše preferovaná střešní krytina šikmé střechy?", short: "Krytina šikmé střechy", hint: "", options: ["Pálená střešní krytina", "Betonová střešní krytina", "Šindelová střešní krytina", "Plechová střešní krytina", "Břidlicová střešní krytina", "Vegetační povrch šikmé střechy", "Jiná preference"] },
+  { id: "dsp_povrch_plocha", type: "choice", title: "Jaký je váš preferovaný povrch ploché střechy?", short: "Povrch ploché střechy", hint: "", options: ["Vegetační povrch ploché střechy (extenzivní, intenzivní…)", "Viditelná hlavní hydroizolační vrstva (PVC, asfaltové pásy…)", "Zatěžovací vrstva z praného říčního kameniva", "Pochozí vrstva ploché střechy (betonové dlažby, dřevěné prkna…)", "Jiná preference"] },
+  { id: "dsp_stineni", type: "choice", title: "Jaké je vaše preferované stínění objektu?", short: "Stínění objektu", hint: "", options: ["Venkovní screenové rolety", "Venkovní žaluzie (tvar Z, C…)", "Vnitřní žaluzie", "Vnitřní rolety", "Jiná preference"] },
+  { id: "dsp_podlahy", type: "text", title: "Jaký preferujete typ podlah?", short: "Typ podlah", hint: "", placeholder: "" },
+  { id: "dsp_schodiste", type: "text", title: "Jaký preferujete typ schodiště?", short: "Typ schodiště", hint: "", placeholder: "" },
+  { id: "dsp_okna", type: "text", title: "Jaká je vaše preference u oken?", short: "Okna", hint: "", placeholder: "" },
+  { id: "dsp_komin", type: "text", title: "Jaká je vaše preference u komínu?", short: "Komín", hint: "", placeholder: "" },
+  { id: "dsp_doplnujici_info", type: "text", title: "Doplňující informace k technickému prostředí staveb", short: "Doplňující informace", hint: "", placeholder: "" },
+  { id: "dsp_zdravotechnika", type: "choice", title: "Jaká je vaše preference u zdravotně technických instalací?", short: "Zdravotně technické instalace", hint: "", options: ["Požadavek na povolení studny a čerpání", "Využití studniční vody", "Zpětné využití šedých vod", "Požadavek na cirkulaci teplé vody", "Jiná preference"] },
+  { id: "dsp_destova_voda", type: "choice", title: "Jak chcete nakládat s dešťovými vodami?", short: "Nakládání s dešťovými vodami", hint: "", options: ["Využívání dešťových vod pro splachování a užitkovou vodu", "Využití pro zálivku na zahradě", "Kombinace pro zálivku i splachování", "Pouze retence dešťové vody a vsak", "Jiná preference"] },
+  { id: "dsp_vytapeni_zdroj", type: "choice", title: "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)", short: "Primární zdroj vytápění", hint: "", options: ["Plynový kondenzační kotel", "Kotel na tuhá paliva (dřevo, pelety, biomasa…)", "Vytápění tepelným čerpadlem vzduch/voda", "Vytápění tepelným čerpadlem země/voda (geotermální vrty)", "Krb, kamna", "Elektrokotel, bojler", "Jiná preference"] },
+  { id: "dsp_vytapeni_typ", type: "choice", title: "Jaké je vaše preferované vytápění?", short: "Preferované vytápění", hint: "", options: ["Podlahové vytápění (teplovodní, elektrické rohože…)", "Otopná tělesa (radiátory, konvektor, otopné žebříky s el. patronou v koupelnách…)", "Požadavek na lokální ovládání vytápění termostatem v každé místnosti", "Požadavek na centrální ovládání vytápění termostatem na patře", "Jiná preference"] },
+  { id: "dsp_elektro", type: "choice", title: "Jaká je vaše preference u elektroinstalace a komunikace?", short: "Elektroinstalace a komunikace", hint: "", options: ["Chytrá domácnost", "Klasické ovládání domácnosti", "Zabezpečovací systémy (kamery, alarmy atd.)", "Napájení pro el. automobil", "Jiná preference"] },
+  { id: "dsp_vetrani", type: "choice", title: "Jaké je vaše preferované větrání?", short: "Větrání", hint: "", options: ["Přirozené větrání pomocí otevíratelných oken", "Řízené větrání pomocí rekuperační jednotky", "Jiná preference"] },
+  { id: "dsp_chlazeni", type: "choice", title: "Jaké je vaše preferované chlazení?", short: "Chlazení", hint: "", options: ["Chlazení klimatizací", "Tepelné čerpadlo země / voda", "Jiná preference"] },
+  { id: "dsp_ostatni_technologie", type: "choice", title: "Máte zájem o některou z ostatních technologií?", short: "Ostatní technologie", hint: "", options: ["Sauna (parní, finská…)", "Bazén (venkovní, interiérový, vířivka…)", "Biotop", "Jiná preference"] },
+  { id: "dsp_ostatni_agenda", type: "status-list", title: "Potřebujete zajistit některou z následujících agend?", short: "Ostatní agenda", hint: "U každého bodu vyberte, jak na tom jste.", items: DSP_OSTATNI_AGENDA_ITEMS, statusOptions: ANO_NE_STATUS_OPTIONS }
+];
+
+const DEFAULT_QUESTIONS_BY_TYPE = {
+  dotaznik: DEFAULT_QUESTIONS,
+  dsp: DSP_QUESTIONS,
+  dps: DEFAULT_QUESTIONS
+};
 /* ============================================================ */
 
 // Záložka "Správa" je vidět v horní liště pro každého (chráněná
@@ -468,7 +508,7 @@ async function loadFormQuestions(type){
       if(data.found){ setState({ questions: data.questions, formQuestionsLoaded: true }); return; }
     }
   }catch(e){}
-  setState({ questions: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS)), formQuestionsLoaded: true });
+  setState({ questions: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS_BY_TYPE[type] || DEFAULT_QUESTIONS)), formQuestionsLoaded: true });
 }
 async function loadAdminQuestions(type){
   setState({ adminQuestions: null, adminQuestionsType: type });
@@ -479,7 +519,7 @@ async function loadAdminQuestions(type){
       if(data.found){ setState({ adminQuestions: data.questions }); return; }
     }
   }catch(e){}
-  setState({ adminQuestions: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS)) });
+  setState({ adminQuestions: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS_BY_TYPE[type] || DEFAULT_QUESTIONS)) });
 }
 async function saveAdminQuestions(){
   try{
@@ -946,11 +986,24 @@ function selectTemplate(){
 }
 
 function clientInfoReady(){
+  if(state.questionnaireType === "dsp") return state.clientName.trim().length > 0;
   return state.clientName.trim().length > 0 && state.clientBuildType.trim().length > 0 && state.clientLocation.trim().length > 0;
 }
 
 function introTemplate(){
   const ready = clientInfoReady();
+  if(state.questionnaireType === "dsp"){
+    return `
+      <div class="sheet">
+        <div class="intro">
+          <div class="client-info">
+            <input type="text" id="client-name-input" placeholder="Číslo projektu" value="${escapeAttr(state.clientName)}">
+          </div>
+          <button class="btn btn-primary" id="start-btn" ${ready ? '' : 'disabled'}>Začít vyplňovat</button>
+        </div>
+      </div>
+    `;
+  }
   return `
     <div class="sheet">
       <div class="intro">
@@ -1125,11 +1178,11 @@ function bindForm(){
     const startBtn = document.getElementById('start-btn');
     startBtn.onclick = () => { clearInterval(heroTimer); setState({ showDisclaimer: true }); };
     const nameInput = document.getElementById('client-name-input');
-    const buildTypeInput = document.getElementById('client-buildtype-input');
-    const locationInput = document.getElementById('client-location-input');
     nameInput.addEventListener('input', () => { state.clientName = nameInput.value; startBtn.disabled = !clientInfoReady(); });
-    buildTypeInput.addEventListener('input', () => { state.clientBuildType = buildTypeInput.value; startBtn.disabled = !clientInfoReady(); });
-    locationInput.addEventListener('input', () => { state.clientLocation = locationInput.value; startBtn.disabled = !clientInfoReady(); });
+    const buildTypeInput = document.getElementById('client-buildtype-input');
+    if(buildTypeInput) buildTypeInput.addEventListener('input', () => { state.clientBuildType = buildTypeInput.value; startBtn.disabled = !clientInfoReady(); });
+    const locationInput = document.getElementById('client-location-input');
+    if(locationInput) locationInput.addEventListener('input', () => { state.clientLocation = locationInput.value; startBtn.disabled = !clientInfoReady(); });
     startHeroBlink();
     return;
   }
