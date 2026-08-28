@@ -77,6 +77,9 @@
   .resp-table th{ text-align:left; padding:6px 6px; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--soft); border-bottom:1.5px solid var(--line); }
   .resp-table td{ padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:middle; overflow-wrap:break-word; }
   .resp-table td.price{ color: var(--tan); font-weight:700; white-space:nowrap; }
+  .resp-edit-input{ width:100%; border:1px solid transparent; background:transparent; padding:3px 5px; margin:-3px -5px; font-family:inherit; font-size:inherit; color:inherit; border-radius:6px; }
+  .resp-edit-input:hover{ border-color: var(--line); }
+  .resp-edit-input:focus{ outline:none; border-color: var(--sage); background:#fff; }
   .resp-table td.nowrap, .resp-table th.nowrap{ white-space:nowrap; }
   .resp-table .col-actions{ width:34px; }
   .resp-pdf-btn, .resp-delete-btn{ width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--soft); font-size:14px; line-height:1; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; padding:0; }
@@ -344,7 +347,7 @@ function sideDecorTemplate(){
   `;
 }
 const QUESTIONNAIRE_TYPES = [
-  { key: "dotaznik", label: "Architektonická studie", adminLabel: "Správa dotazníku", responsesLabel: "Odpovědi dotazníku" },
+  { key: "dotaznik", label: "Architektonická studie", adminLabel: "Správa dotazníku AS", responsesLabel: "Odpovědi dotazníku AS" },
   { key: "dsp", label: "Dokumentace pro povolení záměru", adminLabel: "Správa dotazníku DSP", responsesLabel: "Odpovědi dotazníku DSP" },
   { key: "dps", label: "Dokumentace pro provádění stavby", adminLabel: "Správa dotazníku DPS", responsesLabel: "Odpovědi dotazníku DPS" }
 ];
@@ -519,7 +522,7 @@ const DSP_AGENDA_STATUS_OPTIONS = [
   { key: "sam", label: "Ne, zajistím sám" },
   { key: "zpracovane", label: "Je zpracované" }
 ];
-const DSP_VZOR_PLNA_MOC_URL = "https://docs.google.com/document/d/1Joo50MrCNI0wk6TqiZMLsuXDkablzZ-2?rtpof=true&usp=drive_fs";
+const DSP_VZOR_PLNA_MOC_URL = "https://docs.google.com/document/d/1Joo50MrCNI0wk6TqiZMLsuXDkablzZ-2/export?format=docx";
 const DSP_OSTATNI_AGENDA_ITEMS = [
   { id: uid(), label: "Hydrogeologie" },
   { id: uid(), label: "Inženýrský průzkum" },
@@ -534,18 +537,18 @@ const DSP_QUESTIONS = [
   { id: "dsp_zatepleni_strecha", type: "multi-choice", title: "Jaké je vaše preferované zateplení střešních konstrukcí?", short: "Zateplení střešních konstrukcí", hint: "", options: ["Stříkaná izolace – při provedení mezikrokevního a podkrokevního zateplení (PUR pěny…)", "Vkládaná izolace – při provedení mezikrokevního a podkrokevního zateplení (minerální vata, kombinace…)", "Nadkrokevní zateplení (PIR desky, vaty…)", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_krytina_sikma", type: "multi-choice", title: "Jaká je vaše preferovaná střešní krytina šikmé střechy?", short: "Krytina šikmé střechy", hint: "", options: ["Pálená střešní krytina", "Betonová střešní krytina", "Šindelová střešní krytina", "Plechová střešní krytina", "Břidlicová střešní krytina", "Vegetační povrch šikmé střechy", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_povrch_plocha", type: "multi-choice", title: "Jaký je váš preferovaný povrch ploché střechy?", short: "Povrch ploché střechy", hint: "", options: ["Vegetační povrch ploché střechy (extenzivní, intenzivní…)", "Viditelná hlavní hydroizolační vrstva (PVC, asfaltové pásy…)", "Zatěžovací vrstva z praného říčního kameniva", "Pochozí vrstva ploché střechy (betonové dlažby, dřevěné prkna…)", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
-  { id: "dsp_stineni", type: "multi-choice", title: "Jaké je vaše preferované stínění objektu?", short: "Stínění objektu", hint: "", options: ["Venkovní screenové rolety", "Venkovní žaluzie (tvar Z, C…)", "Vnitřní žaluzie", "Vnitřní rolety", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
-  { id: "dsp_podlahy", type: "text", title: "Jaký preferujete typ podlah?", short: "Typ podlah", hint: "", placeholder: "" },
+  { id: "dsp_stineni", type: "multi-choice", title: "Jaké je vaše preferované stínění objektu?", short: "Stínění objektu", hint: "", options: ["Venkovní screenové rolety", "Venkovní žaluzie (tvar Z, C…)", "Vnitřní žaluzie", "Vnitřní rolety", "Nechci řešit stínění", OTHER_OPTION_LABEL] },
+  { id: "dsp_podlahy", type: "multi-choice", title: "Jaký preferujete typ podlah?", short: "Typ podlah", hint: "", options: ["Dřevěná", "Vinylová", "Laminátová", "Keramická", "Epoxidová stěrka", OTHER_OPTION_LABEL] },
   { id: "dsp_schodiste", type: "multi-choice", title: "Jaký preferujete typ schodiště?", short: "Typ schodiště", hint: "", options: ["Dřevěné", "Monolitické", "Kombinace dřeva a kovu", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_okna", type: "multi-choice", title: "Jaká je vaše preference u oken?", short: "Okna", hint: "", options: ["Hliníkové", "Dřevohliníkové", "Dřevěné", "Plastové", "Kompozitní", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_studna", type: "multi-choice", title: "Jaká je vaše preference u studny?", short: "Studna", hint: "", options: ["Požadavek na povolení studny", "Využití studniční vody pouze čerpadlem na zálivku", "Využití studniční vody na zálivku přes domácí rozvod", "Využití na zálivku a splachování", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_destove_vody", type: "multi-choice", title: "Jaká je vaše preference u dešťových vod?", short: "Dešťové vody", hint: "", options: ["Pouze retence dešťové vody a následný vsak", "Využití dešťových vod pouze čerpadlem na zálivku", "Využití dešťových vod na zálivku přes domácí rozvod", "Využití dešťových vod na zálivku a splachování", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_vnitrni_rozvody", type: "multi-choice", title: "Jaká je vaše preference u vnitřních rozvodů?", short: "Vnitřní rozvody", hint: "", options: ["Zpětné využití šedých vod", "Požadavek na cirkulaci teplé vody", OTHER_OPTION_LABEL] },
-  { id: "dsp_vytapeni_zdroj", type: "multi-choice", title: "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)", short: "Primární zdroj vytápění", hint: "", options: ["Plynový kondenzační kotel", "Kotel na tuhá paliva (dřevo, pelety, biomasa…)", "Vytápění tepelným čerpadlem vzduch/voda", "Vytápění tepelným čerpadlem země/voda (geotermální vrty)", "Krb, kamna", "Elektrokotel, bojler", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
-  { id: "dsp_vytapeni_typ", type: "multi-choice", title: "Jaké je vaše preferované vytápění?", short: "Preferované vytápění", hint: "", options: ["Podlahové vytápění (teplovodní, elektrické rohože…)", "Otopná tělesa (radiátory, konvektor, otopné žebříky s el. patronou v koupelnách…)", "Požadavek na lokální ovládání vytápění termostatem v každé místnosti", "Požadavek na centrální ovládání vytápění termostatem na patře", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
-  { id: "dsp_elektro", type: "multi-choice", title: "Jaká je vaše preference u elektroinstalace a komunikace?", short: "Elektroinstalace a komunikace", hint: "", options: ["Chytrá domácnost", "Klasické ovládání domácnosti", "Zabezpečovací systémy (kamery, alarmy atd.)", "Napájení pro el. automobil", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
-  { id: "dsp_vetrani", type: "multi-choice", title: "Jaké je vaše preferované větrání?", short: "Větrání", hint: "", options: ["Přirozené větrání pomocí otevíratelných oken", "Řízené větrání pomocí rekuperační jednotky", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
-  { id: "dsp_chlazeni", type: "multi-choice", title: "Jaké je vaše preferované chlazení?", short: "Chlazení", hint: "", options: ["Chlazení klimatizací", "Tepelné čerpadlo země / voda", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
+  { id: "dsp_vytapeni_zdroj", type: "multi-choice", title: "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)", short: "Primární zdroj vytápění", hint: "", options: ["Plynový kondenzační kotel", "Kotel na tuhá paliva (dřevo, pelety, biomasa…)", "Vytápění tepelným čerpadlem vzduch/voda", "Vytápění tepelným čerpadlem země/voda (geotermální vrty)", "Krb, kamna", "Elektrokotel, bojler", OTHER_OPTION_LABEL] },
+  { id: "dsp_vytapeni_typ", type: "multi-choice", title: "Jaké je vaše preferované vytápění?", short: "Preferované vytápění", hint: "", options: ["Podlahové vytápění (teplovodní, elektrické rohože…)", "Otopná tělesa (radiátory, konvektor, otopné žebříky s el. patronou v koupelnách…)", "Požadavek na lokální ovládání vytápění termostatem v každé místnosti", "Požadavek na centrální ovládání vytápění termostatem na patře", OTHER_OPTION_LABEL] },
+  { id: "dsp_elektro", type: "multi-choice", title: "Jaká je vaše preference u elektroinstalace a komunikace?", short: "Elektroinstalace a komunikace", hint: "", options: ["Chytrá domácnost (Loxone, KNX a jiné)", "Klasické ovládání domácnosti", "Zabezpečovací systémy (kamery, alarmy atd.)", "Napájení pro el. automobil", "Fotovoltaika", "Solární panely", OTHER_OPTION_LABEL] },
+  { id: "dsp_vetrani", type: "multi-choice", title: "Jaké je vaše preferované větrání?", short: "Větrání", hint: "", options: ["Přirozené větrání pomocí otevíratelných oken", "Řízené větrání pomocí rekuperační jednotky", OTHER_OPTION_LABEL] },
+  { id: "dsp_chlazeni", type: "multi-choice", title: "Jaké je vaše preferované chlazení?", short: "Chlazení", hint: "", options: ["Chlazení klimatizací", "Chlazení pomocí rekuperace", "Chladící stropy", "Tepelné čerpadlo země / voda", "Nechci objekt chladit", OTHER_OPTION_LABEL] },
   { id: "dsp_ostatni_technologie", type: "multi-choice", title: "Máte zájem o některou z ostatních technologií?", short: "Ostatní technologie", hint: "", options: ["Sauna (parní, finská…)", "Bazén (venkovní, interiérový, vířivka…)", "Biotop", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_ostatni_agenda", type: "status-list", title: "Potřebujete zajistit některou z následujících agend?", short: "Ostatní agenda", hint: "U každého bodu vyberte, jak na tom jste.", items: DSP_OSTATNI_AGENDA_ITEMS, statusOptions: DSP_AGENDA_STATUS_OPTIONS }
 ];
@@ -820,6 +823,25 @@ async function loadResponses(){
   }catch(e){ setState({ responses: [] }); }
 }
 
+async function updateResponseField(key, field, value, input){
+  const it = state.responses.find(r => r._key === key);
+  if(!it || it[field] === value) return;
+  const previous = it[field];
+  it[field] = value;
+  try{
+    const r = await fetch(`/api/responses?key=${encodeURIComponent(key)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_PASSCODE },
+      body: JSON.stringify({ [field]: value })
+    });
+    if(!r.ok) throw new Error('update failed');
+  }catch(e){
+    it[field] = previous;
+    if(input) input.value = previous || "";
+    alert("Uložení změny se nezdařilo. Zkuste to znovu.");
+  }
+}
+
 async function deleteResponse(key, triggerBtn){
   const it = state.responses.find(r => r._key === key);
   if(!it) return;
@@ -955,7 +977,7 @@ async function downloadResponsePdf(it, triggerBtn){
         ${it.clientLocation ? `<div style="font-size:12.5px;color:#8b887f;margin-top:2px;">${escapeHtml(it.clientLocation)}</div>` : ""}
       </div>
       ${rows}
-      <div class="pdf-row" style="margin-top:18px; padding-top:12px; border-top:1px solid #e7e4dc; text-align:center;">
+      <div class="pdf-row" style="margin-top:56px; padding-top:16px; border-top:1px solid #e7e4dc; text-align:center;">
         <div style="font-size:10.5px;line-height:1.5;color:#6f6c62;">
           Autorem této tabulky je architektonické studio dream homes.<br>
           www.dreamhomes.cz<br>
@@ -1239,7 +1261,7 @@ function questionTemplate(){
           <div class="status-row">
             <span class="status-row-label">${escapeHtml(item.label)}</span>
             <div class="status-options">
-              <a class="btn btn-outline btn-small" href="${escapeAttr(item.download.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.download.label)}</a>
+              <a class="btn btn-outline btn-small" href="${escapeAttr(item.download.url)}" download>${escapeHtml(item.download.label)}</a>
             </div>
           </div>` : `
           <div class="status-row">
@@ -1526,6 +1548,9 @@ function adminTemplate(){
   const respType = state.adminSection.slice("responses-".length);
   const filteredResponses = state.responses === null ? null : state.responses.filter(it => (it.questionnaireType || "dotaznik") === respType);
 
+  const respSimple = respType === "dsp" || respType === "dps";
+  const nameLabel = respType === "dsp" ? "Číslo projektu" : "Jméno";
+
   const respBody = filteredResponses === null
     ? `<div class="empty-state">Načítám…</div>`
     : filteredResponses.length === 0
@@ -1534,11 +1559,10 @@ function adminTemplate(){
         <div class="resp-table-wrap">
           <table class="resp-table">
             <thead><tr>
-              <th>Jméno</th>
-              <th>Místo stavby</th>
+              <th>${nameLabel}</th>
+              ${respSimple ? "" : `<th>Místo stavby</th>`}
               <th class="nowrap">Datum</th>
-              <th class="nowrap" title="Hrubá podlažní plocha">Plocha</th>
-              <th class="nowrap">Cena domu</th>
+              ${respSimple ? "" : `<th class="nowrap" title="Hrubá podlažní plocha">Plocha</th><th class="nowrap">Cena domu</th>`}
               <th class="col-actions"></th>
               <th class="col-actions"></th>
             </tr></thead>
@@ -1548,11 +1572,10 @@ function adminTemplate(){
                 const price = typeof gross === "number" ? computeHousePrice(gross) : null;
                 return `
                   <tr>
-                    <td>${escapeHtml(it.clientName || "—")}</td>
-                    <td>${escapeHtml(it.clientLocation || "—")}</td>
+                    <td><input type="text" class="resp-edit-input" data-edit-field="clientName" data-key="${escapeAttr(it._key)}" value="${escapeAttr(it.clientName || '')}"></td>
+                    ${respSimple ? "" : `<td><input type="text" class="resp-edit-input" data-edit-field="clientLocation" data-key="${escapeAttr(it._key)}" value="${escapeAttr(it.clientLocation || '')}"></td>`}
                     <td class="nowrap">${it.submittedAt ? escapeHtml(fmtDateShort(it.submittedAt)) : "—"}</td>
-                    <td class="nowrap">${typeof gross === "number" ? fmtM2(gross) : "—"}</td>
-                    <td class="price">${price !== null ? fmtCzk(price) : "—"}</td>
+                    ${respSimple ? "" : `<td class="nowrap">${typeof gross === "number" ? fmtM2(gross) : "—"}</td><td class="price">${price !== null ? fmtCzk(price) : "—"}</td>`}
                     <td class="col-actions"><button class="resp-pdf-btn" data-pdf="${escapeAttr(it._key)}" title="Stáhnout PDF">⬇</button></td>
                     <td class="col-actions"><button class="resp-delete-btn" data-delete-resp="${escapeAttr(it._key)}" title="Smazat odpověď">×</button></td>
                   </tr>`;
@@ -1853,6 +1876,15 @@ function bindAdmin(){
   document.querySelectorAll('[data-delete-resp]').forEach(b => b.onclick = () => {
     const key = b.getAttribute('data-delete-resp');
     deleteResponse(key, b);
+  });
+
+  document.querySelectorAll('[data-edit-field]').forEach(el => {
+    el.addEventListener('blur', () => {
+      const key = el.getAttribute('data-key');
+      const field = el.getAttribute('data-edit-field');
+      updateResponseField(key, field, el.value, el);
+    });
+    el.addEventListener('keydown', e => { if(e.key === 'Enter') el.blur(); });
   });
 
   document.querySelectorAll('[data-copy-link]').forEach(b => b.onclick = () => {
