@@ -1,7 +1,12 @@
 const GITHUB_REPO = process.env.GITHUB_REPO || "dreamhomesarchitecture/dotazn-k-klienta";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const ADMIN_KEY = "Dreamhomes274";
-const PATH = "data/questions.json";
+const VALID_TYPES = ["dotaznik", "dsp", "dps"];
+
+function pathForType(type) {
+  const safeType = VALID_TYPES.includes(type) ? type : "dotaznik";
+  return `data/questions-${safeType}.json`;
+}
 
 async function ghGet(path) {
   const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
@@ -35,8 +40,10 @@ module.exports = async (req, res) => {
   try {
     if (!GITHUB_TOKEN) return res.status(500).json({ error: "GITHUB_TOKEN not configured" });
 
+    const path = pathForType(req.query && req.query.type);
+
     if (req.method === "GET") {
-      const file = await ghGet(PATH);
+      const file = await ghGet(path);
       if (!file) return res.status(404).json({ found: false });
       const json = JSON.parse(Buffer.from(file.content, "base64").toString("utf-8"));
       return res.status(200).json({ found: true, questions: json });
@@ -44,8 +51,8 @@ module.exports = async (req, res) => {
 
     if (req.method === "PUT") {
       if (req.headers["x-admin-key"] !== ADMIN_KEY) return res.status(401).json({ error: "unauthorized" });
-      const existing = await ghGet(PATH);
-      await ghPut(PATH, req.body, existing ? existing.sha : undefined, "Aktualizace otazek dotazniku");
+      const existing = await ghGet(path);
+      await ghPut(path, req.body, existing ? existing.sha : undefined, `Aktualizace otazek dotazniku (${path})`);
       return res.status(200).json({ ok: true });
     }
 
