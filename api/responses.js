@@ -80,6 +80,33 @@ module.exports = async (req, res) => {
       return res.status(200).json({ ok: true });
     }
 
+    if (req.method === "PUT") {
+      if (req.headers["x-admin-key"] !== ADMIN_KEY) return res.status(401).json({ error: "unauthorized" });
+      const key = req.query && req.query.key;
+      if (!key || !key.startsWith(`${DIR}/`)) return res.status(400).json({ error: "invalid key" });
+      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${key}`, {
+        headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: "application/vnd.github+json" }
+      });
+      if (!getRes.ok) return res.status(404).json({ error: "not found" });
+      const fileData = await getRes.json();
+      const record = req.body;
+      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${key}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: `Uprava odpovedi ${key}`,
+          content: Buffer.from(JSON.stringify(record, null, 2)).toString("base64"),
+          sha: fileData.sha
+        })
+      });
+      if (!putRes.ok) return res.status(502).json({ error: "update failed", detail: await putRes.text() });
+      return res.status(200).json({ ok: true });
+    }
+
     if (req.method === "DELETE") {
       if (req.headers["x-admin-key"] !== ADMIN_KEY) return res.status(401).json({ error: "unauthorized" });
       const key = req.query && req.query.key;
@@ -102,7 +129,7 @@ module.exports = async (req, res) => {
       return res.status(200).json({ ok: true });
     }
 
-    res.setHeader("Allow", "GET, POST, PATCH, DELETE");
+    res.setHeader("Allow", "GET, POST, PATCH, PUT, DELETE");
     return res.status(405).json({ error: "method not allowed" });
   } catch (e) {
     return res.status(500).json({ error: String(e) });
