@@ -167,7 +167,8 @@
           "label": "Plná moc",
           "statusLabel": "Vzor ke stažení"
         }
-      ]
+      ],
+      "comment": "d"
     }
   ]
 }
