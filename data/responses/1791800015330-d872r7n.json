@@ -50,15 +50,6 @@
       "value": "Vegetační povrch ploché střechy (extenzivní, intenzivní…)"
     },
     {
-      "id": "dsp_stineni",
-      "title": "Jaké je vaše preferované stínění objektu?",
-      "short": "Stínění objektu",
-      "type": "multi-choice",
-      "value": "Venkovní žaluzie (tvar Z, C…)",
-      "dps": "- ovládání pomocí tlačítek a přes mobilní aplikaci",
-      "dpsLabel": "Ovládání"
-    },
-    {
       "id": "dsp_podlahy",
       "title": "Jaký preferujete typ podlah?",
       "short": "Typ podlah",
@@ -74,10 +65,17 @@
     },
     {
       "id": "dsp_okna",
-      "title": "Jaká je vaše preference u oken?",
+      "title": "Jaká je vaše preference oken?",
       "short": "Okna",
       "type": "multi-choice",
       "value": "Hliníkové"
+    },
+    {
+      "id": "dsp_stineni",
+      "title": "Jaké je vaše preferované stínění objektu?",
+      "short": "Stínění objektu",
+      "type": "multi-choice",
+      "value": "Venkovní žaluzie (tvar Z, C…)"
     },
     {
       "id": "dsp_studna",
@@ -85,7 +83,7 @@
       "short": "Studna",
       "type": "multi-choice",
       "value": "Studnu nebudeme řešit",
-      "comment": "Studna bude realizovaná na pozemku, Nepovolujeme my. Zatím nenapojujeme na dům. - bude upřesněno v prováděcí dokumentaci."
+      "comment": "Studna bude realizovaná na pozemku, Nepovoluje DREAM HOMES. Zatím nenapojujeme na dům. Bude upřesněno v prováděcí dokumentaci."
     },
     {
       "id": "dsp_destove_vody",
@@ -113,7 +111,8 @@
       "title": "Jaké je vaše preferované vytápění?",
       "short": "Preferované vytápění",
       "type": "multi-choice",
-      "value": "Podlahové vytápění (teplovodní, elektrické rohože…)"
+      "value": "Podlahové vytápění (teplovodní, elektrické rohože…)",
+      "comment": "Teplovodní vytápění doplněné o koupelnové žebříky."
     },
     {
       "id": "dsp_elektro",
