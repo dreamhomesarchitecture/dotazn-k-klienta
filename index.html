@@ -1498,8 +1498,7 @@ function questionTemplate(){
       ${dpsFieldsFor(q).map((label, idx) => `
       <div class="q-comment dps-field">
         ${label ? `<div class="dps-sub">${escapeHtml(label)}</div>` : ""}
-        <label class="q-comment-label" for="q-dps-input-${idx}">Poznámka (nepovinné)</label>
-        <textarea id="q-dps-input-${idx}" class="q-comment-input" data-dps-idx="${idx}" placeholder="Doplňte podrobnosti pro provádění stavby…">${escapeHtml(state.answers[dpsAnswerKey(q, idx)] || '')}</textarea>
+        <textarea id="q-dps-input-${idx}" class="q-comment-input" aria-label="Poznámka (nepovinné)" data-dps-idx="${idx}" placeholder="Doplňte podrobnosti pro provádění stavby…">${escapeHtml(state.answers[dpsAnswerKey(q, idx)] || '')}</textarea>
       </div>`).join("")}
       </div>` : ""}
       <div class="nav-row">
