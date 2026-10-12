@@ -92,25 +92,6 @@
     ]
   },
   {
-    "id": "dsp_stineni",
-    "dpsFields": [
-      "Ovládání (tlačítko v místnosti, aplikace, tlačítko i aplikace, chytrá domácnost)",
-      "Automatika (vítr, tma, světlo, slunce, chytrá domácnost)"
-    ],
-    "type": "multi-choice",
-    "title": "Jaké je vaše preferované stínění objektu?",
-    "short": "Stínění objektu",
-    "hint": "",
-    "options": [
-      "Venkovní screenové rolety",
-      "Venkovní žaluzie (tvar Z, C…)",
-      "Vnitřní žaluzie",
-      "Vnitřní rolety",
-      "Nechci řešit stínění",
-      "Jiná preference"
-    ]
-  },
-  {
     "id": "dsp_podlahy",
     "type": "multi-choice",
     "title": "Jaký preferujete typ podlah?",
@@ -142,7 +123,7 @@
   {
     "id": "dsp_okna",
     "type": "multi-choice",
-    "title": "Jaká je vaše preference u oken?",
+    "title": "Jaká je vaše preference oken?",
     "short": "Okna",
     "hint": "",
     "options": [
@@ -156,7 +137,26 @@
     ],
     "dpsFields": [
       "Bezpečnost (standard, RC1, RC2, magnety v oknech)",
-      "Detaily (skryté panty, skryté rámy, čtečka otisku prstů, nulový práh, design line)"
+      "Detaily (skryté panty, skryté rámy, čtečka otisku prstů, nulový práh, design line, vstupní dveře madlo vs koule)"
+    ]
+  },
+  {
+    "id": "dsp_stineni",
+    "dpsFields": [
+      "Ovládání (tlačítko v místnosti, aplikace, tlačítko i aplikace, chytrá domácnost)",
+      "Automatika (vítr, tma, světlo, slunce, chytrá domácnost)"
+    ],
+    "type": "multi-choice",
+    "title": "Jaké je vaše preferované stínění objektu?",
+    "short": "Stínění objektu",
+    "hint": "",
+    "options": [
+      "Venkovní screenové rolety",
+      "Venkovní žaluzie (tvar Z, C…)",
+      "Vnitřní žaluzie",
+      "Vnitřní rolety",
+      "Nechci řešit stínění",
+      "Jiná preference"
     ]
   },
   {
