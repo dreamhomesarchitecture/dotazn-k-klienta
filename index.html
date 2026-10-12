@@ -120,9 +120,17 @@
   .q-comment{ margin-top:22px; padding-top:18px; border-top:1px solid var(--line); }
   .q-comment-label{ display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color: var(--soft); margin-bottom:8px; }
   .q-comment-input{ min-height:64px; }
+  .phase-toggles{ display:flex; gap:10px; margin-bottom:22px; }
+  .phase-toggle{ display:inline-flex; align-items:center; gap:8px; padding:7px 16px 7px 10px; border-radius:999px; border:1.5px solid var(--line); background:#fff; color: var(--soft); font:inherit; font-size:11px; font-weight:800; letter-spacing:.08em; cursor:pointer; transition: border-color .15s, color .15s, background .15s; }
+  .phase-toggle:hover{ border-color: var(--ink); }
+  .phase-toggle-dot{ width:14px; height:14px; border-radius:50%; border:1.5px solid var(--soft); flex:none; position:relative; }
+  .phase-toggle.on{ border-color: var(--sage); background: var(--sage-tint); color: var(--ink); }
+  .phase-toggle.on .phase-toggle-dot{ border-color: var(--sage); background: var(--sage); }
   .phase-head{ display:flex; align-items:center; gap:12px; margin:26px 0 14px; }
   .phase-head:first-of-type{ margin-top:4px; }
   .phase-circle{ display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; border:1.5px solid var(--sage); color: var(--ink); font-size:11px; font-weight:800; letter-spacing:.06em; flex:none; }
+  .dps-field{ margin-top:0; padding-top:0; border-top:none; margin-bottom:18px; }
+  .dps-sub{ font-weight:800; font-size:15px; margin-bottom:8px; }
   .phase-title{ font-weight:800; font-size:17px; letter-spacing:-0.005em; }
 
   textarea, input[type=text], input[type=password], select{
@@ -569,7 +577,7 @@ const DSP_QUESTIONS = [
   { id: "dsp_zatepleni_strecha", type: "multi-choice", title: "Jaké je vaše preferované zateplení střešních konstrukcí?", short: "Zateplení šikmých střešních konstrukcí", hint: "", options: ["Stříkaná izolace – při provedení mezikrokevního a podkrokevního zateplení (PUR pěny…)", "Vkládaná izolace – při provedení mezikrokevního a podkrokevního zateplení (minerální vata, kombinace…)", "Nadkrokevní zateplení (PIR desky, vaty…)", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_krytina_sikma", type: "multi-choice", title: "Jaká je vaše preferovaná střešní krytina šikmé střechy?", short: "Krytina šikmé střechy", hint: "", options: ["Pálená střešní krytina", "Betonová střešní krytina", "Šindelová střešní krytina", "Plechová střešní krytina", "Břidlicová střešní krytina", "Vegetační povrch šikmé střechy", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_povrch_plocha", type: "multi-choice", title: "Jaký je váš preferovaný povrch ploché střechy?", short: "Povrch ploché střechy", hint: "", options: ["Vegetační povrch ploché střechy (extenzivní, intenzivní…)", "Viditelná hlavní hydroizolační vrstva (PVC, asfaltové pásy…)", "Zatěžovací vrstva z praného říčního kameniva", "Pochozí vrstva ploché střechy (betonové dlažby, dřevěné prkna…)", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
-  { id: "dsp_stineni", dpsLabel: "Ovládání", type: "multi-choice", title: "Jaké je vaše preferované stínění objektu?", short: "Stínění objektu", hint: "", options: ["Venkovní screenové rolety", "Venkovní žaluzie (tvar Z, C…)", "Vnitřní žaluzie", "Vnitřní rolety", "Nechci řešit stínění", OTHER_OPTION_LABEL] },
+  { id: "dsp_stineni", dpsFields: ["Ovládání", "Automatika"], type: "multi-choice", title: "Jaké je vaše preferované stínění objektu?", short: "Stínění objektu", hint: "", options: ["Venkovní screenové rolety", "Venkovní žaluzie (tvar Z, C…)", "Vnitřní žaluzie", "Vnitřní rolety", "Nechci řešit stínění", OTHER_OPTION_LABEL] },
   { id: "dsp_podlahy", type: "multi-choice", title: "Jaký preferujete typ podlah?", short: "Typ podlah", hint: "", options: ["Dřevěná", "Vinylová", "Laminátová", "Keramická", "Epoxidová stěrka", OTHER_OPTION_LABEL] },
   { id: "dsp_schodiste", type: "multi-choice", title: "Jaký preferujete typ schodiště?", short: "Typ schodiště", hint: "", options: ["Dřevěné", "Monolitické", "Kombinace dřeva a kovu", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
   { id: "dsp_okna", type: "multi-choice", title: "Jaká je vaše preference u oken?", short: "Okna", hint: "", options: ["Hliníkové", "Dřevohliníkové", "Dřevěné", "Plastové", "Kompozitní", NOT_APPLICABLE_LABEL, OTHER_OPTION_LABEL] },
@@ -615,6 +623,8 @@ let state = {
   questionnaireType: null,
   lockedType: false,
   editingKey: null,
+  showDsp: true,
+  showDps: false,
   adminQuestions: null,
   adminQuestionsType: null,
   clientName: "",
@@ -679,8 +689,22 @@ function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s => ({'&':'&am
 function escapeAttr(str){ return escapeHtml(str); }
 function otherAnswerKey(q){ return q.id + "__other"; }
 function commentAnswerKey(q){ return q.id + "__comment"; }
-function dpsAnswerKey(q){ return q.id + "__dps"; }
-function dpsLabelFor(q){ return q.dpsLabel || "Podrobnosti"; }
+function questionPhaseMode(q){ return q.phases === "dsp" || q.phases === "dps" ? q.phases : "both"; }
+// Které části (DSP / DPS) se u otázky právě zobrazují: omezení u otázky + přepínače nahoře.
+function questionPhases(q){
+  if(state.questionnaireType !== "dsp") return { dsp: true, dps: false };
+  const mode = questionPhaseMode(q);
+  let dsp = mode !== "dps" && state.showDsp;
+  let dps = mode !== "dsp" && state.showDps;
+  if(!dsp && !dps){ dsp = mode !== "dps"; dps = mode !== "dsp"; }
+  return { dsp, dps };
+}
+function dpsFieldsFor(q){ return Array.isArray(q.dpsFields) && q.dpsFields.length ? q.dpsFields : [""]; }
+function dpsAnswerKey(q, idx){ return q.id + "__dps" + (idx || 0); }
+function dpsNotesForStorage(q){
+  if(questionPhaseMode(q) === "dsp") return [];
+  return dpsFieldsFor(q).map((label, idx) => ({ label, note: (state.answers[dpsAnswerKey(q, idx)] || "").trim() })).filter(n => n.note);
+}
 function optionInfoHtml(opt){
   const info = OPTION_INFO[opt];
   if(!info) return "";
@@ -689,6 +713,7 @@ function optionInfoHtml(opt){
 
 /* ---------- client form logic ---------- */
 function questionAnswered(q){
+  if(state.questionnaireType === "dsp" && !questionPhases(q).dsp) return true;
   const v = state.answers[q.id];
   if(q.type === "text") return typeof v === "string" && v.trim().length > 0;
   if(q.type === "choice"){
@@ -820,8 +845,8 @@ async function submitResponses(){
     const comment = (state.answers[commentAnswerKey(q)] || "").trim();
     if(comment) base.comment = comment;
     if(state.questionnaireType === "dsp"){
-      const dps = (state.answers[dpsAnswerKey(q)] || "").trim();
-      if(dps){ base.dps = dps; base.dpsLabel = dpsLabelFor(q); }
+      const dps = dpsNotesForStorage(q);
+      if(dps.length) base.dps = dps;
     }
     return base;
   });
@@ -851,8 +876,8 @@ async function saveEditedResponse(){
     const comment = (state.answers[commentAnswerKey(q)] || "").trim();
     if(comment) base.comment = comment;
     if(state.questionnaireType === "dsp"){
-      const dps = (state.answers[dpsAnswerKey(q)] || "").trim();
-      if(dps){ base.dps = dps; base.dpsLabel = dpsLabelFor(q); }
+      const dps = dpsNotesForStorage(q);
+      if(dps.length) base.dps = dps;
     }
     return base;
   });
@@ -898,7 +923,12 @@ function loadAnswersFromRecord(record, questions){
     const a = byId[q.id];
     if(!a) return;
     if(a.comment) answers[commentAnswerKey(q)] = a.comment;
-    if(a.dps) answers[dpsAnswerKey(q)] = a.dps;
+    if(Array.isArray(a.dps)){
+      a.dps.forEach(n => {
+        const idx = dpsFieldsFor(q).indexOf(n.label);
+        if(idx >= 0) answers[dpsAnswerKey(q, idx)] = n.note;
+      });
+    }
     if(q.type === "text"){
       answers[q.id] = a.value || "";
     } else if(q.type === "choice"){
@@ -957,7 +987,9 @@ async function editResponse(key){
     step: 0,
     formView: "question",
     showDisclaimer: false,
-    editingKey: key
+    editingKey: key,
+    showDsp: true,
+    showDps: (it.answers || []).some(a => Array.isArray(a.dps) && a.dps.length)
   });
 }
 
@@ -1090,8 +1122,8 @@ function pdfRoomsBlock(a){
 }
 
 function pdfDpsLine(a, extraStyle){
-  if(!a.dps) return "";
-  return `<div style="${extraStyle}font-size:11px;line-height:1.3;color:#8b887f;font-style:italic;">DPS – ${escapeHtml(a.dpsLabel || "Podrobnosti")}: ${escapeHtml(a.dps)}</div>`;
+  if(!Array.isArray(a.dps) || !a.dps.length) return "";
+  return a.dps.map(n => `<div style="${extraStyle}font-size:11px;line-height:1.3;color:#8b887f;font-style:italic;">DPS${n.label ? " – " + escapeHtml(n.label) : ""}: ${escapeHtml(n.note)}</div>`).join("");
 }
 
 function pdfStatusListBlock(a){
@@ -1352,6 +1384,7 @@ function questionTemplate(){
   const total = state.questions.length;
   const isLast = state.step === total - 1;
   const answered = questionAnswered(q);
+  const phases = questionPhases(q);
 
   let body = "";
   if(q.type === "text"){
@@ -1453,20 +1486,29 @@ function questionTemplate(){
 
   return `
     <div class="sheet">
+      ${state.questionnaireType === "dsp" ? `
+      <div class="phase-toggles">
+        <button type="button" class="phase-toggle ${state.showDsp?'on':''}" data-phase-toggle="dsp" aria-pressed="${state.showDsp}"><span class="phase-toggle-dot"></span>DSP</button>
+        <button type="button" class="phase-toggle ${state.showDps?'on':''}" data-phase-toggle="dps" aria-pressed="${state.showDps}"><span class="phase-toggle-dot"></span>DPS</button>
+      </div>` : ""}
       <div class="eyebrow">Otázka <b>${state.step+1}</b> z ${total}</div>
       <div class="q-title">${escapeHtml(q.title)}</div>
       ${q.hint ? `<div class="q-hint">${escapeHtml(q.hint)}</div>` : ""}
-      ${state.questionnaireType === "dsp" ? `<div class="phase-head"><span class="phase-circle">DSP</span></div>` : ""}
-      <div class="q-body">${body}</div>
-      ${state.questionnaireType === "dsp" ? `
+      ${state.questionnaireType === "dsp" && phases.dsp ? `<div class="phase-head"><span class="phase-circle">DSP</span></div>` : ""}
+      ${phases.dsp ? `<div class="q-body">${body}</div>` : ""}
+      ${state.questionnaireType === "dsp" && phases.dsp ? `
       <div class="q-comment">
         <label class="q-comment-label" for="q-comment-input">Poznámka (nepovinné)</label>
         <textarea id="q-comment-input" class="q-comment-input" placeholder="Doplňte komentář k této otázce…">${escapeHtml(state.answers[commentAnswerKey(q)] || '')}</textarea>
-      </div>
-      <div class="phase-head"><span class="phase-circle">DPS</span><span class="phase-title">${escapeHtml(dpsLabelFor(q))}</span></div>
-      <div class="q-comment" style="margin-top:0;padding-top:0;border-top:none;">
-        <label class="q-comment-label" for="q-dps-input">Poznámka (nepovinné)</label>
-        <textarea id="q-dps-input" class="q-comment-input" placeholder="Doplňte podrobnosti pro provádění stavby…">${escapeHtml(state.answers[dpsAnswerKey(q)] || '')}</textarea>
+      </div>` : ""}
+      ${phases.dps ? `
+      <div class="phase-head"><span class="phase-circle">DPS</span></div>
+      ${dpsFieldsFor(q).map((label, idx) => `
+      <div class="q-comment dps-field">
+        ${label ? `<div class="dps-sub">${escapeHtml(label)}</div>` : ""}
+        <label class="q-comment-label" for="q-dps-input-${idx}">Poznámka (nepovinné)</label>
+        <textarea id="q-dps-input-${idx}" class="q-comment-input" data-dps-idx="${idx}" placeholder="Doplňte podrobnosti pro provádění stavby…">${escapeHtml(state.answers[dpsAnswerKey(q, idx)] || '')}</textarea>
+      </div>`).join("")}
       </div>` : ""}
       <div class="nav-row">
         <button class="circle-btn" id="back-btn" aria-label="${state.step===0 ? 'Zpět na úvod' : 'Zpět'}">←</button>
@@ -1563,14 +1605,21 @@ function bindForm(){
     else setState({ step: Math.max(0, state.step-1) });
   };
 
+  document.querySelectorAll('[data-phase-toggle]').forEach(btn => btn.onclick = () => {
+    const which = btn.getAttribute('data-phase-toggle');
+    const next = { showDsp: state.showDsp, showDps: state.showDps };
+    next[which === "dsp" ? "showDsp" : "showDps"] = !next[which === "dsp" ? "showDsp" : "showDps"];
+    if(!next.showDsp && !next.showDps) return; // alespoň jedna část musí zůstat zapnutá
+    setState(next);
+  });
+
   const commentInput = document.getElementById('q-comment-input');
   if(commentInput){
     commentInput.addEventListener('input', () => { state.answers[commentAnswerKey(q)] = commentInput.value; });
   }
-  const dpsInput = document.getElementById('q-dps-input');
-  if(dpsInput){
-    dpsInput.addEventListener('input', () => { state.answers[dpsAnswerKey(q)] = dpsInput.value; });
-  }
+  document.querySelectorAll('[data-dps-idx]').forEach(el => {
+    el.addEventListener('input', () => { state.answers[dpsAnswerKey(q, +el.getAttribute('data-dps-idx'))] = el.value; });
+  });
 
   document.querySelectorAll('.opt-info').forEach(el => el.onclick = (e) => e.stopPropagation());
 
@@ -1879,8 +1928,16 @@ function questionCardTemplate(q, i){
         <input type="text" data-field="hint" data-idx="${i}" value="${escapeAttr(q.hint||'')}">
       </div>
       ${state.adminSection === "questions-dsp" ? `<div class="field-row">
-        <label class="field-label">Nadpis sekce DPS (podrobnosti pro provádění)</label>
-        <input type="text" data-field="dpsLabel" data-idx="${i}" placeholder="Podrobnosti" value="${escapeAttr(q.dpsLabel||'')}">
+        <label class="field-label">Zobrazení otázky</label>
+        <select data-field="phases" data-idx="${i}">
+          <option value="both" ${questionPhaseMode(q)==='both'?'selected':''}>DSP i DPS</option>
+          <option value="dsp" ${questionPhaseMode(q)==='dsp'?'selected':''}>Pouze DSP</option>
+          <option value="dps" ${questionPhaseMode(q)==='dps'?'selected':''}>Pouze DPS</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Podsekce DPS (oddělené čárkou, např. Ovládání, Automatika; prázdné = jedno pole)</label>
+        <input type="text" data-field="dpsFields" data-idx="${i}" placeholder="Ovládání, Automatika" value="${escapeAttr((q.dpsFields||[]).join(', '))}">
       </div>` : ""}
       <div class="field-row">
         <label class="field-label">Typ otázky</label>
@@ -1971,14 +2028,15 @@ function bindAdmin(){
       if(field === "type"){
         const newType = el.value;
         const preserved = blankQuestion(newType);
-        state.adminQuestions[i] = { ...preserved, id: q.id, title: q.title, short: q.short, hint: q.hint, dpsLabel: q.dpsLabel };
+        state.adminQuestions[i] = { ...preserved, id: q.id, title: q.title, short: q.short, hint: q.hint, dpsFields: q.dpsFields, phases: q.phases };
         render();
         return;
       }
       if(field === "title") q.title = el.value;
       else if(field === "short") q.short = el.value;
       else if(field === "hint") q.hint = el.value;
-      else if(field === "dpsLabel") q.dpsLabel = el.value;
+      else if(field === "phases") q.phases = el.value;
+      else if(field === "dpsFields") q.dpsFields = el.value.split(",").map(x => x.trim()).filter(Boolean);
       else if(field === "placeholder") q.placeholder = el.value;
       else if(field === "imgA-url"){ q.imageA = q.imageA || {}; q.imageA.url = el.value; }
       else if(field === "imgA-label"){ q.imageA = q.imageA || {}; q.imageA.label = el.value; }
