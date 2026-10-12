@@ -187,6 +187,9 @@
       "Využití dešťových vod na zálivku a splachování",
       "V projektu se nevyskytuje",
       "Jiná preference"
+    ],
+    "dpsFields": [
+      "Ostatní detaily a poznámky"
     ]
   },
   {
@@ -215,6 +218,9 @@
       "Krb, kamna",
       "Elektrokotel, bojler",
       "Jiná preference"
+    ],
+    "dpsFields": [
+      "Ostatní detaily a poznámky"
     ]
   },
   {
@@ -229,6 +235,10 @@
       "Požadavek na lokální ovládání vytápění termostatem v každé místnosti",
       "Požadavek na centrální ovládání vytápění termostatem na patře",
       "Jiná preference"
+    ],
+    "dpsFields": [
+      "Ovládání topení (termostaty, aplikace, chytrá domácnost, rozdělovač)",
+      "Ostatní detaily a poznámky"
     ]
   },
   {
@@ -245,6 +255,9 @@
       "Fotovoltaika",
       "Solární panely",
       "Jiná preference"
+    ],
+    "dpsFields": [
+      "Ostatní detaily a poznámky"
     ]
   },
   {
