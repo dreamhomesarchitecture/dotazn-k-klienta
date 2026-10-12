@@ -1,0 +1,339 @@
+[
+  {
+    "id": "dsp_svisle",
+    "type": "multi-choice",
+    "title": "Jaký je váš preferovaný systém svislých konstrukcí?",
+    "short": "Svislé konstrukce",
+    "hint": "",
+    "options": [
+      "Keramické tvárnice (Porotherm, Heluz)",
+      "Vápenopískové tvárnice (KM BETA, Silka)",
+      "Pórobetonové tvárnice (Ytong, Porfix)",
+      "Dřevěné konstrukce",
+      "Betonová konstrukce",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_vodorovne",
+    "type": "multi-choice",
+    "title": "Jaký je váš preferovaný systém vodorovných konstrukcí?",
+    "short": "Vodorovné konstrukce",
+    "hint": "",
+    "options": [
+      "Skládané konstrukce stropu (systém dle druhu zdícího systému – Porotherm, Heluz…)",
+      "Dřevěné stropy (trámové…)",
+      "Prefabrikované betonové stropy (předpjaté stropní panely Spiroll, filigrán…)",
+      "Monolitické betonové stropy",
+      "Kombinace",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_zatepleni_svisle",
+    "type": "multi-choice",
+    "title": "Jaké je vaše preferované zateplení svislých konstrukcí?",
+    "short": "Zateplení svislých konstrukcí",
+    "hint": "",
+    "options": [
+      "Kontaktní zateplovací systém – polystyren (ETICS systém)",
+      "Kontaktní zateplovací systém minerální – minerální vata (ETICS systém)",
+      "Cihla pro jednovrstvé zdivo vyplněná tepelněizolačním materiálem (minerální vatou / polystyrenem)",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_zatepleni_strecha",
+    "type": "multi-choice",
+    "title": "Jaké je vaše preferované zateplení střešních konstrukcí?",
+    "short": "Zateplení šikmých střešních konstrukcí",
+    "hint": "",
+    "options": [
+      "Stříkaná izolace – při provedení mezikrokevního a podkrokevního zateplení (PUR pěny…)",
+      "Vkládaná izolace – při provedení mezikrokevního a podkrokevního zateplení (minerální vata, kombinace…)",
+      "Nadkrokevní zateplení (PIR desky, vaty…)",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_krytina_sikma",
+    "type": "multi-choice",
+    "title": "Jaká je vaše preferovaná střešní krytina šikmé střechy?",
+    "short": "Krytina šikmé střechy",
+    "hint": "",
+    "options": [
+      "Pálená střešní krytina",
+      "Betonová střešní krytina",
+      "Šindelová střešní krytina",
+      "Plechová střešní krytina",
+      "Břidlicová střešní krytina",
+      "Vegetační povrch šikmé střechy",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_povrch_plocha",
+    "type": "multi-choice",
+    "title": "Jaký je váš preferovaný povrch ploché střechy?",
+    "short": "Povrch ploché střechy",
+    "hint": "",
+    "options": [
+      "Vegetační povrch ploché střechy (extenzivní, intenzivní…)",
+      "Viditelná hlavní hydroizolační vrstva (PVC, asfaltové pásy…)",
+      "Zatěžovací vrstva z praného říčního kameniva",
+      "Pochozí vrstva ploché střechy (betonové dlažby, dřevěné prkna…)",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_stineni",
+    "dpsFields": [
+      "Ovládání (tlačítko v místnosti",
+      "aplikace",
+      "tlačítko a aplikace",
+      "chytrá domácnost)",
+      "Automatika (noc",
+      "vítr",
+      "chytrá domácnost)"
+    ],
+    "type": "multi-choice",
+    "title": "Jaké je vaše preferované stínění objektu?",
+    "short": "Stínění objektu",
+    "hint": "Ovládání (tlačítko v místnosti, aplikace, tlačítko i aplikace, chytrá domácnost), Automatika (vítr, tma, světlo, slunce, chytrá domácnost)",
+    "options": [
+      "Venkovní screenové rolety",
+      "Venkovní žaluzie (tvar Z, C…)",
+      "Vnitřní žaluzie",
+      "Vnitřní rolety",
+      "Nechci řešit stínění",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_podlahy",
+    "type": "multi-choice",
+    "title": "Jaký preferujete typ podlah?",
+    "short": "Typ podlah",
+    "hint": "",
+    "options": [
+      "Dřevěná",
+      "Vinylová",
+      "Laminátová",
+      "Keramická",
+      "Epoxidová stěrka",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_schodiste",
+    "type": "multi-choice",
+    "title": "Jaký preferujete typ schodiště?",
+    "short": "Typ schodiště",
+    "hint": "",
+    "options": [
+      "Dřevěné",
+      "Monolitické",
+      "Kombinace dřeva a kovu",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_okna",
+    "type": "multi-choice",
+    "title": "Jaká je vaše preference u oken?",
+    "short": "Okna",
+    "hint": "",
+    "options": [
+      "Hliníkové",
+      "Dřevohliníkové",
+      "Dřevěné",
+      "Plastové",
+      "Kompozitní",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_studna",
+    "type": "multi-choice",
+    "title": "Jaká je vaše preference u studny?",
+    "short": "Studna",
+    "hint": "",
+    "options": [
+      "Požadavek na povolení studny",
+      "Využití studniční vody pouze čerpadlem na zálivku",
+      "Využití studniční vody na zálivku přes domácí rozvod",
+      "Využití na zálivku a splachování",
+      "Studnu nebudeme řešit",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_destove_vody",
+    "type": "multi-choice",
+    "title": "Jaká je vaše preference u dešťových vod?",
+    "short": "Dešťové vody",
+    "hint": "",
+    "options": [
+      "Pouze retence dešťové vody a následný vsak",
+      "Využití dešťových vod pouze čerpadlem na zálivku",
+      "Využití dešťových vod na zálivku přes domácí rozvod",
+      "Využití dešťových vod na zálivku a splachování",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_vnitrni_rozvody",
+    "type": "multi-choice",
+    "title": "Jaká je vaše preference u vnitřních rozvodů?",
+    "short": "Vnitřní rozvody",
+    "hint": "",
+    "options": [
+      "Zpětné využití šedých vod",
+      "Požadavek na cirkulaci teplé vody",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_vytapeni_zdroj",
+    "type": "multi-choice",
+    "title": "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)",
+    "short": "Primární zdroj vytápění",
+    "hint": "",
+    "options": [
+      "Plynový kondenzační kotel",
+      "Kotel na tuhá paliva (dřevo, pelety, biomasa…)",
+      "Vytápění tepelným čerpadlem vzduch/voda",
+      "Vytápění tepelným čerpadlem země/voda (geotermální vrty)",
+      "Krb, kamna",
+      "Elektrokotel, bojler",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_vytapeni_typ",
+    "type": "multi-choice",
+    "title": "Jaké je vaše preferované vytápění?",
+    "short": "Preferované vytápění",
+    "hint": "",
+    "options": [
+      "Podlahové vytápění (teplovodní, elektrické rohože…)",
+      "Otopná tělesa (radiátory, konvektor, otopné žebříky s el. patronou v koupelnách…)",
+      "Požadavek na lokální ovládání vytápění termostatem v každé místnosti",
+      "Požadavek na centrální ovládání vytápění termostatem na patře",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_elektro",
+    "type": "multi-choice",
+    "title": "Jaká je vaše preference u elektroinstalace a komunikace?",
+    "short": "Elektroinstalace a komunikace",
+    "hint": "",
+    "options": [
+      "Chytrá domácnost (Loxone, KNX a jiné)",
+      "Klasické ovládání domácnosti",
+      "Zabezpečovací systémy (kamery, alarmy atd.)",
+      "Napájení pro el. automobil",
+      "Fotovoltaika",
+      "Solární panely",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_vetrani",
+    "type": "multi-choice",
+    "title": "Jaké je vaše preferované větrání?",
+    "short": "Větrání",
+    "hint": "",
+    "options": [
+      "Přirozené větrání pomocí otevíratelných oken",
+      "Řízené větrání pomocí rekuperační jednotky",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_chlazeni",
+    "type": "multi-choice",
+    "title": "Jaké je vaše preferované chlazení?",
+    "short": "Chlazení",
+    "hint": "",
+    "options": [
+      "Chlazení klimatizací",
+      "Chlazení pomocí rekuperace",
+      "Chladící stropy",
+      "Tepelné čerpadlo země / voda",
+      "Nechci objekt chladit",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_ostatni_technologie",
+    "type": "multi-choice",
+    "title": "Máte zájem o některou z ostatních technologií?",
+    "short": "Ostatní technologie",
+    "hint": "",
+    "options": [
+      "Sauna (parní, finská…)",
+      "Bazén (venkovní, interiérový, vířivka…)",
+      "Biotop",
+      "V projektu se nevyskytuje",
+      "Jiná preference"
+    ]
+  },
+  {
+    "id": "dsp_ostatni_agenda",
+    "type": "status-list",
+    "title": "Potřebujete zajistit některou z následujících agend?",
+    "short": "Ostatní agenda",
+    "hint": "U každého bodu vyberte, jak na tom jste.",
+    "items": [
+      {
+        "id": "psvc18h",
+        "label": "Hydrogeologie"
+      },
+      {
+        "id": "xnom1t1",
+        "label": "Inženýrský průzkum"
+      },
+      {
+        "id": "kmc6x7q",
+        "label": "Radon"
+      },
+      {
+        "id": "44hdxm8",
+        "label": "Zaměření pozemku"
+      },
+      {
+        "id": "o642kvp",
+        "label": "Plná moc",
+        "download": {
+          "url": "https://docs.google.com/document/d/1Joo50MrCNI0wk6TqiZMLsuXDkablzZ-2/export?format=docx",
+          "label": "Stáhnout vzor"
+        }
+      }
+    ],
+    "statusOptions": [
+      {
+        "key": "zajistit",
+        "label": "Ano, chci zajistit"
+      },
+      {
+        "key": "sam",
+        "label": "Ne, zajistím sám"
+      },
+      {
+        "key": "zpracovane",
+        "label": "Je zpracované"
+      }
+    ]
+  }
+]
