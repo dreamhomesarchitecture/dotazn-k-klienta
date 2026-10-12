@@ -77,6 +77,8 @@
   .resp-table-wrap{ overflow-x:auto; }
   .resp-table{ width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
   .resp-table th{ text-align:left; padding:6px 6px; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--soft); border-bottom:1.5px solid var(--line); }
+  .sort-btn{ background:none; border:none; padding:0; margin:0; font:inherit; letter-spacing:inherit; text-transform:inherit; color:inherit; cursor:pointer; text-align:left; }
+  .sort-btn:hover, .sort-btn.active{ color: var(--ink); }
   .resp-table td{ padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:middle; overflow-wrap:break-word; }
   .resp-table td.price{ color: var(--tan); font-weight:700; white-space:nowrap; }
   .resp-edit-input{ width:100%; border:1px solid transparent; background:transparent; padding:3px 5px; margin:-3px -5px; font-family:inherit; font-size:inherit; color:inherit; border-radius:6px; }
@@ -612,6 +614,7 @@ let state = {
   questionnaireType: null,
   lockedType: false,
   editingKey: null,
+  respSort: { field: "date", dir: "desc" },
   showDsp: true,
   showDps: false,
   adminQuestions: null,
@@ -1780,7 +1783,19 @@ function adminTemplate(){
   }
 
   const respType = state.adminSection.slice("responses-".length);
-  const filteredResponses = state.responses === null ? null : state.responses.filter(it => (it.questionnaireType || "dotaznik") === respType);
+  let filteredResponses = state.responses === null ? null : state.responses.filter(it => (it.questionnaireType || "dotaznik") === respType);
+  if(filteredResponses){
+    const { field, dir } = state.respSort;
+    const sign = dir === "asc" ? 1 : -1;
+    filteredResponses = filteredResponses.slice().sort((a, b) => field === "name"
+      ? sign * (a.clientName || "").localeCompare(b.clientName || "", "cs", { numeric: true, sensitivity: "base" })
+      : sign * (new Date(a.submittedAt || 0) - new Date(b.submittedAt || 0)));
+  }
+  const sortTh = (field, label, cls) => {
+    const active = state.respSort.field === field;
+    const arrow = active ? (state.respSort.dir === "asc" ? " ↑" : " ↓") : "";
+    return `<th class="${cls || ""}"><button type="button" class="sort-btn ${active ? 'active' : ''}" data-sort-field="${field}">${label}${arrow}</button></th>`;
+  };
 
   const respSimple = respType === "dsp";
   const nameLabel = respType === "dsp" ? "Číslo projektu" : "Jméno";
@@ -1793,9 +1808,9 @@ function adminTemplate(){
         <div class="resp-table-wrap">
           <table class="resp-table">
             <thead><tr>
-              <th>${nameLabel}</th>
+              ${sortTh('name', nameLabel, '')}
               ${respSimple ? "" : `<th>Místo stavby</th>`}
-              <th class="nowrap">Datum</th>
+              ${sortTh('date', 'Datum', 'nowrap')}
               ${respSimple ? "" : `<th class="nowrap" title="Hrubá podlažní plocha">Plocha</th><th class="nowrap">Cena domu</th>`}
               <th class="col-actions"></th>
               <th class="col-actions"></th>
@@ -1985,6 +2000,12 @@ function bindAdmin(){
     input.focus();
     return;
   }
+
+  document.querySelectorAll('[data-sort-field]').forEach(b => b.onclick = () => {
+    const field = b.getAttribute('data-sort-field');
+    const cur = state.respSort;
+    setState({ respSort: cur.field === field ? { field, dir: cur.dir === "asc" ? "desc" : "asc" } : { field, dir: field === "name" ? "asc" : "desc" } });
+  });
 
   const logoutBtn = document.getElementById('admin-logout');
   if(logoutBtn) logoutBtn.onclick = () => { setAdminRemembered(false); setState({ adminUnlocked:false, responses:null }); };
