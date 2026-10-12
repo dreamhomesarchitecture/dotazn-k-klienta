@@ -54,7 +54,9 @@
       "title": "Jaké je vaše preferované stínění objektu?",
       "short": "Stínění objektu",
       "type": "multi-choice",
-      "value": "Venkovní žaluzie (tvar Z, C…)"
+      "value": "Venkovní žaluzie (tvar Z, C…)",
+      "dps": "- ovládání pomocí tlačítek a přes mobilní aplikaci",
+      "dpsLabel": "Ovládání"
     },
     {
       "id": "dsp_podlahy",
