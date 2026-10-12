@@ -357,5 +357,17 @@
         "label": "Je zpracované"
       }
     ]
+  },
+  {
+    "id": "q_fd3dfvu",
+    "title": "Jaké bude oplocení na hranici pozemku. ",
+    "short": "Oplocení ",
+    "hint": "",
+    "type": "text",
+    "placeholder": "",
+    "dpsFields": [
+      "Oplocení na hranici pozemku, pouze návrh alternativně projekt)",
+      "Ostatní detaily a poznámky"
+    ]
   }
 ]
