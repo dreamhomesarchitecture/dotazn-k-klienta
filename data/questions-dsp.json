@@ -94,18 +94,13 @@
   {
     "id": "dsp_stineni",
     "dpsFields": [
-      "Ovládání (tlačítko v místnosti",
-      "aplikace",
-      "tlačítko a aplikace",
-      "chytrá domácnost)",
-      "Automatika (noc",
-      "vítr",
-      "chytrá domácnost)"
+      "Ovládání (tlačítko v místnosti, aplikace, tlačítko i aplikace, chytrá domácnost)",
+      "Automatika (vítr, tma, světlo, slunce, chytrá domácnost)"
     ],
     "type": "multi-choice",
     "title": "Jaké je vaše preferované stínění objektu?",
     "short": "Stínění objektu",
-    "hint": "Ovládání (tlačítko v místnosti, aplikace, tlačítko i aplikace, chytrá domácnost), Automatika (vítr, tma, světlo, slunce, chytrá domácnost)",
+    "hint": "",
     "options": [
       "Venkovní screenové rolety",
       "Venkovní žaluzie (tvar Z, C…)",
