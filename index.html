@@ -699,7 +699,10 @@ function questionPhases(q){
   if(!dsp && !dps){ dsp = mode !== "dps"; dps = mode !== "dsp"; }
   return { dsp, dps };
 }
-function dpsFieldsFor(q){ return Array.isArray(q.dpsFields) && q.dpsFields.length ? q.dpsFields : [""]; }
+function dpsFieldsFor(q){
+  const named = Array.isArray(q.dpsFields) ? q.dpsFields.map(f => (f || "").trim()).filter(Boolean) : [];
+  return named.length ? named : [""];
+}
 function dpsAnswerKey(q, idx){ return q.id + "__dps" + (idx || 0); }
 function dpsNotesForStorage(q){
   if(questionPhaseMode(q) === "dsp") return [];
@@ -1936,8 +1939,13 @@ function questionCardTemplate(q, i){
         </select>
       </div>
       <div class="field-row">
-        <label class="field-label">Podsekce DPS (oddělené čárkou, např. Ovládání, Automatika; prázdné = jedno pole)</label>
-        <input type="text" data-field="dpsFields" data-idx="${i}" placeholder="Ovládání, Automatika" value="${escapeAttr((q.dpsFields||[]).join(', '))}">
+        <label class="field-label">Podsekce DPS (bez podsekcí se zobrazí jedno pole pro poznámku)</label>
+        ${(q.dpsFields||[]).map((f, fi) => `
+          <div class="opt-row">
+            <input type="text" data-dps-field-idx="${fi}" data-idx="${i}" placeholder="Název podsekce" value="${escapeAttr(f)}">
+            <button class="icon-btn" data-remove-dps-field="${fi}" data-idx="${i}">×</button>
+          </div>`).join("")}
+        <button class="btn btn-outline btn-small" data-add-dps-field="${i}">+ Přidat podsekci</button>
       </div>` : ""}
       <div class="field-row">
         <label class="field-label">Typ otázky</label>
@@ -2036,7 +2044,6 @@ function bindAdmin(){
       else if(field === "short") q.short = el.value;
       else if(field === "hint") q.hint = el.value;
       else if(field === "phases") q.phases = el.value;
-      else if(field === "dpsFields") q.dpsFields = el.value.split(",").map(x => x.trim()).filter(Boolean);
       else if(field === "placeholder") q.placeholder = el.value;
       else if(field === "imgA-url"){ q.imageA = q.imageA || {}; q.imageA.url = el.value; }
       else if(field === "imgA-label"){ q.imageA = q.imageA || {}; q.imageA.label = el.value; }
@@ -2060,6 +2067,23 @@ function bindAdmin(){
       };
       reader.readAsDataURL(file);
     });
+  });
+
+  document.querySelectorAll('[data-dps-field-idx]').forEach(el => {
+    el.addEventListener('input', () => {
+      const i = +el.getAttribute('data-idx');
+      state.adminQuestions[i].dpsFields[+el.getAttribute('data-dps-field-idx')] = el.value;
+    });
+  });
+  document.querySelectorAll('[data-add-dps-field]').forEach(b => b.onclick = () => {
+    const q = state.adminQuestions[+b.getAttribute('data-add-dps-field')];
+    q.dpsFields = (q.dpsFields || []).concat("Nová podsekce");
+    render();
+  });
+  document.querySelectorAll('[data-remove-dps-field]').forEach(b => b.onclick = () => {
+    const q = state.adminQuestions[+b.getAttribute('data-idx')];
+    q.dpsFields.splice(+b.getAttribute('data-remove-dps-field'), 1);
+    render();
   });
 
   document.querySelectorAll('[data-opt-idx]').forEach(el => {
