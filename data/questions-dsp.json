@@ -257,6 +257,11 @@
       "Přirozené větrání pomocí otevíratelných oken",
       "Řízené větrání pomocí rekuperační jednotky",
       "Jiná preference"
+    ],
+    "dpsFields": [
+      "Rekuperace (centrální, zónová, decentrální)",
+      "Ovládání rekuperace (pouze bost tlačítka, ovládání přes aplikaci, CO2)",
+      "Ostatní detaily a poznámky"
     ]
   },
   {
@@ -274,8 +279,9 @@
       "Jiná preference"
     ],
     "dpsFields": [
-      "",
-      "Chlazení klimatizací (multisplit, splitové jednotky)"
+      "Chlazení klimatizací (multisplit, splitové jednotky, vnitřní jednotky viditelné, skryté)",
+      "Ovládání (termostaty, dálkové ovládání, chytrá domácnost)",
+      "Ostatní detaily a poznámky"
     ]
   },
   {
