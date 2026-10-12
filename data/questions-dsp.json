@@ -272,6 +272,10 @@
       "Tepelné čerpadlo země / voda",
       "Nechci objekt chladit",
       "Jiná preference"
+    ],
+    "dpsFields": [
+      "",
+      "Chlazení klimatizací (multisplit, splitové jednotky)"
     ]
   },
   {
