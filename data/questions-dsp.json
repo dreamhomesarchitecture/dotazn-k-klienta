@@ -368,6 +368,7 @@
     "dpsFields": [
       "Oplocení na hranici pozemku, pouze návrh alternativně projekt)",
       "Ostatní detaily a poznámky"
-    ]
+    ],
+    "phases": "dps"
   }
 ]
