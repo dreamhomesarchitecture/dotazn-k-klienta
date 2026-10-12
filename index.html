@@ -47,7 +47,7 @@
   .brand{ display:flex; align-items:center; cursor:pointer; }
   .brand:hover{ opacity:.75; }
   .brand img{ height:75px; width:auto; display:block; }
-  .brand-logo{ display:block; height:75px; aspect-ratio:500/278; background:var(--sage); -webkit-mask:var(--logo) center/contain no-repeat; mask:var(--logo) center/contain no-repeat; }
+  .brand-logo{ display:block; height:75px; aspect-ratio:500/278; background:var(--ink); -webkit-mask:var(--logo) center/contain no-repeat; mask:var(--logo) center/contain no-repeat; }
   .topbar-right{ display:flex; align-items:center; gap:14px; }
   .nav-links{ display:flex; gap:26px; }
   .nav-links button{
@@ -156,19 +156,27 @@
   .opt-info:hover .opt-info-tip{ display:block; }
   .opt-info-tip::after{ content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color: var(--ink); }
 
-  .qtype-grid{ display:flex; flex-wrap:wrap; justify-content:center; gap:32px; max-width:560px; margin:8px auto 0; }
+  .app.app-select{ max-width: 1180px; }
+  .qtype-layout{ display:flex; align-items:center; justify-content:space-between; gap:40px; min-height:52vh; }
+  .qtype-heading{ flex:1 1 0; min-width:0; margin:0; text-align:left; font-weight:900; font-size:clamp(40px, 6vw, 88px); line-height:1.02; letter-spacing:-0.02em; }
+  .qtype-accent{ color: var(--sage); }
+  .qtype-grid{ flex:none; display:flex; justify-content:flex-end; gap:8px; }
   .qtype-card{
-    display:flex; flex-direction:column; align-items:center; gap:16px;
-    width:150px; padding:18px 10px; border:none; background:transparent;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    width:104px; padding:10px 6px; border:none; background:transparent;
     cursor:pointer; color: var(--ink);
   }
-  .qtype-icon{ width:84px; height:84px; color: var(--soft); transition: color .15s; }
+  .qtype-icon{ width:48px; height:48px; color: var(--soft); transition: color .15s; }
   .qtype-card:hover .qtype-icon, .qtype-card:focus-visible .qtype-icon{ color: var(--sage); }
-  .qtype-label{ font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; line-height:1.4; text-align:center; }
+  .qtype-label{ font-size:9.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; line-height:1.4; text-align:center; }
+  @media (max-width:900px){
+    .qtype-layout{ flex-direction:column; align-items:flex-start; gap:28px; min-height:0; }
+    .qtype-heading{ font-size:clamp(36px, 11vw, 64px); }
+    .qtype-grid{ justify-content:flex-start; }
+  }
   @media (max-width:520px){
-    .qtype-grid{ gap:20px; }
-    .qtype-card{ width:120px; }
-    .qtype-icon{ width:68px; height:68px; }
+    .qtype-grid{ gap:4px; }
+    .qtype-card{ width:96px; }
   }
 
   .image-pair{ display:flex; gap:14px; }
@@ -1192,6 +1200,7 @@ function render(){
   if(!ADMIN_ACCESS && state.tab === "admin") state.tab = "form";
   const app = document.getElementById('app');
   app.classList.toggle('app-admin', state.tab === "admin");
+  app.classList.toggle('app-select', state.tab === "form" && state.formView === "select");
   const showCounter = state.tab === "form" && state.formView === "question";
   app.innerHTML = `
     <div class="topbar">
@@ -1257,9 +1266,8 @@ function formTemplate(){
 function selectTemplate(){
   return `
     <div class="sheet">
-      <div class="intro">
-        <div class="q-title" style="text-align:center;">Který dotazník vyplňujete?</div>
-        <p>Vyberte typ dotazníku, kterým chcete projekt zahájit.</p>
+      <div class="qtype-layout">
+        <h1 class="qtype-heading">Vyberte dotazník, kterým chcete <span class="qtype-accent">projekt</span> zahájit.</h1>
         <div class="qtype-grid">
           ${QUESTIONNAIRE_TYPES.map(t => `
           <button class="qtype-card" data-qtype="${escapeAttr(t.key)}">
