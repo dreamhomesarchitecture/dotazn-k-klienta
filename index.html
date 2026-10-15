@@ -1617,12 +1617,15 @@ function bindForm(){
 
   document.querySelectorAll('.opt-info').forEach(el => el.onclick = (e) => e.stopPropagation());
 
-  if(q.type === "text"){
+  // Pokud je část DSP u otázky skrytá, tělo otázky se nevykreslí, a tak se na něj nesmí vázat obsluha.
+  const bodyShown = questionPhases(q).dsp;
+
+  if(q.type === "text" && bodyShown){
     const input = document.getElementById('q-input');
     input.addEventListener('input', () => { state.answers[q.id] = input.value; nextBtn.disabled = !questionAnswered(q); });
     input.focus();
   }
-  if(q.type === "choice"){
+  if(q.type === "choice" && bodyShown){
     document.querySelectorAll('.choice-btn').forEach(btn => btn.onclick = () => { state.answers[q.id] = btn.getAttribute('data-opt'); render(); });
     const otherInput = document.getElementById('q-other-input');
     if(otherInput){
@@ -1631,7 +1634,7 @@ function bindForm(){
       otherInput.setSelectionRange(otherInput.value.length, otherInput.value.length);
     }
   }
-  if(q.type === "multi-choice"){
+  if(q.type === "multi-choice" && bodyShown){
     document.querySelectorAll('.choice-btn').forEach(btn => btn.onclick = () => {
       const opt = btn.getAttribute('data-opt');
       const arr = Array.isArray(state.answers[q.id]) ? state.answers[q.id].slice() : [];
@@ -1647,10 +1650,10 @@ function bindForm(){
       otherInput.setSelectionRange(otherInput.value.length, otherInput.value.length);
     }
   }
-  if(q.type === "image-choice"){
+  if(q.type === "image-choice" && bodyShown){
     document.querySelectorAll('.image-opt').forEach(el => el.onclick = () => { state.answers[q.id] = el.getAttribute('data-choice'); render(); });
   }
-  if(q.type === "rooms"){
+  if(q.type === "rooms" && bodyShown){
     state.answers[q.id] = state.answers[q.id] || { predefined: {}, custom: [] };
     const ansBucket = state.answers[q.id];
     ansBucket.predefined = ansBucket.predefined || {};
@@ -1707,7 +1710,7 @@ function bindForm(){
       render();
     };
   }
-  if(q.type === "status-list"){
+  if(q.type === "status-list" && bodyShown){
     state.answers[q.id] = state.answers[q.id] || {};
     const ansBucket = state.answers[q.id];
     document.querySelectorAll('[data-status-item]').forEach(btn => {
