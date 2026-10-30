@@ -122,6 +122,11 @@
   .q-comment{ margin-top:22px; padding-top:18px; border-top:1px solid var(--line); }
   .q-comment-label{ display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color: var(--soft); margin-bottom:8px; }
   .q-comment-input{ min-height:64px; }
+  .q-jump{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px; }
+  .q-jump-btn{ min-width:32px; height:32px; padding:0 8px; border-radius:8px; border:1.5px solid var(--sage); background: var(--sage-tint); color: var(--ink); font:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+  .q-jump-btn.empty{ border-color: var(--line); background:#fff; color: var(--soft); }
+  .q-jump-btn.current{ background: var(--ink); border-color: var(--ink); color:#fff; }
+  .q-jump-btn:hover{ border-color: var(--ink); }
   .phase-toggles{ display:flex; gap:10px; margin-bottom:22px; }
   .phase-toggle{ display:inline-flex; align-items:center; gap:8px; padding:7px 16px 7px 10px; border-radius:999px; border:1.5px solid var(--line); background:#fff; color: var(--soft); font:inherit; font-size:11px; font-weight:800; letter-spacing:.08em; cursor:pointer; transition: border-color .15s, color .15s, background .15s; }
   .phase-toggle:hover{ border-color: var(--ink); }
@@ -1492,6 +1497,10 @@ function questionTemplate(){
         <button type="button" class="phase-toggle ${state.showDsp?'on':''}" data-phase-toggle="dsp" aria-pressed="${state.showDsp}"><span class="phase-toggle-dot"></span>DSP</button>
         <button type="button" class="phase-toggle ${state.showDps?'on':''}" data-phase-toggle="dps" aria-pressed="${state.showDps}"><span class="phase-toggle-dot"></span>DPS</button>
       </div>` : ""}
+      ${state.editingKey && state.adminUnlocked ? `
+      <div class="q-jump" aria-label="Přejít na otázku">
+        ${state.questions.map((jq, ji) => `<button type="button" class="q-jump-btn ${ji===state.step?'current':''} ${questionAnswered(jq)?'':'empty'}" data-jump="${ji}" title="${escapeAttr(jq.short || jq.title)}">${ji+1}</button>`).join("")}
+      </div>` : ""}
       <div class="eyebrow">Otázka <b>${state.step+1}</b> z ${total}</div>
       <div class="q-title">${escapeHtml(q.title)}</div>
       ${q.hint ? `<div class="q-hint">${escapeHtml(q.hint)}</div>` : ""}
@@ -1512,6 +1521,7 @@ function questionTemplate(){
       </div>`).join("")}` : ""}
       <div class="nav-row">
         <button class="circle-btn" id="back-btn" aria-label="${state.step===0 ? 'Zpět na úvod' : 'Zpět'}">←</button>
+        ${state.editingKey && state.adminUnlocked && !isLast ? `<button class="btn btn-outline" id="save-now-btn" ${state.submitting?'disabled':''}>${state.submitting ? 'Ukládám…' : 'Uložit změny'}</button>` : ""}
         ${isLast
           ? `<button class="btn btn-primary" id="next-btn" ${answered?'':'disabled'}>${state.submitting ? 'Ukládám…' : (state.editingKey ? 'Uložit změny' : 'Odeslat odpovědi')}</button>`
           : `<button class="circle-btn filled" id="next-btn" aria-label="Další" ${answered?'':'disabled'}>→</button>`}
@@ -1604,6 +1614,10 @@ function bindForm(){
     if(state.step === 0) goHome();
     else setState({ step: Math.max(0, state.step-1) });
   };
+
+  document.querySelectorAll('[data-jump]').forEach(b => b.onclick = () => setState({ step: +b.getAttribute('data-jump') }));
+  const saveNowBtn = document.getElementById('save-now-btn');
+  if(saveNowBtn) saveNowBtn.onclick = () => { if(!state.submitting) saveEditedResponse(); };
 
   document.querySelectorAll('[data-phase-toggle]').forEach(btn => btn.onclick = () => {
     const which = btn.getAttribute('data-phase-toggle');
