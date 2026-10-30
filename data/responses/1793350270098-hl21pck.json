@@ -81,6 +81,19 @@
       ]
     },
     {
+      "id": "q_y5mlucd",
+      "title": "Jaká bude vnitřní omítka?",
+      "short": "Vnitřní omítka",
+      "type": "multi-choice",
+      "value": "",
+      "dps": [
+        {
+          "label": "",
+          "note": "- vnitřní omítka hliněná ve všech prostorách kromě koupelny a technické místnosti"
+        }
+      ]
+    },
+    {
       "id": "dsp_schodiste",
       "title": "Jaký preferujete typ schodiště?",
       "short": "Typ schodiště",
@@ -136,19 +149,19 @@
       "value": "Využití dešťových vod pouze čerpadlem na zálivku"
     },
     {
-      "id": "dsp_vnitrni_rozvody",
-      "title": "Jaká je vaše preference u vnitřních rozvodů?",
-      "short": "Vnitřní rozvody",
-      "type": "multi-choice",
-      "value": "Jiná preference: bež požadavků"
-    },
-    {
       "id": "dsp_vytapeni_zdroj",
       "title": "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)",
       "short": "Primární zdroj vytápění",
       "type": "multi-choice",
       "value": "Vytápění tepelným čerpadlem vzduch/voda",
       "comment": "- umístění na střeše, pro každý objekt samostatné tepelné čerpadlo, v koupelně dotápěno žebříkem"
+    },
+    {
+      "id": "dsp_vnitrni_rozvody",
+      "title": "Jaká je vaše preference u vnitřních rozvodů?",
+      "short": "Vnitřní rozvody",
+      "type": "multi-choice",
+      "value": "Jiná preference: bež požadavků"
     },
     {
       "id": "dsp_vytapeni_typ",
@@ -246,13 +259,7 @@
       "title": "Jaké bude oplocení na hranici pozemku. ",
       "short": "Oplocení ",
       "type": "text",
-      "value": "",
-      "dps": [
-        {
-          "label": "Oplocení na hranici pozemku, pouze návrh alternativně projekt)",
-          "note": "- oplocení pomocí betonových stěn, které jsou následně omítnuty břízolitem a osazena cihlová hlava"
-        }
-      ]
+      "value": ""
     },
     {
       "id": "q_dlz4a3s",
