@@ -1,0 +1,262 @@
+{
+  "submittedAt": "2026-10-30T08:51:09.697Z",
+  "questionnaireType": "dsp",
+  "clientName": "223",
+  "clientBuildType": "",
+  "clientLocation": "",
+  "roomsTotalM2": null,
+  "roomsGrossM2": null,
+  "answers": [
+    {
+      "id": "dsp_svisle",
+      "title": "Jaký je váš preferovaný systém svislých konstrukcí?",
+      "short": "Svislé konstrukce",
+      "type": "multi-choice",
+      "value": "Keramické tvárnice (Porotherm, Heluz)",
+      "dps": [
+        {
+          "label": "",
+          "note": "- vnitřní příčky budou řešeny pomocí plné cihly pálené, která bude následně omítnuta, důvedem je tloušťka luxfer, které budou v horní části příček"
+        }
+      ]
+    },
+    {
+      "id": "dsp_vodorovne",
+      "title": "Jaký je váš preferovaný systém vodorovných konstrukcí?",
+      "short": "Vodorovné konstrukce",
+      "type": "multi-choice",
+      "value": "Monolitické betonové stropy"
+    },
+    {
+      "id": "dsp_zatepleni_svisle",
+      "title": "Jaké je vaše preferované zateplení svislých konstrukcí?",
+      "short": "Zateplení svislých konstrukcí",
+      "type": "multi-choice",
+      "value": "Kontaktní zateplovací systém minerální – minerální vata (ETICS systém)",
+      "dps": [
+        {
+          "label": "",
+          "note": "- soklové zdivo bude řešeno pomocí extrudovaného polystyrenu"
+        }
+      ]
+    },
+    {
+      "id": "dsp_zatepleni_strecha",
+      "title": "Jaké je vaše preferované zateplení střešních konstrukcí?",
+      "short": "Zateplení šikmých střešních konstrukcí",
+      "type": "multi-choice",
+      "value": "V projektu se nevyskytuje"
+    },
+    {
+      "id": "dsp_krytina_sikma",
+      "title": "Jaká je vaše preferovaná střešní krytina šikmé střechy?",
+      "short": "Krytina šikmé střechy",
+      "type": "multi-choice",
+      "value": "V projektu se nevyskytuje"
+    },
+    {
+      "id": "dsp_povrch_plocha",
+      "title": "Jaký je váš preferovaný povrch ploché střechy?",
+      "short": "Povrch ploché střechy",
+      "type": "multi-choice",
+      "value": "Vegetační povrch ploché střechy (extenzivní, intenzivní…)",
+      "dps": [
+        {
+          "label": "",
+          "note": "- extenzivní řešení vegetační střechy"
+        }
+      ]
+    },
+    {
+      "id": "dsp_podlahy",
+      "title": "Jaký preferujete typ podlah?",
+      "short": "Typ podlah",
+      "type": "multi-choice",
+      "value": "Jiná preference: leštěný beton",
+      "dps": [
+        {
+          "label": "",
+          "note": "leštěný beton ve všech místnostech, výjimku tvoří technická místnost a koupelna kde bude keramická dlažba"
+        }
+      ]
+    },
+    {
+      "id": "dsp_schodiste",
+      "title": "Jaký preferujete typ schodiště?",
+      "short": "Typ schodiště",
+      "type": "multi-choice",
+      "value": "V projektu se nevyskytuje"
+    },
+    {
+      "id": "dsp_okna",
+      "title": "Jaká je vaše preference oken?",
+      "short": "Okna",
+      "type": "multi-choice",
+      "value": "Hliníkové",
+      "dps": [
+        {
+          "label": "Bezpečnost (standard, RC1, RC2, magnety v oknech)",
+          "note": "- magnety v oknech, standardní bezpečnost"
+        },
+        {
+          "label": "Detaily (skryté panty, skryté rámy, čtečka otisku prstů, nulový práh, design line, vstupní dveře madlo vs koule)",
+          "note": "- skryté panky u oken, přiznané rámy, bez čtečky otisku prstů, nulový práh na vstupu a na HS portálu, design line na HS portálu, vstupní dveře madlo"
+        }
+      ]
+    },
+    {
+      "id": "dsp_stineni",
+      "title": "Jaké je vaše preferované stínění objektu?",
+      "short": "Stínění objektu",
+      "type": "multi-choice",
+      "value": "Venkovní žaluzie (tvar Z, C…)",
+      "dps": [
+        {
+          "label": "Ovládání (tlačítko v místnosti, aplikace, tlačítko i aplikace, chytrá domácnost)",
+          "note": "- tlačítko v místnosti"
+        },
+        {
+          "label": "Automatika (vítr, tma, světlo, slunce, chytrá domácnost)",
+          "note": "- vítr, tmas, světlo, slunce"
+        }
+      ]
+    },
+    {
+      "id": "dsp_studna",
+      "title": "Jaká je vaše preference u studny?",
+      "short": "Studna",
+      "type": "multi-choice",
+      "value": "Využití na zálivku a splachování"
+    },
+    {
+      "id": "dsp_destove_vody",
+      "title": "Jaká je vaše preference u dešťových vod?",
+      "short": "Dešťové vody",
+      "type": "multi-choice",
+      "value": "Využití dešťových vod pouze čerpadlem na zálivku"
+    },
+    {
+      "id": "dsp_vnitrni_rozvody",
+      "title": "Jaká je vaše preference u vnitřních rozvodů?",
+      "short": "Vnitřní rozvody",
+      "type": "multi-choice",
+      "value": "Jiná preference: bež požadavků"
+    },
+    {
+      "id": "dsp_vytapeni_zdroj",
+      "title": "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)",
+      "short": "Primární zdroj vytápění",
+      "type": "multi-choice",
+      "value": "Vytápění tepelným čerpadlem vzduch/voda",
+      "comment": "- umístění na střeše, pro každý objekt samostatné tepelné čerpadlo, v koupelně dotápěno žebříkem"
+    },
+    {
+      "id": "dsp_vytapeni_typ",
+      "title": "Jaké je vaše preferované vytápění?",
+      "short": "Preferované vytápění",
+      "type": "multi-choice",
+      "value": "Podlahové vytápění (teplovodní, elektrické rohože…); Požadavek na centrální ovládání vytápění termostatem na patře; Otopná tělesa (radiátory, konvektor, otopné žebříky s el. patronou v koupelnách…)",
+      "dps": [
+        {
+          "label": "Ovládání topení (termostaty, aplikace, chytrá domácnost, rozdělovač)",
+          "note": "- jeden termostat v referenční místnosti, rozdělovač v technické místnosti"
+        }
+      ]
+    },
+    {
+      "id": "dsp_elektro",
+      "title": "Jaká je vaše preference u elektroinstalace a komunikace?",
+      "short": "Elektroinstalace a komunikace",
+      "type": "multi-choice",
+      "value": "Klasické ovládání domácnosti"
+    },
+    {
+      "id": "dsp_vetrani",
+      "title": "Jaké je vaše preferované větrání?",
+      "short": "Větrání",
+      "type": "multi-choice",
+      "value": "Řízené větrání pomocí rekuperační jednotky",
+      "comment": "- rekuperace decentrální pro obytné místnosti",
+      "dps": [
+        {
+          "label": "Rekuperace (centrální, zónová, decentrální)",
+          "note": "decentrální"
+        },
+        {
+          "label": "Ovládání rekuperace (pouze bost tlačítka, ovládání přes aplikaci, CO2)",
+          "note": "boost tlačítka"
+        }
+      ]
+    },
+    {
+      "id": "dsp_chlazeni",
+      "title": "Jaké je vaše preferované chlazení?",
+      "short": "Chlazení",
+      "type": "multi-choice",
+      "value": "Nechci objekt chladit",
+      "dps": [
+        {
+          "label": "Chlazení klimatizací (multisplit, splitové jednotky, vnitřní jednotky viditelné, skryté)",
+          "note": "- bez klimatizace"
+        },
+        {
+          "label": "Ovládání (termostaty, dálkové ovládání, chytrá domácnost)",
+          "note": "- bez klimatizace"
+        }
+      ]
+    },
+    {
+      "id": "dsp_ostatni_technologie",
+      "title": "Máte zájem o některou z ostatních technologií?",
+      "short": "Ostatní technologie",
+      "type": "multi-choice",
+      "value": "V projektu se nevyskytuje"
+    },
+    {
+      "id": "dsp_ostatni_agenda",
+      "title": "Potřebujete zajistit některou z následujících agend?",
+      "short": "Ostatní agenda",
+      "type": "status-list",
+      "value": "Hydrogeologie: Je zpracované; Inženýrský průzkum: Je zpracované; Radon: Je zpracované; Zaměření pozemku: Je zpracované; Plná moc: Vzor ke stažení",
+      "detail": [
+        {
+          "label": "Hydrogeologie",
+          "statusLabel": "Je zpracované"
+        },
+        {
+          "label": "Inženýrský průzkum",
+          "statusLabel": "Je zpracované"
+        },
+        {
+          "label": "Radon",
+          "statusLabel": "Je zpracované"
+        },
+        {
+          "label": "Zaměření pozemku",
+          "statusLabel": "Je zpracované"
+        },
+        {
+          "label": "Plná moc",
+          "statusLabel": "Vzor ke stažení"
+        }
+      ]
+    },
+    {
+      "id": "q_fd3dfvu",
+      "title": "Jaké bude oplocení na hranici pozemku. ",
+      "short": "Oplocení ",
+      "type": "text",
+      "value": "",
+      "dps": [
+        {
+          "label": "Oplocení na hranici pozemku, pouze návrh alternativně projekt)",
+          "note": "- oplocení pomocí betonových stěn, které jsou následně omítnuty břízolitem a osazena cihlová hlava"
+        },
+        {
+          "label": "Ostatní detaily a poznámky",
+          "note": "- schodiště bude řešeno kartáčovaným betonem"
+        }
+      ]
+    }
+  ]
+}
