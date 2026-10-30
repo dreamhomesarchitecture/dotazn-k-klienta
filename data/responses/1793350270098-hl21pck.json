@@ -184,7 +184,7 @@
         },
         {
           "label": "Ovládání rekuperace (pouze bost tlačítka, ovládání přes aplikaci, CO2)",
-          "note": "boost tlačítka"
+          "note": "bost tlačítka"
         }
       ]
     },
@@ -251,10 +251,6 @@
         {
           "label": "Oplocení na hranici pozemku, pouze návrh alternativně projekt)",
           "note": "- oplocení pomocí betonových stěn, které jsou následně omítnuty břízolitem a osazena cihlová hlava"
-        },
-        {
-          "label": "Ostatní detaily a poznámky",
-          "note": "- schodiště bude řešeno kartáčovaným betonem"
         }
       ]
     }
