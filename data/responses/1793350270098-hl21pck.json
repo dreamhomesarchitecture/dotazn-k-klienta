@@ -253,6 +253,19 @@
           "note": "- oplocení pomocí betonových stěn, které jsou následně omítnuty břízolitem a osazena cihlová hlava"
         }
       ]
+    },
+    {
+      "id": "q_dlz4a3s",
+      "title": "Jaký materiál bude použit na zpevněné plochy a vyrovnávací schodiště?",
+      "short": "Zpevněné plochy a vyrovnávací schodiště. ",
+      "type": "text",
+      "value": "",
+      "dps": [
+        {
+          "label": "",
+          "note": "- schodiště i veškeré plochy budou řešeny jako kartáčovaný beton"
+        }
+      ]
     }
   ]
 }
