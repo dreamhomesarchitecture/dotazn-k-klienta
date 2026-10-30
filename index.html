@@ -132,6 +132,7 @@
   .phase-head:first-of-type{ margin-top:4px; }
   .phase-circle{ display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; border:1.5px solid var(--sage); color: var(--ink); font-size:11px; font-weight:800; letter-spacing:.06em; flex:none; }
   .dps-field{ margin-top:0; padding-top:0; border-top:none; margin-bottom:18px; }
+  .q-body + .dps-field{ margin-top:24px; }
   .dps-sub{ font-weight:800; font-size:15px; margin-bottom:8px; }
   .phase-title{ font-weight:800; font-size:17px; letter-spacing:-0.005em; }
 
@@ -690,6 +691,11 @@ function questionPhases(q){
   let dps = mode !== "dsp" && state.showDps;
   if(!dsp && !dps){ dsp = mode !== "dps"; dps = mode !== "dsp"; }
   return { dsp, dps };
+}
+// U otázek „Pouze DPS“ se tělo otázky (např. možnosti) zobrazuje pod kolečkem DPS.
+function questionBodyShown(q){
+  const ph = questionPhases(q);
+  return ph.dsp || (questionPhaseMode(q) === "dps" && ph.dps);
 }
 function dpsFieldsFor(q){
   const named = Array.isArray(q.dpsFields) ? q.dpsFields.map(f => (f || "").trim()).filter(Boolean) : [];
@@ -1498,12 +1504,12 @@ function questionTemplate(){
       </div>` : ""}
       ${phases.dps ? `
       <div class="phase-head"><span class="phase-circle">DPS</span></div>
+      ${!phases.dsp && questionPhaseMode(q) === "dps" ? `<div class="q-body">${body}</div>` : ""}
       ${dpsFieldsFor(q).map((label, idx) => `
       <div class="q-comment dps-field">
         ${label ? `<div class="dps-sub">${escapeHtml(label)}</div>` : ""}
         <textarea id="q-dps-input-${idx}" class="q-comment-input" aria-label="Poznámka (nepovinné)" data-dps-idx="${idx}" placeholder="Doplňte podrobnosti pro provádění stavby…">${escapeHtml(state.answers[dpsAnswerKey(q, idx)] || '')}</textarea>
-      </div>`).join("")}
-      </div>` : ""}
+      </div>`).join("")}` : ""}
       <div class="nav-row">
         <button class="circle-btn" id="back-btn" aria-label="${state.step===0 ? 'Zpět na úvod' : 'Zpět'}">←</button>
         ${isLast
@@ -1618,7 +1624,7 @@ function bindForm(){
   document.querySelectorAll('.opt-info').forEach(el => el.onclick = (e) => e.stopPropagation());
 
   // Pokud je část DSP u otázky skrytá, tělo otázky se nevykreslí, a tak se na něj nesmí vázat obsluha.
-  const bodyShown = questionPhases(q).dsp;
+  const bodyShown = questionBodyShown(q);
 
   if(q.type === "text" && bodyShown){
     const input = document.getElementById('q-input');
