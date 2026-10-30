@@ -25,7 +25,13 @@
       "title": "Jaký je váš preferovaný systém vodorovných konstrukcí?",
       "short": "Vodorovné konstrukce",
       "type": "multi-choice",
-      "value": "Monolitické betonové stropy"
+      "value": "Monolitické betonové stropy",
+      "dps": [
+        {
+          "label": "Jak budou řešeny podhledy?",
+          "note": "Podhledy nebudou v projektu instalovány. Stropní konstrukce bude omítnuta."
+        }
+      ]
     },
     {
       "id": "dsp_zatepleni_svisle",
