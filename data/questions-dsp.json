@@ -370,5 +370,14 @@
       "Ostatní detaily a poznámky"
     ],
     "phases": "dps"
+  },
+  {
+    "id": "q_dlz4a3s",
+    "title": "Jaký materiál bude použit na zpevněné plochy a vyrovnávací schodiště?",
+    "short": "Zpevněné plochy a vyrovnávací schodiště. ",
+    "hint": "",
+    "type": "text",
+    "placeholder": "",
+    "phases": "dps"
   }
 ]
