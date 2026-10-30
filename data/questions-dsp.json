@@ -107,6 +107,19 @@
     ]
   },
   {
+    "id": "q_y5mlucd",
+    "title": "Jaká bude vnitřní omítka?",
+    "short": "Vnitřní omítka",
+    "hint": "",
+    "type": "multi-choice",
+    "options": [
+      "Jádrová omítka se štukem ",
+      "Sádrová omítka",
+      "Hliněná omítka "
+    ],
+    "phases": "dps"
+  },
+  {
     "id": "dsp_schodiste",
     "type": "multi-choice",
     "title": "Jaký preferujete typ schodiště?",
@@ -193,18 +206,6 @@
     ]
   },
   {
-    "id": "dsp_vnitrni_rozvody",
-    "type": "multi-choice",
-    "title": "Jaká je vaše preference u vnitřních rozvodů?",
-    "short": "Vnitřní rozvody",
-    "hint": "",
-    "options": [
-      "Zpětné využití šedých vod",
-      "Požadavek na cirkulaci teplé vody",
-      "Jiná preference"
-    ]
-  },
-  {
     "id": "dsp_vytapeni_zdroj",
     "type": "multi-choice",
     "title": "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)",
@@ -221,6 +222,18 @@
     ],
     "dpsFields": [
       "Ostatní detaily a poznámky"
+    ]
+  },
+  {
+    "id": "dsp_vnitrni_rozvody",
+    "type": "multi-choice",
+    "title": "Jaká je vaše preference u vnitřních rozvodů?",
+    "short": "Vnitřní rozvody",
+    "hint": "",
+    "options": [
+      "Zpětné využití šedých vod",
+      "Požadavek na cirkulaci teplé vody",
+      "Jiná preference"
     ]
   },
   {
