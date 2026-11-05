@@ -13,14 +13,14 @@
       "short": "Svislé konstrukce",
       "type": "multi-choice",
       "value": "Keramické tvárnice (Porotherm, Heluz)",
-      "comment": "- 300 mm tloušťka nezateplená 15, vnitřní nosné stěny 240 mm"
+      "comment": "- 300 mm tloušťka nezateplená P15, vnitřní nosné stěny 240 mm"
     },
     {
       "id": "dsp_vodorovne",
       "title": "Jaký je váš preferovaný systém vodorovných konstrukcí?",
       "short": "Vodorovné konstrukce",
       "type": "multi-choice",
-      "value": "Jiná preference: - svěšený sádrokarton v obývacím pokoji a jídelně kopíruje šikmunu (vzduchový prostor na rekuperace a nepříé osvětlení mezi izolací a SDK), ostatní místnosti to samé, ale rovný SDK, ale nemusíbýt vzdchová mezera"
+      "value": "Jiná preference: - svěšený sádrokarton v obývacím pokoji a jídelně kopíruje šikminu (vzduchový prostor na rekuperace a nepřímé osvětlení mezi izolací a SDK), ostatní místnosti to samé, ale rovný SDK, ale nemusí být vzduchová mezera"
     },
     {
       "id": "dsp_zatepleni_svisle",
@@ -58,7 +58,7 @@
       "short": "Typ podlah",
       "type": "multi-choice",
       "value": "Keramická",
-      "comment": "keramika všude, garáž drátkobeton - cca 14 cm tloušťky drátkobetonu, obytné pokoje jako je ložnice, šatna a dětské pokoje - vinyl, podlahové topení bude zalito anhydrid"
+      "comment": "keramika všude, garáž drátkobeton - cca 14 cm tloušťky drátkobetonu, obytné pokoje jako je ložnice, šatna a dětské pokoje - vinyl, podlahové topení bude zalito anhydritem"
     },
     {
       "id": "q_y5mlucd",
@@ -87,7 +87,7 @@
       "short": "Stínění objektu",
       "type": "multi-choice",
       "value": "Venkovní žaluzie (tvar Z, C…)",
-      "comment": "- venkovní žaluzie budou realizovány všude na objektu kroě vstupů a hlavního HS portálu"
+      "comment": "- venkovní žaluzie budou realizovány všude na objektu kromě vstupů a hlavního HS portálu"
     },
     {
       "id": "dsp_studna",
