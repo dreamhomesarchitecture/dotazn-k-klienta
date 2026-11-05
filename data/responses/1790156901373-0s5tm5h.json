@@ -94,7 +94,8 @@
       "title": "Jaká je vaše preference u studny?",
       "short": "Studna",
       "type": "multi-choice",
-      "value": "Využití studniční vody na zálivku přes domácí rozvod"
+      "value": "Využití studniční vody na zálivku přes domácí rozvod",
+      "comment": "- studnu nakonec řeší DHA, povolit a používat na splachování, rozvody vody do kohoutů na domě"
     },
     {
       "id": "dsp_destove_vody",
