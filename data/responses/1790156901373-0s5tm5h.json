@@ -12,21 +12,23 @@
       "title": "Jaký je váš preferovaný systém svislých konstrukcí?",
       "short": "Svislé konstrukce",
       "type": "multi-choice",
-      "value": "Jiná preference: bude doplněno (3E)"
+      "value": "Keramické tvárnice (Porotherm, Heluz)",
+      "comment": "- 300 mm tloušťka nezateplená 15, vnitřní nosné stěny 240 mm"
     },
     {
       "id": "dsp_vodorovne",
       "title": "Jaký je váš preferovaný systém vodorovných konstrukcí?",
       "short": "Vodorovné konstrukce",
       "type": "multi-choice",
-      "value": "Jiná preference: všude svěšený SDK a zateplený, nikde nebude nosná konstrukce, nad garáží dimenzovat na větší únosnost (150 kg m2)"
+      "value": "Jiná preference: - svěšený sádrokarton v obývacím pokoji a jídelně kopíruje šikmunu (vzduchový prostor na rekuperace a nepříé osvětlení mezi izolací a SDK), ostatní místnosti to samé, ale rovný SDK, ale nemusíbýt vzdchová mezera"
     },
     {
       "id": "dsp_zatepleni_svisle",
       "title": "Jaké je vaše preferované zateplení svislých konstrukcí?",
       "short": "Zateplení svislých konstrukcí",
       "type": "multi-choice",
-      "value": "Jiná preference: bude doplněno"
+      "value": "Kontaktní zateplovací systém minerální – minerální vata (ETICS systém)",
+      "comment": "- tloušťka tepelné izolace bude volena dle žaluzí"
     },
     {
       "id": "dsp_zatepleni_strecha",
@@ -40,7 +42,8 @@
       "title": "Jaká je vaše preferovaná střešní krytina šikmé střechy?",
       "short": "Krytina šikmé střechy",
       "type": "multi-choice",
-      "value": "Plechová střešní krytina"
+      "value": "Plechová střešní krytina",
+      "comment": "- příprava na fotovoltaiku, dimenzovat staticky krov"
     },
     {
       "id": "dsp_povrch_plocha",
@@ -50,19 +53,19 @@
       "value": "V projektu se nevyskytuje"
     },
     {
-      "id": "dsp_stineni",
-      "title": "Jaké je vaše preferované stínění objektu?",
-      "short": "Stínění objektu",
-      "type": "multi-choice",
-      "value": "Jiná preference: bude doplněno"
-    },
-    {
       "id": "dsp_podlahy",
       "title": "Jaký preferujete typ podlah?",
       "short": "Typ podlah",
       "type": "multi-choice",
       "value": "Keramická",
-      "comment": "keramika všude, garáž drátkobeton - cca 14 cm"
+      "comment": "keramika všude, garáž drátkobeton - cca 14 cm tloušťky drátkobetonu, obytné pokoje jako je ložnice, šatna a dětské pokoje - vinyl, podlahové topení bude zalito anhydrid"
+    },
+    {
+      "id": "q_y5mlucd",
+      "title": "Jaká bude vnitřní omítka?",
+      "short": "Vnitřní omítka",
+      "type": "multi-choice",
+      "value": "Sádrová omítka"
     },
     {
       "id": "dsp_schodiste",
@@ -73,10 +76,18 @@
     },
     {
       "id": "dsp_okna",
-      "title": "Jaká je vaše preference u oken?",
+      "title": "Jaká je vaše preference oken?",
       "short": "Okna",
       "type": "multi-choice",
       "value": "Plastové"
+    },
+    {
+      "id": "dsp_stineni",
+      "title": "Jaké je vaše preferované stínění objektu?",
+      "short": "Stínění objektu",
+      "type": "multi-choice",
+      "value": "Venkovní žaluzie (tvar Z, C…)",
+      "comment": "- venkovní žaluzie budou realizovány všude na objektu kroě vstupů a hlavního HS portálu"
     },
     {
       "id": "dsp_studna",
@@ -93,19 +104,19 @@
       "value": "Využití dešťových vod pouze čerpadlem na zálivku"
     },
     {
-      "id": "dsp_vnitrni_rozvody",
-      "title": "Jaká je vaše preference u vnitřních rozvodů?",
-      "short": "Vnitřní rozvody",
-      "type": "multi-choice",
-      "value": "Požadavek na cirkulaci teplé vody"
-    },
-    {
       "id": "dsp_vytapeni_zdroj",
       "title": "Jaký je váš preferovaný primární zdroj vytápění? (případně sekundární zdroj vytápění)",
       "short": "Primární zdroj vytápění",
       "type": "multi-choice",
       "value": "Kotel na tuhá paliva (dřevo, pelety, biomasa…)",
-      "comment": "sekundárně kondenzační kotel"
+      "comment": "sekundárně kondenzační plynový kotel, kotel na tuhá paliva včetně komínu bude umístěn v místnosti skladu (místnost č. 5), kotel bude kombinovaý (dřevo, pelety, štěpka - více možností paliva)"
+    },
+    {
+      "id": "dsp_vnitrni_rozvody",
+      "title": "Jaká je vaše preference u vnitřních rozvodů?",
+      "short": "Vnitřní rozvody",
+      "type": "multi-choice",
+      "value": "Požadavek na cirkulaci teplé vody"
     },
     {
       "id": "dsp_vytapeni_typ",
@@ -133,7 +144,8 @@
       "title": "Jaké je vaše preferované chlazení?",
       "short": "Chlazení",
       "type": "multi-choice",
-      "value": "Chlazení klimatizací"
+      "value": "Chlazení klimatizací",
+      "comment": "- chladíme obytné místnosti (ložice, obývací pokoj a dětské pokoje)- multisplitem, vnitřní jednotky aktuálně pohledové"
     },
     {
       "id": "dsp_ostatni_technologie",
@@ -141,26 +153,26 @@
       "short": "Ostatní technologie",
       "type": "multi-choice",
       "value": "Bazén (venkovní, interiérový, vířivka…); Sauna (parní, finská…)",
-      "comment": "na bazén pouze příprava"
+      "comment": "na bazén pouze příprava, vířivka příprava"
     },
     {
       "id": "dsp_ostatni_agenda",
       "title": "Potřebujete zajistit některou z následujících agend?",
       "short": "Ostatní agenda",
       "type": "status-list",
-      "value": "Hydrogeologie: Ne, zajistím sám; Inženýrský průzkum: Ne, zajistím sám; Radon: Ne, zajistím sám; Zaměření pozemku: Je zpracované; Plná moc: Vzor ke stažení",
+      "value": "Hydrogeologie: Ano, chci zajistit; Inženýrský průzkum: Ano, chci zajistit; Radon: Ano, chci zajistit; Zaměření pozemku: Je zpracované; Plná moc: Vzor ke stažení",
       "detail": [
         {
           "label": "Hydrogeologie",
-          "statusLabel": "Ne, zajistím sám"
+          "statusLabel": "Ano, chci zajistit"
         },
         {
           "label": "Inženýrský průzkum",
-          "statusLabel": "Ne, zajistím sám"
+          "statusLabel": "Ano, chci zajistit"
         },
         {
           "label": "Radon",
-          "statusLabel": "Ne, zajistím sám"
+          "statusLabel": "Ano, chci zajistit"
         },
         {
           "label": "Zaměření pozemku",
@@ -171,6 +183,20 @@
           "statusLabel": "Vzor ke stažení"
         }
       ]
+    },
+    {
+      "id": "q_fd3dfvu",
+      "title": "Jaké bude oplocení na hranici pozemku. ",
+      "short": "Oplocení ",
+      "type": "text",
+      "value": "Zděný do ulice s pojezdovou bránou dle studie, zbylé tři strany jsou drátěné pletivo. DTTO architektonická studie. "
+    },
+    {
+      "id": "q_dlz4a3s",
+      "title": "Jaký materiál bude použit na zpevněné plochy a vyrovnávací schodiště?",
+      "short": "Zpevněné plochy a vyrovnávací schodiště. ",
+      "type": "text",
+      "value": "Žulové odseky. "
     }
   ]
 }
